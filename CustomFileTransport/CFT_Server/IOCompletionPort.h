@@ -1,23 +1,21 @@
-//출처 : https://github.com/LimSungMin/IOCompletionPort
 #pragma once
+// winsock2 사용을 위해 아래 코멘트 추가
 #pragma comment(lib, "ws2_32.lib")
 #include <WinSock2.h>
-#include <string>
-#include <iostream>
+#include <vector>
 using namespace std;
 
-#define SERVER_PORT 4000
-#define BUFFER_LENGTH 1024
-#define SERVER_IP "127.0.0.1"
+#define	MAX_BUFFER		1024
+#define SERVER_PORT		8000
 
-typedef struct stSOCKETINFO
+struct stSOCKETINFO
 {
 	WSAOVERLAPPED	overlapped;
 	WSABUF			dataBuf;
 	SOCKET			socket;
-	char			messageBuffer[BUFFER_LENGTH];
-	int				recvLength;
-	int				sendLength;
+	char			messageBuffer[MAX_BUFFER];
+	int				recvBytes;
+	int				sendBytes;
 };
 
 
@@ -27,19 +25,24 @@ public:
 	IOCompletionPort();
 	~IOCompletionPort();
 
+	// 소켓 등록 및 서버 정보 설정
 	bool Initialize();
-
+	// 서버 시작
 	void StartServer();
+	// 작업 스레드 생성
+	bool CreateWorkerThread();
+	// 작업 스레드
+	void WorkerThread();
 
-	bool CreateThread();
+	void BroadCast();
 
-	void Thread();
+	vector<SOCKET*>* connectedClients;
 
 private:
-	stSOCKETINFO* m_pSocketInfo;
-	SOCKET		  m_listenSocket;
-	HANDLE		  m_hIOCP;
-	bool		  m_bAccept;
-	bool		  m_bThread;
-	HANDLE*		  m_pHandle;
+	stSOCKETINFO* m_pSocketInfo;		// 소켓 정보
+	SOCKET			m_listenSocket;		// 서버 리슨 소켓
+	HANDLE			m_hIOCP;			// IOCP 객체 핸들
+	bool			m_bAccept;			// 요청 동작 플래그
+	bool			m_bWorkerThread;	// 작업 스레드 동작 플래그
+	HANDLE* m_pWorkerHandle;	// 작업 스레드 핸들
 };
