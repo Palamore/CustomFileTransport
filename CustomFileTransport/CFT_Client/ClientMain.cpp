@@ -4,6 +4,7 @@
 #include <iostream>
 #include <WS2tcpip.h>
 #include <thread>
+#include "ProtocolTag.h"
 
 using namespace std;
 #define	MAX_BUFFER		1024
@@ -105,7 +106,7 @@ void RunSendThread(SOCKET clientSocket)
 	char	szOutMsg[MAX_BUFFER];
 	while (true) {
 		std::cout << ">>";
-		std::cin >> szOutMsg;
+		std::cin.getline(szOutMsg, MAX_BUFFER);
 		if (_strcmpi(szOutMsg, "quit") == 0) break;
 
 		int nSendLen = send(clientSocket, szOutMsg, strlen(szOutMsg), 0);

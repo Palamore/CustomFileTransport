@@ -2,6 +2,7 @@
 #include "Debug.h"
 #include <process.h>
 
+void RemoveTag();
 bool Contain(vector<SOCKET*>& target, SOCKET value);
 
 unsigned int WINAPI CallWorkerThread(LPVOID p)
@@ -15,12 +16,12 @@ IOCompletionPort::IOCompletionPort()
 	:m_bWorkerThread(true)
 	, m_bAccept(true)
 	, connectedClients(new vector<SOCKET*>())
-	, m_pSocketInfo(NULL)
+	, m_pSocketInfo(null)
 	, m_listenSocket(0)
-	, m_hIOCP(NULL)
-	, m_pWorkerHandle(NULL)
+	, m_hIOCP(null)
+	, m_pWorkerHandle(null)
 {
-	connectedClients->reserve(1000);
+	connectedClients->reserve(MAX_CLIENT);
 }
 
 
@@ -32,13 +33,13 @@ IOCompletionPort::~IOCompletionPort()
 	if (m_pSocketInfo)
 	{
 		delete[] m_pSocketInfo;
-		m_pSocketInfo = NULL;
+		m_pSocketInfo = null;
 	}
 
 	if (m_pWorkerHandle)
 	{
 		delete[] m_pWorkerHandle;
-		m_pWorkerHandle = NULL;
+		m_pWorkerHandle = null;
 	}
 }
 
@@ -56,7 +57,7 @@ bool IOCompletionPort::Initialize()
 	}
 
 	// 소켓 생성
-	m_listenSocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+	m_listenSocket = WSASocket(AF_INET, SOCK_STREAM, 0, null, 0, WSA_FLAG_OVERLAPPED);
 	if (m_listenSocket == INVALID_SOCKET)
 	{
 		Debug::LogError("Socket Create Failed\n");
@@ -103,7 +104,7 @@ void IOCompletionPort::StartServer()
 	DWORD flags;
 
 	// Completion Port 객체 생성
-	m_hIOCP = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
+	m_hIOCP = CreateIoCompletionPort(INVALID_HANDLE_VALUE, null, 0, 0);
 
 	// Worker Thread 생성
 	if (!CreateWorkerThread()) return;
@@ -114,7 +115,7 @@ void IOCompletionPort::StartServer()
 	while (m_bAccept)
 	{
 		clientSocket = WSAAccept(
-			m_listenSocket, (struct sockaddr*)&clientAddr, &addrLen, NULL, NULL
+			m_listenSocket, (struct sockaddr*)&clientAddr, &addrLen, null, null
 		);
 
 		if (clientSocket == INVALID_SOCKET)
@@ -184,9 +185,9 @@ bool IOCompletionPort::CreateWorkerThread()
 	for (int i = 0; i < nThreadCnt; i++)
 	{
 		m_pWorkerHandle[i] = (HANDLE*)_beginthreadex(
-			NULL, 0, &CallWorkerThread, this, CREATE_SUSPENDED, &threadId
+			null, 0, &CallWorkerThread, this, CREATE_SUSPENDED, &threadId
 		);
-		if (m_pWorkerHandle[i] == NULL)
+		if (m_pWorkerHandle[i] == null)
 		{
 			Debug::LogError("Worker Thread Create Failed\n");
 			return false;
@@ -246,6 +247,18 @@ void IOCompletionPort::WorkerThread()
 		{
 			Debug::Log("Msg Recv : " + string(pSocketInfo->dataBuf.buf) + "\n");
 
+			string tag = "";
+			tag += pSocketInfo->dataBuf.buf[0];
+			tag += pSocketInfo->dataBuf.buf[1];
+			tag += pSocketInfo->dataBuf.buf[2];
+
+			Debug::Log("Tag : " + tag);
+
+			if (tag == to_string(ProtocolTag::CHAT_NORMAL))
+			{
+				Debug::Log("Tag Normal Chat");
+			}
+
 			for (int i = 0; i < connectedClients->size(); i++)
 			{
 				nResult = WSASend(
@@ -254,8 +267,8 @@ void IOCompletionPort::WorkerThread()
 					1,
 					&sendBytes,
 					dwFlags,
-					NULL,
-					NULL
+					null,
+					null
 				);
 
 				if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
@@ -295,64 +308,7 @@ void IOCompletionPort::WorkerThread()
 	}
 }
 
-void IOCompletionPort::BroadCast()
+void RemoveTag()
 {
-	BOOL	bResult;
-	int		nResult;
-	// Overlapped I/O 작업에서 전송된 데이터 크기
-	DWORD	recvBytes;
-	DWORD	sendBytes;
-	// Completion Key를 받을 포인터 변수
-	stSOCKETINFO* pCompletionKey;
-	// I/O 작업을 위해 요청한 Overlapped 구조체를 받을 포인터	
-	stSOCKETINFO* pSocketInfo;
-	// 
-	DWORD	dwFlags = 0;
-	// 클라이언트의 응답을 그대로 송신		
-	//for (int i = 0; i < connectedClients->size(); i++)
-	//{
-	//	nResult = WSASend(
-	//		pSocketInfo->socket,
-	//		&(pSocketInfo->dataBuf),
-	//		1,
-	//		&sendBytes,
-	//		dwFlags,
-	//		NULL,
-	//		NULL
-	//	);
 
-	//	if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-	//	{
-	//		printf_s("[ERROR] WSASend 실패 : ", WSAGetLastError());
-	//	}
-
-	//	printf_s("[INFO] 메시지 송신 - Bytes : [%d], Msg : [%s]\n",
-	//		pSocketInfo->dataBuf.len, pSocketInfo->dataBuf.buf);
-
-	//	// stSOCKETINFO 데이터 초기화
-	//	ZeroMemory(&(pSocketInfo->overlapped), sizeof(OVERLAPPED));
-	//	pSocketInfo->dataBuf.len = MAX_BUFFER;
-	//	pSocketInfo->dataBuf.buf = pSocketInfo->messageBuffer;
-	//	ZeroMemory(pSocketInfo->messageBuffer, MAX_BUFFER);
-	//	pSocketInfo->recvBytes = 0;
-	//	pSocketInfo->sendBytes = 0;
-
-	//	dwFlags = 0;
-
-	//	// 클라이언트로부터 다시 응답을 받기 위해 WSARecv 를 호출해줌
-	//	nResult = WSARecv(
-	//		pSocketInfo->socket,
-	//		&(pSocketInfo->dataBuf),
-	//		1,
-	//		&recvBytes,
-	//		&dwFlags,
-	//		(LPWSAOVERLAPPED) & (pSocketInfo->overlapped),
-	//		NULL
-	//	);
-
-	//	if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-	//	{
-	//		printf_s("[ERROR] WSARecv Failed : ", WSAGetLastError());
-	//	}
-	//}
 }

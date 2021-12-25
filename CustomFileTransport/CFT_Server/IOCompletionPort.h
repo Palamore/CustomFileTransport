@@ -1,12 +1,15 @@
+//원본 출처 : https://github.com/LimSungMin/IOCompletionPort
 #pragma once
-// winsock2 사용을 위해 아래 코멘트 추가
 #pragma comment(lib, "ws2_32.lib")
 #include <WinSock2.h>
 #include <vector>
+#include "ProtocolTag.h"
 using namespace std;
 
 #define	MAX_BUFFER		1024
 #define SERVER_PORT		8000
+#define MAX_CLIENT		1000
+#define null			NULL
 
 struct stSOCKETINFO
 {
@@ -33,8 +36,6 @@ public:
 	bool CreateWorkerThread();
 	// 작업 스레드
 	void WorkerThread();
-
-	void BroadCast();
 
 	vector<SOCKET*>* connectedClients;
 
