@@ -1,4 +1,5 @@
 #include "IOCompletionPort.h"
+#include "Debug.h"
 #include <process.h>
 
 bool Contain(vector<SOCKET*>& target, SOCKET value);
@@ -11,10 +12,14 @@ unsigned int WINAPI CallWorkerThread(LPVOID p)
 }
 
 IOCompletionPort::IOCompletionPort()
+	:m_bWorkerThread(true)
+	, m_bAccept(true)
+	, connectedClients(new vector<SOCKET*>())
+	, m_pSocketInfo(NULL)
+	, m_listenSocket(0)
+	, m_hIOCP(NULL)
+	, m_pWorkerHandle(NULL)
 {
-	m_bWorkerThread = true;
-	m_bAccept = true;
-	connectedClients = new vector<SOCKET*>();
 	connectedClients->reserve(1000);
 }
 
@@ -46,7 +51,7 @@ bool IOCompletionPort::Initialize()
 
 	if (nResult != 0)
 	{
-		printf_s("[ERROR] winsock 초기화 실패\n");
+		Debug::LogError("Winsock Initialize Failed\n");
 		return false;
 	}
 
@@ -54,7 +59,7 @@ bool IOCompletionPort::Initialize()
 	m_listenSocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
 	if (m_listenSocket == INVALID_SOCKET)
 	{
-		printf_s("[ERROR] 소켓 생성 실패\n");
+		Debug::LogError("Socket Create Failed\n");
 		return false;
 	}
 
@@ -68,7 +73,7 @@ bool IOCompletionPort::Initialize()
 	nResult = bind(m_listenSocket, (struct sockaddr*)&serverAddr, sizeof(SOCKADDR_IN));
 	if (nResult == SOCKET_ERROR)
 	{
-		printf_s("[ERROR] bind 실패\n");
+		Debug::LogError("Bind Failed\n");
 		closesocket(m_listenSocket);
 		WSACleanup();
 		return false;
@@ -78,7 +83,7 @@ bool IOCompletionPort::Initialize()
 	nResult = listen(m_listenSocket, 5);
 	if (nResult == SOCKET_ERROR)
 	{
-		printf_s("[ERROR] listen 실패\n");
+		Debug::LogError("Listen Failed\n");
 		closesocket(m_listenSocket);
 		WSACleanup();
 		return false;
@@ -103,7 +108,7 @@ void IOCompletionPort::StartServer()
 	// Worker Thread 생성
 	if (!CreateWorkerThread()) return;
 
-	printf_s("[INFO] 서버 시작...\n");
+	Debug::Log("Server Start...\n");
 
 	// 클라이언트 접속을 받음
 	while (m_bAccept)
@@ -114,7 +119,7 @@ void IOCompletionPort::StartServer()
 
 		if (clientSocket == INVALID_SOCKET)
 		{
-			printf_s("[ERROR] Accept 실패\n");
+			Debug::LogError("Accept Failed\n");
 			return;
 		}
 
@@ -143,7 +148,7 @@ void IOCompletionPort::StartServer()
 
 		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
 		{
-			printf_s("[ERROR] IO Pending 실패 : %d", WSAGetLastError());
+			Debug::LogError("IO Pending Failed : " + to_string(WSAGetLastError()));
 			return;
 		}
 		if (!Contain(*connectedClients, m_pSocketInfo->socket))
@@ -169,7 +174,7 @@ bool IOCompletionPort::CreateWorkerThread()
 	// 시스템 정보 가져옴
 	SYSTEM_INFO sysInfo;
 	GetSystemInfo(&sysInfo);
-	printf_s("[INFO] CPU 갯수 : %d\n", sysInfo.dwNumberOfProcessors);
+	Debug::Log("CPU Count : " + to_string(sysInfo.dwNumberOfProcessors) + "\n");
 	// 적절한 작업 스레드의 갯수는 (CPU * 2) + 1
 	int nThreadCnt = sysInfo.dwNumberOfProcessors * 2;
 
@@ -183,12 +188,12 @@ bool IOCompletionPort::CreateWorkerThread()
 		);
 		if (m_pWorkerHandle[i] == NULL)
 		{
-			printf_s("[ERROR] Worker Thread 생성 실패\n");
+			Debug::LogError("Worker Thread Create Failed\n");
 			return false;
 		}
 		ResumeThread(m_pWorkerHandle[i]);
 	}
-	printf_s("[INFO] Worker Thread 시작...\n");
+	Debug::Log("Worker Thread Start...\n");
 	return true;
 }
 
@@ -223,7 +228,7 @@ void IOCompletionPort::WorkerThread()
 
 		if (!bResult && recvBytes == 0)
 		{
-			printf_s("[INFO] socket(%d) 접속 끊김\n", pSocketInfo->socket);
+			Debug::Log("socket(" + to_string(pSocketInfo->socket) + ") 접속 끊김\n");
 			closesocket(pSocketInfo->socket);
 			free(pSocketInfo);
 			continue;
@@ -239,8 +244,7 @@ void IOCompletionPort::WorkerThread()
 		}
 		else
 		{
-			printf_s("[INFO] 메시지 수신- Bytes : [%d], Msg : [%s]\n",
-				pSocketInfo->dataBuf.len, pSocketInfo->dataBuf.buf);
+			Debug::Log("Msg Recv : " + string(pSocketInfo->dataBuf.buf) + "\n");
 
 			for (int i = 0; i < connectedClients->size(); i++)
 			{
@@ -256,11 +260,10 @@ void IOCompletionPort::WorkerThread()
 
 				if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
 				{
-					printf_s("[ERROR] WSASend 실패 : ", WSAGetLastError());
+					Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
 				}
 
-				printf_s("[INFO] 메시지 송신 - Bytes : [%d], Msg : [%s]\n",
-					pSocketInfo->dataBuf.len, pSocketInfo->dataBuf.buf);
+				Debug::Log("Msg Sent : " + string(pSocketInfo->dataBuf.buf) + "\n");
 
 			}
 			// stSOCKETINFO 데이터 초기화
@@ -286,7 +289,7 @@ void IOCompletionPort::WorkerThread()
 
 			if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
 			{
-				printf_s("[ERROR] WSARecv Failed : ", WSAGetLastError());
+				Debug::LogError("WSARecv Failed : " + to_string(WSAGetLastError()));
 			}
 		}
 	}
