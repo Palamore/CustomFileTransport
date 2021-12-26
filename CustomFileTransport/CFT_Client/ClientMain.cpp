@@ -4,6 +4,8 @@
 #include <iostream>
 #include <WS2tcpip.h>
 #include <thread>
+#include <vector>
+#include <string>
 #include "ProtocolTag.h"
 
 using namespace std;
@@ -21,12 +23,21 @@ struct stSOCKETINFO
 	int				sendBytes;
 };
 
+vector<ProtocolTag> AllTag;
+
+void Init();
+
 void RunListenThread(SOCKET clientSocket);
 
 void RunSendThread(SOCKET clientSocket);
 
+bool ValidateMessage(char* msg);
+
+void AddTag(char* msg);
+
 int main()
 {
+	Init();
 	WSADATA wsaData;
 	// 윈속 버전을 2.2로 초기화
 	int nRet = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -109,6 +120,11 @@ void RunSendThread(SOCKET clientSocket)
 		std::cin.getline(szOutMsg, MAX_BUFFER);
 		if (_strcmpi(szOutMsg, "quit") == 0) break;
 
+		if (!ValidateMessage(szOutMsg))
+		{
+			AddTag(szOutMsg);
+		}
+
 		int nSendLen = send(clientSocket, szOutMsg, strlen(szOutMsg), 0);
 
 		if (nSendLen == -1) {
@@ -120,4 +136,46 @@ void RunSendThread(SOCKET clientSocket)
 			szOutMsg << "]" << std::endl;
 
 	}
+}
+
+
+void Init()
+{
+	AllTag.reserve(100);
+	AllTag.push_back(ProtocolTag::CHAT_NORMAL);
+	AllTag.push_back(ProtocolTag::CHAT_WHISPER);
+	AllTag.push_back(ProtocolTag::ROOM_USER_LIST);
+	AllTag.push_back(ProtocolTag::TAG_EXIT);
+}
+
+bool ValidateMessage(char* msg)
+{
+	for (int i = 0; i < AllTag.size(); i++)
+	{
+		if (_strcmpi(msg, to_string(int(AllTag[i])).c_str()) == 0)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void AddTag(char* msg)
+{
+	int i = 0;
+	int msgLength = strlen(msg);
+	char* cpy = new char[msgLength + 1];
+	memcpy(cpy, msg, (msgLength + 1) * sizeof(char));
+	while (cpy[i] != '\0')
+	{
+		msg[i + 4] = cpy[i];
+		i++;
+	}
+	msg[0] = '1';
+	msg[1] = '0';
+	msg[2] = '1';
+	msg[3] = ' ';
+	msg[i + 4] = '\0';
+	delete[] cpy;
 }

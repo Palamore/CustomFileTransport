@@ -4,6 +4,7 @@
 #include <WinSock2.h>
 #include <vector>
 #include "ProtocolTag.h"
+#include <memory>
 using namespace std;
 
 #define	MAX_BUFFER		1024

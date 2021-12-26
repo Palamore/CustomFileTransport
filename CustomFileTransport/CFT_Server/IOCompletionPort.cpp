@@ -2,7 +2,7 @@
 #include "Debug.h"
 #include <process.h>
 
-void RemoveTag();
+void RemoveTag(char* buf, int length);
 bool Contain(vector<SOCKET*>& target, SOCKET value);
 
 unsigned int WINAPI CallWorkerThread(LPVOID p)
@@ -254,10 +254,12 @@ void IOCompletionPort::WorkerThread()
 
 			Debug::Log("Tag : " + tag);
 
-			if (tag == to_string(ProtocolTag::CHAT_NORMAL))
+			if (tag == to_string(int(ProtocolTag::CHAT_NORMAL)))
 			{
 				Debug::Log("Tag Normal Chat");
 			}
+			
+			RemoveTag(pSocketInfo->dataBuf.buf, pSocketInfo->dataBuf.len);
 
 			for (int i = 0; i < connectedClients->size(); i++)
 			{
@@ -308,7 +310,14 @@ void IOCompletionPort::WorkerThread()
 	}
 }
 
-void RemoveTag()
+void RemoveTag(char* buf, int length)
 {
-
+	for (int i = 0; i < length - 4; i++)
+	{
+		buf[i] = buf[i + 4];
+	}
+	for (int i = length - 4; i < length; i++)
+	{
+		buf[i] = '\0';
+	}
 }
