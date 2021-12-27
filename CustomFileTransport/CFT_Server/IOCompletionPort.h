@@ -1,10 +1,12 @@
 //원본 출처 : https://github.com/LimSungMin/IOCompletionPort
 #pragma once
 #pragma comment(lib, "ws2_32.lib")
-#include <WinSock2.h>
 #include <vector>
 #include "ProtocolTag.h"
+#include "ClientInfo.pb.h"
+#include <WinSock2.h>
 #include <memory>
+using namespace ServerPacket;
 using namespace std;
 
 #define	MAX_BUFFER		1024
@@ -39,6 +41,7 @@ public:
 	void WorkerThread();
 
 	vector<SOCKET*>* connectedClients;
+	vector<ClientInfo*>* clientInfoContainer;
 
 private:
 	stSOCKETINFO* m_pSocketInfo;		// 소켓 정보

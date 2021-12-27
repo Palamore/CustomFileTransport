@@ -20,8 +20,10 @@ IOCompletionPort::IOCompletionPort()
 	, m_listenSocket(0)
 	, m_hIOCP(null)
 	, m_pWorkerHandle(null)
+	, clientInfoContainer(new vector<ClientInfo*>())
 {
 	connectedClients->reserve(MAX_CLIENT);
+	clientInfoContainer->reserve(MAX_CLIENT);
 }
 
 
@@ -30,6 +32,20 @@ IOCompletionPort::~IOCompletionPort()
 	// winsock 의 사용을 끝낸다
 	WSACleanup();
 	// 다 사용한 객체를 삭제
+	while (!connectedClients->empty())
+	{
+		delete connectedClients->back();
+		connectedClients->pop_back();
+	}
+	delete connectedClients;
+
+	while (!clientInfoContainer->empty())
+	{
+		delete clientInfoContainer->back();
+		clientInfoContainer->pop_back();
+	}
+	delete clientInfoContainer;
+
 	if (m_pSocketInfo)
 	{
 		delete[] m_pSocketInfo;
@@ -70,11 +86,12 @@ bool IOCompletionPort::Initialize()
 	serverAddr.sin_port = htons(SERVER_PORT);
 	serverAddr.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
 
+
 	// 소켓 설정
-	nResult = bind(m_listenSocket, (struct sockaddr*)&serverAddr, sizeof(SOCKADDR_IN));
+	nResult = bind(m_listenSocket, (struct sockaddr*)&serverAddr, (int)sizeof(SOCKADDR_IN));
 	if (nResult == SOCKET_ERROR)
 	{
-		Debug::LogError("Bind Failed\n");
+		Debug::LogError("Listen Failed\n");
 		closesocket(m_listenSocket);
 		WSACleanup();
 		return false;
@@ -155,6 +172,10 @@ void IOCompletionPort::StartServer()
 		if (!Contain(*connectedClients, m_pSocketInfo->socket))
 		{
 			connectedClients->push_back(&m_pSocketInfo->socket);
+			ClientInfo* cInfo = new ClientInfo();
+			cInfo->set_socket(m_pSocketInfo->socket);
+			cInfo->set_nickname(to_string(m_pSocketInfo->socket));
+			clientInfoContainer->push_back(cInfo);
 		}
 
 	}
@@ -251,15 +272,16 @@ void IOCompletionPort::WorkerThread()
 			tag += pSocketInfo->dataBuf.buf[0];
 			tag += pSocketInfo->dataBuf.buf[1];
 			tag += pSocketInfo->dataBuf.buf[2];
-
-			Debug::Log("Tag : " + tag);
-
-			if (tag == to_string(int(ProtocolTag::CHAT_NORMAL)))
-			{
-				Debug::Log("Tag Normal Chat");
-			}
 			
 			RemoveTag(pSocketInfo->dataBuf.buf, pSocketInfo->dataBuf.len);
+
+			for (int i = 0; i < clientInfoContainer->size(); i++)
+			{
+				if (pSocketInfo->socket == clientInfoContainer->at(i)->socket())
+				{
+					cout << clientInfoContainer->at(i)->nickname() << " Sent Msg " << endl;
+				}
+			}
 
 			for (int i = 0; i < connectedClients->size(); i++)
 			{
