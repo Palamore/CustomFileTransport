@@ -7,7 +7,11 @@
 #include <vector>
 #include <string>
 #include "ProtocolTag.h"
+#include "ClientInfo.pb.h"
+#include "PacketTag.pb.h"
 
+using namespace ServerPacket;
+using namespace PacketTag;
 using namespace std;
 #define	MAX_BUFFER		1024
 #define SERVER_PORT		8000
@@ -115,6 +119,7 @@ void RunListenThread(SOCKET clientSocket)
 void RunSendThread(SOCKET clientSocket)
 {
 	char	szOutMsg[MAX_BUFFER];
+	string outMsg;
 	while (true) {
 		std::cout << ">>";
 		std::cin.getline(szOutMsg, MAX_BUFFER);
@@ -125,7 +130,14 @@ void RunSendThread(SOCKET clientSocket)
 			AddTag(szOutMsg);
 		}
 
-		int nSendLen = send(clientSocket, szOutMsg, strlen(szOutMsg), 0);
+		ClientInfo cInfo;
+		cInfo.set_socket(333);
+		cInfo.set_nickname("palamore");
+		
+		outMsg = cInfo.SerializeAsString();
+
+
+		int nSendLen = send(clientSocket, outMsg.c_str(), strlen(outMsg.c_str()), 0);
 
 		if (nSendLen == -1) {
 			std::cout << "Error : " << WSAGetLastError() << std::endl;
@@ -133,7 +145,7 @@ void RunSendThread(SOCKET clientSocket)
 		}
 
 		std::cout << "Message sended : bytes[" << nSendLen << "], message : [" <<
-			szOutMsg << "]" << std::endl;
+			szOutMsg << "]" << std::endl << "outMSg : " << outMsg << std::endl;
 
 	}
 }
