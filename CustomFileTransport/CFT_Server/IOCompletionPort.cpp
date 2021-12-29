@@ -268,12 +268,15 @@ void IOCompletionPort::WorkerThread()
 		{
 			Debug::Log("Msg Recv : " + string(pSocketInfo->dataBuf.buf) + "\n");
 
-			string tag = "";
+			/*string tag = "";
 			tag += pSocketInfo->dataBuf.buf[0];
 			tag += pSocketInfo->dataBuf.buf[1];
 			tag += pSocketInfo->dataBuf.buf[2];
 			
-			RemoveTag(pSocketInfo->dataBuf.buf, pSocketInfo->dataBuf.len);
+			RemoveTag(pSocketInfo->dataBuf.buf, pSocketInfo->dataBuf.len);*/
+
+			ClientInfo rcvInfo;
+			rcvInfo.ParseFromString(string(pSocketInfo->dataBuf.buf));
 
 			for (int i = 0; i < clientInfoContainer->size(); i++)
 			{
