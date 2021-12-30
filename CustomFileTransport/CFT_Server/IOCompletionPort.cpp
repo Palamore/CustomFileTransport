@@ -266,46 +266,48 @@ void IOCompletionPort::WorkerThread()
 		}
 		else
 		{
-			Debug::Log("Msg Recv : " + string(pSocketInfo->dataBuf.buf) + "\n");
+			PacketMsg msg;
+			msg.ParseFromString(string(pSocketInfo->dataBuf.buf));
+			Chat_Normal chatData;
 
-			/*string tag = "";
-			tag += pSocketInfo->dataBuf.buf[0];
-			tag += pSocketInfo->dataBuf.buf[1];
-			tag += pSocketInfo->dataBuf.buf[2];
-			
-			RemoveTag(pSocketInfo->dataBuf.buf, pSocketInfo->dataBuf.len);*/
-
-			ClientInfo rcvInfo;
-			rcvInfo.ParseFromString(string(pSocketInfo->dataBuf.buf));
-
-			for (int i = 0; i < clientInfoContainer->size(); i++)
+			switch (msg.type())
 			{
-				if (pSocketInfo->socket == clientInfoContainer->at(i)->socket())
+			case PacketType::CHAT_NORMAL:
+				chatData.ParseFromString(msg.serializeddata());
+				pSocketInfo->dataBuf.buf = (CHAR*)(chatData.message().c_str());
+				pSocketInfo->dataBuf.len = strlen(chatData.message().c_str());
+				for (int i = 0; i < connectedClients->size(); i++)
 				{
-					cout << clientInfoContainer->at(i)->nickname() << " Sent Msg " << endl;
+					nResult = WSASend(
+						*(connectedClients->at(i)),
+						&(pSocketInfo->dataBuf),
+						1,
+						&sendBytes,
+						dwFlags,
+						null,
+						null
+					);
+
+					if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+					{
+						Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
+					}
+
+					Debug::Log("Msg Sent : " + string(pSocketInfo->dataBuf.buf) + "\n");
+
 				}
+				break;
+			case PacketType::CHAT_WHISPER:
+
+				break;
+			case PacketType::ROOM_USER_LIST:
+
+				break;
+			case PacketType::EXIT_REQUEST:
+
+				break;
 			}
 
-			for (int i = 0; i < connectedClients->size(); i++)
-			{
-				nResult = WSASend(
-					*(connectedClients->at(i)),
-					&(pSocketInfo->dataBuf),
-					1,
-					&sendBytes,
-					dwFlags,
-					null,
-					null
-				);
-
-				if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-				{
-					Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
-				}
-
-				Debug::Log("Msg Sent : " + string(pSocketInfo->dataBuf.buf) + "\n");
-
-			}
 			// stSOCKETINFO 데이터 초기화
 			ZeroMemory(&(pSocketInfo->overlapped), sizeof(OVERLAPPED));
 			pSocketInfo->dataBuf.len = MAX_BUFFER;

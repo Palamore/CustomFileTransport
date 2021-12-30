@@ -3,11 +3,13 @@
 #pragma comment(lib, "ws2_32.lib")
 #include <vector>
 #include "ProtocolTag.h"
+#include "PacketTag.pb.h"
 #include "ClientInfo.pb.h"
 #include <WinSock2.h>
 #include <memory>
 using namespace ServerPacket;
 using namespace std;
+using namespace PacketTag;
 
 #define	MAX_BUFFER		1024
 #define SERVER_PORT		8000
