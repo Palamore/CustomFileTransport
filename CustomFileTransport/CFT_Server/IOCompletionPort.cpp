@@ -273,9 +273,9 @@ void IOCompletionPort::WorkerThread()
 			switch (msg.type())
 			{
 			case PacketType::CHAT_NORMAL:
-				chatData.ParseFromString(msg.serializeddata());
-				pSocketInfo->dataBuf.buf = (CHAR*)(chatData.message().c_str());
-				pSocketInfo->dataBuf.len = strlen(chatData.message().c_str());
+				chatData.ParseFromString(msg.data());
+				pSocketInfo->dataBuf.buf = (CHAR*)(chatData.data().c_str());
+				pSocketInfo->dataBuf.len = strlen(chatData.data().c_str());
 				for (int i = 0; i < connectedClients->size(); i++)
 				{
 					nResult = WSASend(

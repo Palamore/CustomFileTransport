@@ -6,6 +6,7 @@
 
 #include <limits>
 #include <string>
+
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/arena.h>
 #include <google/protobuf/arenastring.h>
@@ -214,21 +215,36 @@ class PacketMsg final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kSerializedDataFieldNumber = 2,
+    kNicknameFieldNumber = 2,
+    kDataFieldNumber = 3,
     kTypeFieldNumber = 1,
   };
-  // string SerializedData = 2;
-  void clear_serializeddata();
-  const std::string& serializeddata() const;
+  // string nickname = 2;
+  void clear_nickname();
+  const std::string& nickname() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_serializeddata(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_serializeddata();
-  PROTOBUF_MUST_USE_RESULT std::string* release_serializeddata();
-  void set_allocated_serializeddata(std::string* serializeddata);
+  void set_nickname(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_nickname();
+  PROTOBUF_MUST_USE_RESULT std::string* release_nickname();
+  void set_allocated_nickname(std::string* nickname);
   private:
-  const std::string& _internal_serializeddata() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_serializeddata(const std::string& value);
-  std::string* _internal_mutable_serializeddata();
+  const std::string& _internal_nickname() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_nickname(const std::string& value);
+  std::string* _internal_mutable_nickname();
+  public:
+
+  // string data = 3;
+  void clear_data();
+  const std::string& data() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_data(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_data();
+  PROTOBUF_MUST_USE_RESULT std::string* release_data();
+  void set_allocated_data(std::string* data);
+  private:
+  const std::string& _internal_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(const std::string& value);
+  std::string* _internal_mutable_data();
   public:
 
   // .PacketTag.PacketType type = 1;
@@ -247,7 +263,8 @@ class PacketMsg final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr serializeddata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr nickname_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
   int type_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_PacketTag_2eproto;
@@ -373,35 +390,20 @@ class Chat_Normal final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kNicknameFieldNumber = 1,
-    kMessageFieldNumber = 2,
+    kDataFieldNumber = 1,
   };
-  // string nickname = 1;
-  void clear_nickname();
-  const std::string& nickname() const;
+  // string data = 1;
+  void clear_data();
+  const std::string& data() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_nickname(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_nickname();
-  PROTOBUF_MUST_USE_RESULT std::string* release_nickname();
-  void set_allocated_nickname(std::string* nickname);
+  void set_data(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_data();
+  PROTOBUF_MUST_USE_RESULT std::string* release_data();
+  void set_allocated_data(std::string* data);
   private:
-  const std::string& _internal_nickname() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_nickname(const std::string& value);
-  std::string* _internal_mutable_nickname();
-  public:
-
-  // string message = 2;
-  void clear_message();
-  const std::string& message() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_message(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_message();
-  PROTOBUF_MUST_USE_RESULT std::string* release_message();
-  void set_allocated_message(std::string* message);
-  private:
-  const std::string& _internal_message() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_message(const std::string& value);
-  std::string* _internal_mutable_message();
+  const std::string& _internal_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(const std::string& value);
+  std::string* _internal_mutable_data();
   public:
 
   // @@protoc_insertion_point(class_scope:PacketTag.Chat_Normal)
@@ -411,8 +413,7 @@ class Chat_Normal final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr nickname_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr message_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_PacketTag_2eproto;
 };
@@ -537,25 +538,10 @@ class Chat_Whisper final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kNicknameFieldNumber = 1,
-    kTargetNicknameFieldNumber = 2,
-    kMessageFieldNumber = 3,
+    kTargetNicknameFieldNumber = 1,
+    kDataFieldNumber = 2,
   };
-  // string nickname = 1;
-  void clear_nickname();
-  const std::string& nickname() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_nickname(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_nickname();
-  PROTOBUF_MUST_USE_RESULT std::string* release_nickname();
-  void set_allocated_nickname(std::string* nickname);
-  private:
-  const std::string& _internal_nickname() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_nickname(const std::string& value);
-  std::string* _internal_mutable_nickname();
-  public:
-
-  // string targetNickname = 2;
+  // string targetNickname = 1;
   void clear_targetnickname();
   const std::string& targetnickname() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -569,18 +555,18 @@ class Chat_Whisper final :
   std::string* _internal_mutable_targetnickname();
   public:
 
-  // string message = 3;
-  void clear_message();
-  const std::string& message() const;
+  // string data = 2;
+  void clear_data();
+  const std::string& data() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_message(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_message();
-  PROTOBUF_MUST_USE_RESULT std::string* release_message();
-  void set_allocated_message(std::string* message);
+  void set_data(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_data();
+  PROTOBUF_MUST_USE_RESULT std::string* release_data();
+  void set_allocated_data(std::string* data);
   private:
-  const std::string& _internal_message() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_message(const std::string& value);
-  std::string* _internal_mutable_message();
+  const std::string& _internal_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(const std::string& value);
+  std::string* _internal_mutable_data();
   public:
 
   // @@protoc_insertion_point(class_scope:PacketTag.Chat_Whisper)
@@ -590,9 +576,8 @@ class Chat_Whisper final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr nickname_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr targetnickname_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr message_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_PacketTag_2eproto;
 };
@@ -717,20 +702,20 @@ class Room_User_List final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kNicknameFieldNumber = 1,
+    kDataFieldNumber = 1,
   };
-  // string nickname = 1;
-  void clear_nickname();
-  const std::string& nickname() const;
+  // string data = 1;
+  void clear_data();
+  const std::string& data() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_nickname(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_nickname();
-  PROTOBUF_MUST_USE_RESULT std::string* release_nickname();
-  void set_allocated_nickname(std::string* nickname);
+  void set_data(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_data();
+  PROTOBUF_MUST_USE_RESULT std::string* release_data();
+  void set_allocated_data(std::string* data);
   private:
-  const std::string& _internal_nickname() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_nickname(const std::string& value);
-  std::string* _internal_mutable_nickname();
+  const std::string& _internal_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(const std::string& value);
+  std::string* _internal_mutable_data();
   public:
 
   // @@protoc_insertion_point(class_scope:PacketTag.Room_User_List)
@@ -740,7 +725,7 @@ class Room_User_List final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr nickname_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_PacketTag_2eproto;
 };
@@ -865,20 +850,20 @@ class Exit_Request final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kNicknameFieldNumber = 1,
+    kDataFieldNumber = 1,
   };
-  // string nickname = 1;
-  void clear_nickname();
-  const std::string& nickname() const;
+  // string data = 1;
+  void clear_data();
+  const std::string& data() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_nickname(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_nickname();
-  PROTOBUF_MUST_USE_RESULT std::string* release_nickname();
-  void set_allocated_nickname(std::string* nickname);
+  void set_data(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_data();
+  PROTOBUF_MUST_USE_RESULT std::string* release_data();
+  void set_allocated_data(std::string* data);
   private:
-  const std::string& _internal_nickname() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_nickname(const std::string& value);
-  std::string* _internal_mutable_nickname();
+  const std::string& _internal_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(const std::string& value);
+  std::string* _internal_mutable_data();
   public:
 
   // @@protoc_insertion_point(class_scope:PacketTag.Exit_Request)
@@ -888,7 +873,7 @@ class Exit_Request final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr nickname_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_PacketTag_2eproto;
 };
@@ -923,199 +908,153 @@ inline void PacketMsg::set_type(::PacketTag::PacketType value) {
   // @@protoc_insertion_point(field_set:PacketTag.PacketMsg.type)
 }
 
-// string SerializedData = 2;
-inline void PacketMsg::clear_serializeddata() {
-  serializeddata_.ClearToEmpty();
+// string nickname = 2;
+inline void PacketMsg::clear_nickname() {
+  nickname_.ClearToEmpty();
 }
-inline const std::string& PacketMsg::serializeddata() const {
-  // @@protoc_insertion_point(field_get:PacketTag.PacketMsg.SerializedData)
-  return _internal_serializeddata();
+inline const std::string& PacketMsg::nickname() const {
+  // @@protoc_insertion_point(field_get:PacketTag.PacketMsg.nickname)
+  return _internal_nickname();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void PacketMsg::set_serializeddata(ArgT0&& arg0, ArgT... args) {
+void PacketMsg::set_nickname(ArgT0&& arg0, ArgT... args) {
  
- serializeddata_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.PacketMsg.SerializedData)
+ nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.PacketMsg.nickname)
 }
-inline std::string* PacketMsg::mutable_serializeddata() {
-  std::string* _s = _internal_mutable_serializeddata();
-  // @@protoc_insertion_point(field_mutable:PacketTag.PacketMsg.SerializedData)
+inline std::string* PacketMsg::mutable_nickname() {
+  std::string* _s = _internal_mutable_nickname();
+  // @@protoc_insertion_point(field_mutable:PacketTag.PacketMsg.nickname)
   return _s;
 }
-inline const std::string& PacketMsg::_internal_serializeddata() const {
-  return serializeddata_.Get();
+inline const std::string& PacketMsg::_internal_nickname() const {
+  return nickname_.Get();
 }
-inline void PacketMsg::_internal_set_serializeddata(const std::string& value) {
+inline void PacketMsg::_internal_set_nickname(const std::string& value) {
   
-  serializeddata_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+  nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* PacketMsg::_internal_mutable_serializeddata() {
+inline std::string* PacketMsg::_internal_mutable_nickname() {
   
-  return serializeddata_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+  return nickname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* PacketMsg::release_serializeddata() {
-  // @@protoc_insertion_point(field_release:PacketTag.PacketMsg.SerializedData)
-  return serializeddata_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+inline std::string* PacketMsg::release_nickname() {
+  // @@protoc_insertion_point(field_release:PacketTag.PacketMsg.nickname)
+  return nickname_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void PacketMsg::set_allocated_serializeddata(std::string* serializeddata) {
-  if (serializeddata != nullptr) {
+inline void PacketMsg::set_allocated_nickname(std::string* nickname) {
+  if (nickname != nullptr) {
     
   } else {
     
   }
-  serializeddata_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), serializeddata,
+  nickname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), nickname,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.PacketMsg.SerializedData)
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.PacketMsg.nickname)
+}
+
+// string data = 3;
+inline void PacketMsg::clear_data() {
+  data_.ClearToEmpty();
+}
+inline const std::string& PacketMsg::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.PacketMsg.data)
+  return _internal_data();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void PacketMsg::set_data(ArgT0&& arg0, ArgT... args) {
+ 
+ data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.PacketMsg.data)
+}
+inline std::string* PacketMsg::mutable_data() {
+  std::string* _s = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:PacketTag.PacketMsg.data)
+  return _s;
+}
+inline const std::string& PacketMsg::_internal_data() const {
+  return data_.Get();
+}
+inline void PacketMsg::_internal_set_data(const std::string& value) {
+  
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* PacketMsg::_internal_mutable_data() {
+  
+  return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* PacketMsg::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.PacketMsg.data)
+  return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void PacketMsg::set_allocated_data(std::string* data) {
+  if (data != nullptr) {
+    
+  } else {
+    
+  }
+  data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.PacketMsg.data)
 }
 
 // -------------------------------------------------------------------
 
 // Chat_Normal
 
-// string nickname = 1;
-inline void Chat_Normal::clear_nickname() {
-  nickname_.ClearToEmpty();
+// string data = 1;
+inline void Chat_Normal::clear_data() {
+  data_.ClearToEmpty();
 }
-inline const std::string& Chat_Normal::nickname() const {
-  // @@protoc_insertion_point(field_get:PacketTag.Chat_Normal.nickname)
-  return _internal_nickname();
+inline const std::string& Chat_Normal::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.Chat_Normal.data)
+  return _internal_data();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void Chat_Normal::set_nickname(ArgT0&& arg0, ArgT... args) {
+void Chat_Normal::set_data(ArgT0&& arg0, ArgT... args) {
  
- nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.Chat_Normal.nickname)
+ data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.Chat_Normal.data)
 }
-inline std::string* Chat_Normal::mutable_nickname() {
-  std::string* _s = _internal_mutable_nickname();
-  // @@protoc_insertion_point(field_mutable:PacketTag.Chat_Normal.nickname)
+inline std::string* Chat_Normal::mutable_data() {
+  std::string* _s = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:PacketTag.Chat_Normal.data)
   return _s;
 }
-inline const std::string& Chat_Normal::_internal_nickname() const {
-  return nickname_.Get();
+inline const std::string& Chat_Normal::_internal_data() const {
+  return data_.Get();
 }
-inline void Chat_Normal::_internal_set_nickname(const std::string& value) {
+inline void Chat_Normal::_internal_set_data(const std::string& value) {
   
-  nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* Chat_Normal::_internal_mutable_nickname() {
+inline std::string* Chat_Normal::_internal_mutable_data() {
   
-  return nickname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+  return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* Chat_Normal::release_nickname() {
-  // @@protoc_insertion_point(field_release:PacketTag.Chat_Normal.nickname)
-  return nickname_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+inline std::string* Chat_Normal::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.Chat_Normal.data)
+  return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void Chat_Normal::set_allocated_nickname(std::string* nickname) {
-  if (nickname != nullptr) {
+inline void Chat_Normal::set_allocated_data(std::string* data) {
+  if (data != nullptr) {
     
   } else {
     
   }
-  nickname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), nickname,
+  data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.Chat_Normal.nickname)
-}
-
-// string message = 2;
-inline void Chat_Normal::clear_message() {
-  message_.ClearToEmpty();
-}
-inline const std::string& Chat_Normal::message() const {
-  // @@protoc_insertion_point(field_get:PacketTag.Chat_Normal.message)
-  return _internal_message();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void Chat_Normal::set_message(ArgT0&& arg0, ArgT... args) {
- 
- message_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.Chat_Normal.message)
-}
-inline std::string* Chat_Normal::mutable_message() {
-  std::string* _s = _internal_mutable_message();
-  // @@protoc_insertion_point(field_mutable:PacketTag.Chat_Normal.message)
-  return _s;
-}
-inline const std::string& Chat_Normal::_internal_message() const {
-  return message_.Get();
-}
-inline void Chat_Normal::_internal_set_message(const std::string& value) {
-  
-  message_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
-}
-inline std::string* Chat_Normal::_internal_mutable_message() {
-  
-  return message_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
-}
-inline std::string* Chat_Normal::release_message() {
-  // @@protoc_insertion_point(field_release:PacketTag.Chat_Normal.message)
-  return message_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
-}
-inline void Chat_Normal::set_allocated_message(std::string* message) {
-  if (message != nullptr) {
-    
-  } else {
-    
-  }
-  message_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), message,
-      GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.Chat_Normal.message)
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.Chat_Normal.data)
 }
 
 // -------------------------------------------------------------------
 
 // Chat_Whisper
 
-// string nickname = 1;
-inline void Chat_Whisper::clear_nickname() {
-  nickname_.ClearToEmpty();
-}
-inline const std::string& Chat_Whisper::nickname() const {
-  // @@protoc_insertion_point(field_get:PacketTag.Chat_Whisper.nickname)
-  return _internal_nickname();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void Chat_Whisper::set_nickname(ArgT0&& arg0, ArgT... args) {
- 
- nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.Chat_Whisper.nickname)
-}
-inline std::string* Chat_Whisper::mutable_nickname() {
-  std::string* _s = _internal_mutable_nickname();
-  // @@protoc_insertion_point(field_mutable:PacketTag.Chat_Whisper.nickname)
-  return _s;
-}
-inline const std::string& Chat_Whisper::_internal_nickname() const {
-  return nickname_.Get();
-}
-inline void Chat_Whisper::_internal_set_nickname(const std::string& value) {
-  
-  nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
-}
-inline std::string* Chat_Whisper::_internal_mutable_nickname() {
-  
-  return nickname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
-}
-inline std::string* Chat_Whisper::release_nickname() {
-  // @@protoc_insertion_point(field_release:PacketTag.Chat_Whisper.nickname)
-  return nickname_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
-}
-inline void Chat_Whisper::set_allocated_nickname(std::string* nickname) {
-  if (nickname != nullptr) {
-    
-  } else {
-    
-  }
-  nickname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), nickname,
-      GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.Chat_Whisper.nickname)
-}
-
-// string targetNickname = 2;
+// string targetNickname = 1;
 inline void Chat_Whisper::clear_targetnickname() {
   targetnickname_.ClearToEmpty();
 }
@@ -1161,150 +1100,150 @@ inline void Chat_Whisper::set_allocated_targetnickname(std::string* targetnickna
   // @@protoc_insertion_point(field_set_allocated:PacketTag.Chat_Whisper.targetNickname)
 }
 
-// string message = 3;
-inline void Chat_Whisper::clear_message() {
-  message_.ClearToEmpty();
+// string data = 2;
+inline void Chat_Whisper::clear_data() {
+  data_.ClearToEmpty();
 }
-inline const std::string& Chat_Whisper::message() const {
-  // @@protoc_insertion_point(field_get:PacketTag.Chat_Whisper.message)
-  return _internal_message();
+inline const std::string& Chat_Whisper::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.Chat_Whisper.data)
+  return _internal_data();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void Chat_Whisper::set_message(ArgT0&& arg0, ArgT... args) {
+void Chat_Whisper::set_data(ArgT0&& arg0, ArgT... args) {
  
- message_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.Chat_Whisper.message)
+ data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.Chat_Whisper.data)
 }
-inline std::string* Chat_Whisper::mutable_message() {
-  std::string* _s = _internal_mutable_message();
-  // @@protoc_insertion_point(field_mutable:PacketTag.Chat_Whisper.message)
+inline std::string* Chat_Whisper::mutable_data() {
+  std::string* _s = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:PacketTag.Chat_Whisper.data)
   return _s;
 }
-inline const std::string& Chat_Whisper::_internal_message() const {
-  return message_.Get();
+inline const std::string& Chat_Whisper::_internal_data() const {
+  return data_.Get();
 }
-inline void Chat_Whisper::_internal_set_message(const std::string& value) {
+inline void Chat_Whisper::_internal_set_data(const std::string& value) {
   
-  message_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* Chat_Whisper::_internal_mutable_message() {
+inline std::string* Chat_Whisper::_internal_mutable_data() {
   
-  return message_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+  return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* Chat_Whisper::release_message() {
-  // @@protoc_insertion_point(field_release:PacketTag.Chat_Whisper.message)
-  return message_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+inline std::string* Chat_Whisper::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.Chat_Whisper.data)
+  return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void Chat_Whisper::set_allocated_message(std::string* message) {
-  if (message != nullptr) {
+inline void Chat_Whisper::set_allocated_data(std::string* data) {
+  if (data != nullptr) {
     
   } else {
     
   }
-  message_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), message,
+  data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.Chat_Whisper.message)
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.Chat_Whisper.data)
 }
 
 // -------------------------------------------------------------------
 
 // Room_User_List
 
-// string nickname = 1;
-inline void Room_User_List::clear_nickname() {
-  nickname_.ClearToEmpty();
+// string data = 1;
+inline void Room_User_List::clear_data() {
+  data_.ClearToEmpty();
 }
-inline const std::string& Room_User_List::nickname() const {
-  // @@protoc_insertion_point(field_get:PacketTag.Room_User_List.nickname)
-  return _internal_nickname();
+inline const std::string& Room_User_List::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.Room_User_List.data)
+  return _internal_data();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void Room_User_List::set_nickname(ArgT0&& arg0, ArgT... args) {
+void Room_User_List::set_data(ArgT0&& arg0, ArgT... args) {
  
- nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.Room_User_List.nickname)
+ data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.Room_User_List.data)
 }
-inline std::string* Room_User_List::mutable_nickname() {
-  std::string* _s = _internal_mutable_nickname();
-  // @@protoc_insertion_point(field_mutable:PacketTag.Room_User_List.nickname)
+inline std::string* Room_User_List::mutable_data() {
+  std::string* _s = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:PacketTag.Room_User_List.data)
   return _s;
 }
-inline const std::string& Room_User_List::_internal_nickname() const {
-  return nickname_.Get();
+inline const std::string& Room_User_List::_internal_data() const {
+  return data_.Get();
 }
-inline void Room_User_List::_internal_set_nickname(const std::string& value) {
+inline void Room_User_List::_internal_set_data(const std::string& value) {
   
-  nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* Room_User_List::_internal_mutable_nickname() {
+inline std::string* Room_User_List::_internal_mutable_data() {
   
-  return nickname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+  return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* Room_User_List::release_nickname() {
-  // @@protoc_insertion_point(field_release:PacketTag.Room_User_List.nickname)
-  return nickname_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+inline std::string* Room_User_List::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.Room_User_List.data)
+  return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void Room_User_List::set_allocated_nickname(std::string* nickname) {
-  if (nickname != nullptr) {
+inline void Room_User_List::set_allocated_data(std::string* data) {
+  if (data != nullptr) {
     
   } else {
     
   }
-  nickname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), nickname,
+  data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.Room_User_List.nickname)
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.Room_User_List.data)
 }
 
 // -------------------------------------------------------------------
 
 // Exit_Request
 
-// string nickname = 1;
-inline void Exit_Request::clear_nickname() {
-  nickname_.ClearToEmpty();
+// string data = 1;
+inline void Exit_Request::clear_data() {
+  data_.ClearToEmpty();
 }
-inline const std::string& Exit_Request::nickname() const {
-  // @@protoc_insertion_point(field_get:PacketTag.Exit_Request.nickname)
-  return _internal_nickname();
+inline const std::string& Exit_Request::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.Exit_Request.data)
+  return _internal_data();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void Exit_Request::set_nickname(ArgT0&& arg0, ArgT... args) {
+void Exit_Request::set_data(ArgT0&& arg0, ArgT... args) {
  
- nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.Exit_Request.nickname)
+ data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.Exit_Request.data)
 }
-inline std::string* Exit_Request::mutable_nickname() {
-  std::string* _s = _internal_mutable_nickname();
-  // @@protoc_insertion_point(field_mutable:PacketTag.Exit_Request.nickname)
+inline std::string* Exit_Request::mutable_data() {
+  std::string* _s = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:PacketTag.Exit_Request.data)
   return _s;
 }
-inline const std::string& Exit_Request::_internal_nickname() const {
-  return nickname_.Get();
+inline const std::string& Exit_Request::_internal_data() const {
+  return data_.Get();
 }
-inline void Exit_Request::_internal_set_nickname(const std::string& value) {
+inline void Exit_Request::_internal_set_data(const std::string& value) {
   
-  nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* Exit_Request::_internal_mutable_nickname() {
+inline std::string* Exit_Request::_internal_mutable_data() {
   
-  return nickname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+  return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* Exit_Request::release_nickname() {
-  // @@protoc_insertion_point(field_release:PacketTag.Exit_Request.nickname)
-  return nickname_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+inline std::string* Exit_Request::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.Exit_Request.data)
+  return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void Exit_Request::set_allocated_nickname(std::string* nickname) {
-  if (nickname != nullptr) {
+inline void Exit_Request::set_allocated_data(std::string* data) {
+  if (data != nullptr) {
     
   } else {
     
   }
-  nickname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), nickname,
+  data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.Exit_Request.nickname)
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.Exit_Request.data)
 }
 
 #ifdef __GNUC__

@@ -19,8 +19,7 @@ PROTOBUF_PRAGMA_INIT_SEG
 namespace PacketTag {
 constexpr PacketMsg::PacketMsg(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : nickname_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  : serializeddata_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , type_(0)
 {}
 struct PacketMsgDefaultTypeInternal {
@@ -34,7 +33,8 @@ struct PacketMsgDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PacketMsgDefaultTypeInternal _PacketMsg_default_instance_;
 constexpr Chat_Normal::Chat_Normal(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+  : nickname_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , message_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
 struct Chat_NormalDefaultTypeInternal {
   constexpr Chat_NormalDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -46,8 +46,9 @@ struct Chat_NormalDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT Chat_NormalDefaultTypeInternal _Chat_Normal_default_instance_;
 constexpr Chat_Whisper::Chat_Whisper(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : targetnickname_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
-  , data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+  : nickname_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , targetnickname_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , message_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
 struct Chat_WhisperDefaultTypeInternal {
   constexpr Chat_WhisperDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -59,7 +60,7 @@ struct Chat_WhisperDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT Chat_WhisperDefaultTypeInternal _Chat_Whisper_default_instance_;
 constexpr Room_User_List::Room_User_List(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+  : nickname_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
 struct Room_User_ListDefaultTypeInternal {
   constexpr Room_User_ListDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -71,7 +72,7 @@ struct Room_User_ListDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT Room_User_ListDefaultTypeInternal _Room_User_List_default_instance_;
 constexpr Exit_Request::Exit_Request(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+  : nickname_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
 struct Exit_RequestDefaultTypeInternal {
   constexpr Exit_RequestDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -94,44 +95,45 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_PacketTag_2eproto::offsets[] P
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::PacketTag::PacketMsg, type_),
-  PROTOBUF_FIELD_OFFSET(::PacketTag::PacketMsg, nickname_),
-  PROTOBUF_FIELD_OFFSET(::PacketTag::PacketMsg, data_),
+  PROTOBUF_FIELD_OFFSET(::PacketTag::PacketMsg, serializeddata_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::PacketTag::Chat_Normal, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::PacketTag::Chat_Normal, data_),
+  PROTOBUF_FIELD_OFFSET(::PacketTag::Chat_Normal, nickname_),
+  PROTOBUF_FIELD_OFFSET(::PacketTag::Chat_Normal, message_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::PacketTag::Chat_Whisper, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::PacketTag::Chat_Whisper, nickname_),
   PROTOBUF_FIELD_OFFSET(::PacketTag::Chat_Whisper, targetnickname_),
-  PROTOBUF_FIELD_OFFSET(::PacketTag::Chat_Whisper, data_),
+  PROTOBUF_FIELD_OFFSET(::PacketTag::Chat_Whisper, message_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::PacketTag::Room_User_List, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::PacketTag::Room_User_List, data_),
+  PROTOBUF_FIELD_OFFSET(::PacketTag::Room_User_List, nickname_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::PacketTag::Exit_Request, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::PacketTag::Exit_Request, data_),
+  PROTOBUF_FIELD_OFFSET(::PacketTag::Exit_Request, nickname_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::PacketTag::PacketMsg)},
-  { 9, -1, -1, sizeof(::PacketTag::Chat_Normal)},
+  { 8, -1, -1, sizeof(::PacketTag::Chat_Normal)},
   { 16, -1, -1, sizeof(::PacketTag::Chat_Whisper)},
-  { 24, -1, -1, sizeof(::PacketTag::Room_User_List)},
-  { 31, -1, -1, sizeof(::PacketTag::Exit_Request)},
+  { 25, -1, -1, sizeof(::PacketTag::Room_User_List)},
+  { 32, -1, -1, sizeof(::PacketTag::Exit_Request)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -143,19 +145,20 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_PacketTag_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\017PacketTag.proto\022\tPacketTag\"P\n\tPacketMs"
-  "g\022#\n\004type\030\001 \001(\0162\025.PacketTag.PacketType\022\020"
-  "\n\010nickname\030\002 \001(\t\022\014\n\004data\030\003 \001(\t\"\033\n\013Chat_N"
-  "ormal\022\014\n\004data\030\001 \001(\t\"4\n\014Chat_Whisper\022\026\n\016t"
-  "argetNickname\030\001 \001(\t\022\014\n\004data\030\002 \001(\t\"\036\n\016Roo"
-  "m_User_List\022\014\n\004data\030\001 \001(\t\"\034\n\014Exit_Reques"
-  "t\022\014\n\004data\030\001 \001(\t*U\n\nPacketType\022\017\n\013CHAT_NO"
-  "RMAL\020\000\022\020\n\014CHAT_WHISPER\020\001\022\022\n\016ROOM_USER_LI"
-  "ST\020\002\022\020\n\014EXIT_REQUEST\020\003b\006proto3"
+  "\n\017PacketTag.proto\022\tPacketTag\"H\n\tPacketMs"
+  "g\022#\n\004type\030\001 \001(\0162\025.PacketTag.PacketType\022\026"
+  "\n\016SerializedData\030\002 \001(\t\"0\n\013Chat_Normal\022\020\n"
+  "\010nickname\030\001 \001(\t\022\017\n\007message\030\002 \001(\t\"I\n\014Chat"
+  "_Whisper\022\020\n\010nickname\030\001 \001(\t\022\026\n\016targetNick"
+  "name\030\002 \001(\t\022\017\n\007message\030\003 \001(\t\"\"\n\016Room_User"
+  "_List\022\020\n\010nickname\030\001 \001(\t\" \n\014Exit_Request\022"
+  "\020\n\010nickname\030\001 \001(\t*U\n\nPacketType\022\017\n\013CHAT_"
+  "NORMAL\020\000\022\020\n\014CHAT_WHISPER\020\001\022\022\n\016ROOM_USER_"
+  "LIST\020\002\022\020\n\014EXIT_REQUEST\020\003b\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_PacketTag_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_PacketTag_2eproto = {
-  false, false, 350, descriptor_table_protodef_PacketTag_2eproto, "PacketTag.proto", 
+  false, false, 392, descriptor_table_protodef_PacketTag_2eproto, "PacketTag.proto", 
   &descriptor_table_PacketTag_2eproto_once, nullptr, 0, 5,
   schemas, file_default_instances, TableStruct_PacketTag_2eproto::offsets,
   file_level_metadata_PacketTag_2eproto, file_level_enum_descriptors_PacketTag_2eproto, file_level_service_descriptors_PacketTag_2eproto,
@@ -202,14 +205,9 @@ PacketMsg::PacketMsg(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 PacketMsg::PacketMsg(const PacketMsg& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  nickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_nickname().empty()) {
-    nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_nickname(), 
-      GetArenaForAllocation());
-  }
-  data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_data().empty()) {
-    data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data(), 
+  serializeddata_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_serializeddata().empty()) {
+    serializeddata_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_serializeddata(), 
       GetArenaForAllocation());
   }
   type_ = from.type_;
@@ -217,8 +215,7 @@ PacketMsg::PacketMsg(const PacketMsg& from)
 }
 
 void PacketMsg::SharedCtor() {
-nickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+serializeddata_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 type_ = 0;
 }
 
@@ -231,8 +228,7 @@ PacketMsg::~PacketMsg() {
 
 inline void PacketMsg::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  nickname_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  data_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  serializeddata_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void PacketMsg::ArenaDtor(void* object) {
@@ -251,8 +247,7 @@ void PacketMsg::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  nickname_.ClearToEmpty();
-  data_.ClearToEmpty();
+  serializeddata_.ClearToEmpty();
   type_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -272,22 +267,12 @@ const char* PacketMsg::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
         } else
           goto handle_unusual;
         continue;
-      // string nickname = 2;
+      // string SerializedData = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          auto str = _internal_mutable_nickname();
+          auto str = _internal_mutable_serializeddata();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.PacketMsg.nickname"));
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      // string data = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
-          auto str = _internal_mutable_data();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.PacketMsg.data"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.PacketMsg.SerializedData"));
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -328,24 +313,14 @@ failure:
       1, this->_internal_type(), target);
   }
 
-  // string nickname = 2;
-  if (!this->_internal_nickname().empty()) {
+  // string SerializedData = 2;
+  if (!this->_internal_serializeddata().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_nickname().data(), static_cast<int>(this->_internal_nickname().length()),
+      this->_internal_serializeddata().data(), static_cast<int>(this->_internal_serializeddata().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "PacketTag.PacketMsg.nickname");
+      "PacketTag.PacketMsg.SerializedData");
     target = stream->WriteStringMaybeAliased(
-        2, this->_internal_nickname(), target);
-  }
-
-  // string data = 3;
-  if (!this->_internal_data().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "PacketTag.PacketMsg.data");
-    target = stream->WriteStringMaybeAliased(
-        3, this->_internal_data(), target);
+        2, this->_internal_serializeddata(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -364,18 +339,11 @@ size_t PacketMsg::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string nickname = 2;
-  if (!this->_internal_nickname().empty()) {
+  // string SerializedData = 2;
+  if (!this->_internal_serializeddata().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_nickname());
-  }
-
-  // string data = 3;
-  if (!this->_internal_data().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_data());
+        this->_internal_serializeddata());
   }
 
   // .PacketTag.PacketType type = 1;
@@ -406,11 +374,8 @@ void PacketMsg::MergeFrom(const PacketMsg& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_nickname().empty()) {
-    _internal_set_nickname(from._internal_nickname());
-  }
-  if (!from._internal_data().empty()) {
-    _internal_set_data(from._internal_data());
+  if (!from._internal_serializeddata().empty()) {
+    _internal_set_serializeddata(from._internal_serializeddata());
   }
   if (from._internal_type() != 0) {
     _internal_set_type(from._internal_type());
@@ -436,13 +401,8 @@ void PacketMsg::InternalSwap(PacketMsg* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &nickname_, lhs_arena,
-      &other->nickname_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &data_, lhs_arena,
-      &other->data_, rhs_arena
+      &serializeddata_, lhs_arena,
+      &other->serializeddata_, rhs_arena
   );
   swap(type_, other->type_);
 }
@@ -471,16 +431,22 @@ Chat_Normal::Chat_Normal(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 Chat_Normal::Chat_Normal(const Chat_Normal& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_data().empty()) {
-    data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data(), 
+  nickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_nickname().empty()) {
+    nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_nickname(), 
+      GetArenaForAllocation());
+  }
+  message_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_message().empty()) {
+    message_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_message(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:PacketTag.Chat_Normal)
 }
 
 void Chat_Normal::SharedCtor() {
-data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+nickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+message_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 Chat_Normal::~Chat_Normal() {
@@ -492,7 +458,8 @@ Chat_Normal::~Chat_Normal() {
 
 inline void Chat_Normal::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  data_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  nickname_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  message_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void Chat_Normal::ArenaDtor(void* object) {
@@ -511,7 +478,8 @@ void Chat_Normal::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  data_.ClearToEmpty();
+  nickname_.ClearToEmpty();
+  message_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -521,12 +489,22 @@ const char* Chat_Normal::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string data = 1;
+      // string nickname = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_data();
+          auto str = _internal_mutable_nickname();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.Chat_Normal.data"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.Chat_Normal.nickname"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string message = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_message();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.Chat_Normal.message"));
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -560,14 +538,24 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string data = 1;
-  if (!this->_internal_data().empty()) {
+  // string nickname = 1;
+  if (!this->_internal_nickname().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
+      this->_internal_nickname().data(), static_cast<int>(this->_internal_nickname().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "PacketTag.Chat_Normal.data");
+      "PacketTag.Chat_Normal.nickname");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_data(), target);
+        1, this->_internal_nickname(), target);
+  }
+
+  // string message = 2;
+  if (!this->_internal_message().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_message().data(), static_cast<int>(this->_internal_message().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PacketTag.Chat_Normal.message");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_message(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -586,11 +574,18 @@ size_t Chat_Normal::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string data = 1;
-  if (!this->_internal_data().empty()) {
+  // string nickname = 1;
+  if (!this->_internal_nickname().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_data());
+        this->_internal_nickname());
+  }
+
+  // string message = 2;
+  if (!this->_internal_message().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_message());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -615,8 +610,11 @@ void Chat_Normal::MergeFrom(const Chat_Normal& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_data().empty()) {
-    _internal_set_data(from._internal_data());
+  if (!from._internal_nickname().empty()) {
+    _internal_set_nickname(from._internal_nickname());
+  }
+  if (!from._internal_message().empty()) {
+    _internal_set_message(from._internal_message());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -639,8 +637,13 @@ void Chat_Normal::InternalSwap(Chat_Normal* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &data_, lhs_arena,
-      &other->data_, rhs_arena
+      &nickname_, lhs_arena,
+      &other->nickname_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &message_, lhs_arena,
+      &other->message_, rhs_arena
   );
 }
 
@@ -668,22 +671,28 @@ Chat_Whisper::Chat_Whisper(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 Chat_Whisper::Chat_Whisper(const Chat_Whisper& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  nickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_nickname().empty()) {
+    nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_nickname(), 
+      GetArenaForAllocation());
+  }
   targetnickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (!from._internal_targetnickname().empty()) {
     targetnickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_targetnickname(), 
       GetArenaForAllocation());
   }
-  data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_data().empty()) {
-    data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data(), 
+  message_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_message().empty()) {
+    message_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_message(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:PacketTag.Chat_Whisper)
 }
 
 void Chat_Whisper::SharedCtor() {
+nickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 targetnickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+message_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 Chat_Whisper::~Chat_Whisper() {
@@ -695,8 +704,9 @@ Chat_Whisper::~Chat_Whisper() {
 
 inline void Chat_Whisper::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  nickname_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   targetnickname_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  data_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  message_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void Chat_Whisper::ArenaDtor(void* object) {
@@ -715,8 +725,9 @@ void Chat_Whisper::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  nickname_.ClearToEmpty();
   targetnickname_.ClearToEmpty();
-  data_.ClearToEmpty();
+  message_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -726,9 +737,19 @@ const char* Chat_Whisper::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string targetNickname = 1;
+      // string nickname = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_nickname();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.Chat_Whisper.nickname"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string targetNickname = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_targetnickname();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.Chat_Whisper.targetNickname"));
@@ -736,12 +757,12 @@ const char* Chat_Whisper::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
         } else
           goto handle_unusual;
         continue;
-      // string data = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          auto str = _internal_mutable_data();
+      // string message = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          auto str = _internal_mutable_message();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.Chat_Whisper.data"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.Chat_Whisper.message"));
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -775,24 +796,34 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string targetNickname = 1;
+  // string nickname = 1;
+  if (!this->_internal_nickname().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_nickname().data(), static_cast<int>(this->_internal_nickname().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PacketTag.Chat_Whisper.nickname");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_nickname(), target);
+  }
+
+  // string targetNickname = 2;
   if (!this->_internal_targetnickname().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_targetnickname().data(), static_cast<int>(this->_internal_targetnickname().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "PacketTag.Chat_Whisper.targetNickname");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_targetnickname(), target);
+        2, this->_internal_targetnickname(), target);
   }
 
-  // string data = 2;
-  if (!this->_internal_data().empty()) {
+  // string message = 3;
+  if (!this->_internal_message().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
+      this->_internal_message().data(), static_cast<int>(this->_internal_message().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "PacketTag.Chat_Whisper.data");
+      "PacketTag.Chat_Whisper.message");
     target = stream->WriteStringMaybeAliased(
-        2, this->_internal_data(), target);
+        3, this->_internal_message(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -811,18 +842,25 @@ size_t Chat_Whisper::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string targetNickname = 1;
+  // string nickname = 1;
+  if (!this->_internal_nickname().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_nickname());
+  }
+
+  // string targetNickname = 2;
   if (!this->_internal_targetnickname().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_targetnickname());
   }
 
-  // string data = 2;
-  if (!this->_internal_data().empty()) {
+  // string message = 3;
+  if (!this->_internal_message().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_data());
+        this->_internal_message());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -847,11 +885,14 @@ void Chat_Whisper::MergeFrom(const Chat_Whisper& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (!from._internal_nickname().empty()) {
+    _internal_set_nickname(from._internal_nickname());
+  }
   if (!from._internal_targetnickname().empty()) {
     _internal_set_targetnickname(from._internal_targetnickname());
   }
-  if (!from._internal_data().empty()) {
-    _internal_set_data(from._internal_data());
+  if (!from._internal_message().empty()) {
+    _internal_set_message(from._internal_message());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -874,13 +915,18 @@ void Chat_Whisper::InternalSwap(Chat_Whisper* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &nickname_, lhs_arena,
+      &other->nickname_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       &targetnickname_, lhs_arena,
       &other->targetnickname_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &data_, lhs_arena,
-      &other->data_, rhs_arena
+      &message_, lhs_arena,
+      &other->message_, rhs_arena
   );
 }
 
@@ -908,16 +954,16 @@ Room_User_List::Room_User_List(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 Room_User_List::Room_User_List(const Room_User_List& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_data().empty()) {
-    data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data(), 
+  nickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_nickname().empty()) {
+    nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_nickname(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:PacketTag.Room_User_List)
 }
 
 void Room_User_List::SharedCtor() {
-data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+nickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 Room_User_List::~Room_User_List() {
@@ -929,7 +975,7 @@ Room_User_List::~Room_User_List() {
 
 inline void Room_User_List::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  data_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  nickname_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void Room_User_List::ArenaDtor(void* object) {
@@ -948,7 +994,7 @@ void Room_User_List::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  data_.ClearToEmpty();
+  nickname_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -958,12 +1004,12 @@ const char* Room_User_List::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string data = 1;
+      // string nickname = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_data();
+          auto str = _internal_mutable_nickname();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.Room_User_List.data"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.Room_User_List.nickname"));
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -997,14 +1043,14 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string data = 1;
-  if (!this->_internal_data().empty()) {
+  // string nickname = 1;
+  if (!this->_internal_nickname().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
+      this->_internal_nickname().data(), static_cast<int>(this->_internal_nickname().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "PacketTag.Room_User_List.data");
+      "PacketTag.Room_User_List.nickname");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_data(), target);
+        1, this->_internal_nickname(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1023,11 +1069,11 @@ size_t Room_User_List::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string data = 1;
-  if (!this->_internal_data().empty()) {
+  // string nickname = 1;
+  if (!this->_internal_nickname().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_data());
+        this->_internal_nickname());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -1052,8 +1098,8 @@ void Room_User_List::MergeFrom(const Room_User_List& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_data().empty()) {
-    _internal_set_data(from._internal_data());
+  if (!from._internal_nickname().empty()) {
+    _internal_set_nickname(from._internal_nickname());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1076,8 +1122,8 @@ void Room_User_List::InternalSwap(Room_User_List* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &data_, lhs_arena,
-      &other->data_, rhs_arena
+      &nickname_, lhs_arena,
+      &other->nickname_, rhs_arena
   );
 }
 
@@ -1105,16 +1151,16 @@ Exit_Request::Exit_Request(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 Exit_Request::Exit_Request(const Exit_Request& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_data().empty()) {
-    data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data(), 
+  nickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_nickname().empty()) {
+    nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_nickname(), 
       GetArenaForAllocation());
   }
   // @@protoc_insertion_point(copy_constructor:PacketTag.Exit_Request)
 }
 
 void Exit_Request::SharedCtor() {
-data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+nickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 Exit_Request::~Exit_Request() {
@@ -1126,7 +1172,7 @@ Exit_Request::~Exit_Request() {
 
 inline void Exit_Request::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  data_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  nickname_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void Exit_Request::ArenaDtor(void* object) {
@@ -1145,7 +1191,7 @@ void Exit_Request::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  data_.ClearToEmpty();
+  nickname_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1155,12 +1201,12 @@ const char* Exit_Request::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string data = 1;
+      // string nickname = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_data();
+          auto str = _internal_mutable_nickname();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.Exit_Request.data"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.Exit_Request.nickname"));
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -1194,14 +1240,14 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string data = 1;
-  if (!this->_internal_data().empty()) {
+  // string nickname = 1;
+  if (!this->_internal_nickname().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
+      this->_internal_nickname().data(), static_cast<int>(this->_internal_nickname().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "PacketTag.Exit_Request.data");
+      "PacketTag.Exit_Request.nickname");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_data(), target);
+        1, this->_internal_nickname(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1220,11 +1266,11 @@ size_t Exit_Request::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string data = 1;
-  if (!this->_internal_data().empty()) {
+  // string nickname = 1;
+  if (!this->_internal_nickname().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_data());
+        this->_internal_nickname());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -1249,8 +1295,8 @@ void Exit_Request::MergeFrom(const Exit_Request& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_data().empty()) {
-    _internal_set_data(from._internal_data());
+  if (!from._internal_nickname().empty()) {
+    _internal_set_nickname(from._internal_nickname());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1273,8 +1319,8 @@ void Exit_Request::InternalSwap(Exit_Request* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &data_, lhs_arena,
-      &other->data_, rhs_arena
+      &nickname_, lhs_arena,
+      &other->nickname_, rhs_arena
   );
 }
 

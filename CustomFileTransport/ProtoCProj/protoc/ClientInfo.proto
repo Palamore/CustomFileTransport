@@ -1,0 +1,7 @@
+syntax = "proto3";
+package ServerPacket;
+
+message ClientInfo {
+  int32 Socket = 1;
+  string NickName = 2;
+}

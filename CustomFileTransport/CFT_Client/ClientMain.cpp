@@ -28,6 +28,7 @@ struct stSOCKETINFO
 };
 
 vector<ProtocolTag> AllTag;
+string nickname;
 
 void Init();
 
@@ -75,6 +76,11 @@ int main()
 		std::cout << "Error : " << WSAGetLastError() << std::endl;
 		return false;
 	}
+
+	std::cout << "Nickname : ";
+	std::cin >> nickname;
+
+
 
 	std::thread t1(RunListenThread, clientSocket);
 	std::thread t2(RunSendThread, clientSocket);
@@ -125,16 +131,16 @@ void RunSendThread(SOCKET clientSocket)
 		std::cin.getline(szOutMsg, MAX_BUFFER);
 		if (_strcmpi(szOutMsg, "quit") == 0) break;
 
-		if (!ValidateMessage(szOutMsg))
-		{
-			AddTag(szOutMsg);
-		}
 
-		ClientInfo cInfo;
-		cInfo.set_socket(333);
-		cInfo.set_nickname("palamore");
-		
-		outMsg = cInfo.SerializeAsString();
+		Chat_Normal chatData;
+		chatData.set_data(szOutMsg);
+
+		PacketMsg msg;
+		msg.set_nickname(nickname);
+		msg.set_type(PacketType::CHAT_NORMAL);
+		msg.set_data(chatData.SerializeAsString());
+
+		outMsg = msg.SerializeAsString();
 
 
 		int nSendLen = send(clientSocket, outMsg.c_str(), strlen(outMsg.c_str()), 0);

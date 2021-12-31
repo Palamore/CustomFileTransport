@@ -1,0 +1,33 @@
+syntax = "proto3";
+package PacketTag;
+
+enum PacketType {
+  CHAT_NORMAL = 0;
+  CHAT_WHISPER = 1;
+  ROOM_USER_LIST = 2;
+  EXIT_REQUEST = 3;
+}
+
+message PacketMsg{
+  PacketType type = 1;
+  string nickname = 2;
+  string data = 3;
+}
+
+message Chat_Normal {
+  string data = 1;
+}
+
+message Chat_Whisper {
+  string targetNickname = 1;
+  string data = 2;
+}
+
+message Room_User_List {
+  string data = 1;
+}
+
+message Exit_Request {
+  string data = 1;
+}
+
