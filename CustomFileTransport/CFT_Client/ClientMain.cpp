@@ -16,6 +16,10 @@ using namespace std;
 #define	MAX_BUFFER		1024
 #define SERVER_PORT		8000
 #define SERVER_IP		"127.0.0.1"
+#define INPUT_COMMAND_INDEX 0
+#define INPUT_COMMAND_TYPE_INDEX 1
+#define INPUT_TARGET_NICKNAME_INDEX 1
+#define INPUT_MESSAGE_INDEX 2
 
 struct stSOCKETINFO
 {
@@ -27,18 +31,19 @@ struct stSOCKETINFO
 	int				sendBytes;
 };
 
-vector<ProtocolTag> AllTag;
 string nickname;
+SOCKET clientSocket;
 
 void Init();
+void RunListenThread();
+void RunSendThread();
+void SendPacket(string serializedPacket);
+void SendChatNormal(string msg);
+void SendChatWhisper(string targetNickname, string data);
+void SendRoomList(string data);
+void SendExitRequest(string data);
+vector<string> Split(string targetStr, char splitter);
 
-void RunListenThread(SOCKET clientSocket);
-
-void RunSendThread(SOCKET clientSocket);
-
-bool ValidateMessage(char* msg);
-
-void AddTag(char* msg);
 
 int main()
 {
@@ -52,7 +57,7 @@ int main()
 	}
 
 	// TCP 家南 积己
-	SOCKET clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (clientSocket == INVALID_SOCKET) {
 		std::cout << "Error : " << WSAGetLastError() << std::endl;
 		return false;
@@ -82,8 +87,8 @@ int main()
 
 
 
-	std::thread t1(RunListenThread, clientSocket);
-	std::thread t2(RunSendThread, clientSocket);
+	std::thread t1(RunListenThread);
+	std::thread t2(RunSendThread);
 
 	std::cout << "Connection success..." << std::endl;
 	while (true) {
@@ -99,7 +104,7 @@ int main()
 	return 0;
 }
 
-void RunListenThread(SOCKET clientSocket)
+void RunListenThread()
 {
 	char	sz_socketbuf_[MAX_BUFFER];
 	while (1)
@@ -122,78 +127,137 @@ void RunListenThread(SOCKET clientSocket)
 	}
 }
 
-void RunSendThread(SOCKET clientSocket)
+void RunSendThread()
 {
 	char	szOutMsg[MAX_BUFFER];
 	string outMsg;
 	while (true) {
 		std::cout << ">>";
 		std::cin.getline(szOutMsg, MAX_BUFFER);
-		if (_strcmpi(szOutMsg, "quit") == 0) break;
 
-
-		Chat_Normal chatData;
-		chatData.set_data(szOutMsg);
-
-		PacketMsg msg;
-		msg.set_nickname(nickname);
-		msg.set_type(PacketType::CHAT_NORMAL);
-		msg.set_data(chatData.SerializeAsString());
-
-		outMsg = msg.SerializeAsString();
-
-
-		int nSendLen = send(clientSocket, outMsg.c_str(), strlen(outMsg.c_str()), 0);
-
-		if (nSendLen == -1) {
-			std::cout << "Error : " << WSAGetLastError() << std::endl;
-			return;
+		if (szOutMsg[INPUT_COMMAND_INDEX] == '/')
+		{
+			vector<string> splitted;
+			splitted = Split(szOutMsg, ' ');
+			string msg = "";
+			switch (splitted[INPUT_COMMAND_INDEX][INPUT_COMMAND_TYPE_INDEX])
+			{
+			case 'w':
+				for (int i = 2; i < splitted.size(); i++)
+				{
+					msg += splitted[i];
+				}
+				SendChatWhisper(splitted[INPUT_TARGET_NICKNAME_INDEX], msg);
+				break;
+			case 'l':
+				SendRoomList(splitted[INPUT_MESSAGE_INDEX]);
+				break;
+			case 'e':
+				SendExitRequest(splitted[INPUT_MESSAGE_INDEX]);
+				exit(0);
+				break;
+			default:
+				break;
+			}
 		}
-
-		std::cout << "Message sended : bytes[" << nSendLen << "], message : [" <<
-			szOutMsg << "]" << std::endl << "outMSg : " << outMsg << std::endl;
-
+		SendChatNormal(szOutMsg);
 	}
 }
 
 
 void Init()
 {
-	AllTag.reserve(100);
-	AllTag.push_back(ProtocolTag::CHAT_NORMAL);
-	AllTag.push_back(ProtocolTag::CHAT_WHISPER);
-	AllTag.push_back(ProtocolTag::ROOM_USER_LIST);
-	AllTag.push_back(ProtocolTag::TAG_EXIT);
+
 }
 
-bool ValidateMessage(char* msg)
+void SendPacket(string serializedPacket)
 {
-	for (int i = 0; i < AllTag.size(); i++)
+	int sendResult = send(clientSocket, serializedPacket.c_str(), strlen(serializedPacket.c_str()), 0);
+	if (sendResult == -1) {
+		std::cout << "Error : " << WSAGetLastError() << std::endl;
+		return;
+	}
+}
+
+void SendChatNormal(string msg)
+{
+	Chat_Normal chatData;
+	chatData.set_data(msg);
+
+	PacketMsg packet;
+	packet.set_nickname(nickname);
+	packet.set_type(PacketType::CHAT_NORMAL);
+	packet.set_data(chatData.SerializeAsString());
+
+	SendPacket(packet.SerializeAsString());
+
+	std::cout << "[CHAT_NORMAL]" << std::endl <<
+		msg << std::endl;
+}
+
+void SendChatWhisper(string targetNickname, string data)
+{
+	Chat_Whisper chatData;
+	chatData.set_targetnickname(targetNickname);
+	chatData.set_data(data);
+
+	PacketMsg packet;
+	packet.set_nickname(nickname);
+	packet.set_type(PacketType::CHAT_WHISPER);
+	packet.set_data(chatData.SerializeAsString());
+
+	SendPacket(packet.SerializeAsString());
+
+	std::cout << "[CHAT_WHISPER]" << std::endl <<
+		"to " << targetNickname << " : " << data << std::endl;
+}
+
+void SendRoomList(string data)
+{
+	Room_User_List roomList;
+	roomList.set_data(data);
+
+	PacketMsg packet;
+	packet.set_nickname(nickname);
+	packet.set_type(PacketType::ROOM_USER_LIST);
+	packet.set_data(roomList.SerializeAsString());
+
+	SendPacket(packet.SerializeAsString());
+
+	cout << "[ROOM_USER_LIST]" << endl;
+}
+
+void SendExitRequest(string data)
+{
+	Exit_Request exitReq;
+	exitReq.set_data(data);
+
+	PacketMsg packet;
+	packet.set_nickname(nickname);
+	packet.set_type(PacketType::EXIT_REQUEST);
+	packet.set_data(exitReq.SerializeAsString());
+
+	SendPacket(packet.SerializeAsString());
+
+	cout << "[EXIT_REQUEST]" << endl;
+}
+
+vector<string> Split(string targetStr, char splitter)
+{
+	vector<string> vect;
+	string e = "";
+	for (int i = 0; i < targetStr.size(); i++)
 	{
-		if (_strcmpi(msg, to_string(int(AllTag[i])).c_str()) == 0)
+		if (targetStr[i] == splitter)
 		{
-			return true;
+			vect.push_back(e);
+			e = "";
+		}
+		else
+		{
+			e += targetStr[i];
 		}
 	}
-
-	return false;
-}
-
-void AddTag(char* msg)
-{
-	int i = 0;
-	int msgLength = strlen(msg);
-	char* cpy = new char[msgLength + 1];
-	memcpy(cpy, msg, (msgLength + 1) * sizeof(char));
-	while (cpy[i] != '\0')
-	{
-		msg[i + 4] = cpy[i];
-		i++;
-	}
-	msg[0] = '1';
-	msg[1] = '0';
-	msg[2] = '1';
-	msg[3] = ' ';
-	msg[i + 4] = '\0';
-	delete[] cpy;
+	vect.push_back(e);
+	return vect;
 }
