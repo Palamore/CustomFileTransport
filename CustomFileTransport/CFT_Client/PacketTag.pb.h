@@ -34,7 +34,7 @@ struct TableStruct_PacketTag_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[5]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[6]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -42,41 +42,46 @@ struct TableStruct_PacketTag_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_PacketTag_2eproto;
 namespace PacketTag {
-class Chat_Normal;
-struct Chat_NormalDefaultTypeInternal;
-extern Chat_NormalDefaultTypeInternal _Chat_Normal_default_instance_;
-class Chat_Whisper;
-struct Chat_WhisperDefaultTypeInternal;
-extern Chat_WhisperDefaultTypeInternal _Chat_Whisper_default_instance_;
-class Exit_Request;
-struct Exit_RequestDefaultTypeInternal;
-extern Exit_RequestDefaultTypeInternal _Exit_Request_default_instance_;
+class ChatNormal;
+struct ChatNormalDefaultTypeInternal;
+extern ChatNormalDefaultTypeInternal _ChatNormal_default_instance_;
+class ChatWhisper;
+struct ChatWhisperDefaultTypeInternal;
+extern ChatWhisperDefaultTypeInternal _ChatWhisper_default_instance_;
+class ExitRequest;
+struct ExitRequestDefaultTypeInternal;
+extern ExitRequestDefaultTypeInternal _ExitRequest_default_instance_;
+class LoginRequest;
+struct LoginRequestDefaultTypeInternal;
+extern LoginRequestDefaultTypeInternal _LoginRequest_default_instance_;
 class PacketMsg;
 struct PacketMsgDefaultTypeInternal;
 extern PacketMsgDefaultTypeInternal _PacketMsg_default_instance_;
-class Room_User_List;
-struct Room_User_ListDefaultTypeInternal;
-extern Room_User_ListDefaultTypeInternal _Room_User_List_default_instance_;
+class UserListRequest;
+struct UserListRequestDefaultTypeInternal;
+extern UserListRequestDefaultTypeInternal _UserListRequest_default_instance_;
 }  // namespace PacketTag
 PROTOBUF_NAMESPACE_OPEN
-template<> ::PacketTag::Chat_Normal* Arena::CreateMaybeMessage<::PacketTag::Chat_Normal>(Arena*);
-template<> ::PacketTag::Chat_Whisper* Arena::CreateMaybeMessage<::PacketTag::Chat_Whisper>(Arena*);
-template<> ::PacketTag::Exit_Request* Arena::CreateMaybeMessage<::PacketTag::Exit_Request>(Arena*);
+template<> ::PacketTag::ChatNormal* Arena::CreateMaybeMessage<::PacketTag::ChatNormal>(Arena*);
+template<> ::PacketTag::ChatWhisper* Arena::CreateMaybeMessage<::PacketTag::ChatWhisper>(Arena*);
+template<> ::PacketTag::ExitRequest* Arena::CreateMaybeMessage<::PacketTag::ExitRequest>(Arena*);
+template<> ::PacketTag::LoginRequest* Arena::CreateMaybeMessage<::PacketTag::LoginRequest>(Arena*);
 template<> ::PacketTag::PacketMsg* Arena::CreateMaybeMessage<::PacketTag::PacketMsg>(Arena*);
-template<> ::PacketTag::Room_User_List* Arena::CreateMaybeMessage<::PacketTag::Room_User_List>(Arena*);
+template<> ::PacketTag::UserListRequest* Arena::CreateMaybeMessage<::PacketTag::UserListRequest>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace PacketTag {
 
 enum PacketType : int {
-  CHAT_NORMAL = 0,
-  CHAT_WHISPER = 1,
-  ROOM_USER_LIST = 2,
-  EXIT_REQUEST = 3,
+  LOGIN_REQUEST = 0,
+  CHAT_NORMAL = 1,
+  CHAT_WHISPER = 2,
+  USER_LIST_REQUEST = 3,
+  EXIT_REQUEST = 4,
   PacketType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   PacketType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool PacketType_IsValid(int value);
-constexpr PacketType PacketType_MIN = CHAT_NORMAL;
+constexpr PacketType PacketType_MIN = LOGIN_REQUEST;
 constexpr PacketType PacketType_MAX = EXIT_REQUEST;
 constexpr int PacketType_ARRAYSIZE = PacketType_MAX + 1;
 
@@ -271,24 +276,24 @@ class PacketMsg final :
 };
 // -------------------------------------------------------------------
 
-class Chat_Normal final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.Chat_Normal) */ {
+class LoginRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.LoginRequest) */ {
  public:
-  inline Chat_Normal() : Chat_Normal(nullptr) {}
-  ~Chat_Normal() override;
-  explicit constexpr Chat_Normal(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline LoginRequest() : LoginRequest(nullptr) {}
+  ~LoginRequest() override;
+  explicit constexpr LoginRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  Chat_Normal(const Chat_Normal& from);
-  Chat_Normal(Chat_Normal&& from) noexcept
-    : Chat_Normal() {
+  LoginRequest(const LoginRequest& from);
+  LoginRequest(LoginRequest&& from) noexcept
+    : LoginRequest() {
     *this = ::std::move(from);
   }
 
-  inline Chat_Normal& operator=(const Chat_Normal& from) {
+  inline LoginRequest& operator=(const LoginRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline Chat_Normal& operator=(Chat_Normal&& from) noexcept {
+  inline LoginRequest& operator=(LoginRequest&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -311,20 +316,20 @@ class Chat_Normal final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const Chat_Normal& default_instance() {
+  static const LoginRequest& default_instance() {
     return *internal_default_instance();
   }
-  static inline const Chat_Normal* internal_default_instance() {
-    return reinterpret_cast<const Chat_Normal*>(
-               &_Chat_Normal_default_instance_);
+  static inline const LoginRequest* internal_default_instance() {
+    return reinterpret_cast<const LoginRequest*>(
+               &_LoginRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     1;
 
-  friend void swap(Chat_Normal& a, Chat_Normal& b) {
+  friend void swap(LoginRequest& a, LoginRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(Chat_Normal* other) {
+  inline void Swap(LoginRequest* other) {
     if (other == this) return;
     if (GetOwningArena() == other->GetOwningArena()) {
       InternalSwap(other);
@@ -332,7 +337,7 @@ class Chat_Normal final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(Chat_Normal* other) {
+  void UnsafeArenaSwap(LoginRequest* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -340,17 +345,17 @@ class Chat_Normal final :
 
   // implements Message ----------------------------------------------
 
-  inline Chat_Normal* New() const final {
-    return new Chat_Normal();
+  inline LoginRequest* New() const final {
+    return new LoginRequest();
   }
 
-  Chat_Normal* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<Chat_Normal>(arena);
+  LoginRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<LoginRequest>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const Chat_Normal& from);
+  void CopyFrom(const LoginRequest& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const Chat_Normal& from);
+  void MergeFrom(const LoginRequest& from);
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
   public:
@@ -367,13 +372,177 @@ class Chat_Normal final :
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(Chat_Normal* other);
+  void InternalSwap(LoginRequest* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "PacketTag.Chat_Normal";
+    return "PacketTag.LoginRequest";
   }
   protected:
-  explicit Chat_Normal(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit LoginRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kNicknameFieldNumber = 1,
+    kDataFieldNumber = 2,
+  };
+  // string nickname = 1;
+  void clear_nickname();
+  const std::string& nickname() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_nickname(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_nickname();
+  PROTOBUF_MUST_USE_RESULT std::string* release_nickname();
+  void set_allocated_nickname(std::string* nickname);
+  private:
+  const std::string& _internal_nickname() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_nickname(const std::string& value);
+  std::string* _internal_mutable_nickname();
+  public:
+
+  // string data = 2;
+  void clear_data();
+  const std::string& data() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_data(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_data();
+  PROTOBUF_MUST_USE_RESULT std::string* release_data();
+  void set_allocated_data(std::string* data);
+  private:
+  const std::string& _internal_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(const std::string& value);
+  std::string* _internal_mutable_data();
+  public:
+
+  // @@protoc_insertion_point(class_scope:PacketTag.LoginRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr nickname_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_PacketTag_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ChatNormal final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.ChatNormal) */ {
+ public:
+  inline ChatNormal() : ChatNormal(nullptr) {}
+  ~ChatNormal() override;
+  explicit constexpr ChatNormal(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  ChatNormal(const ChatNormal& from);
+  ChatNormal(ChatNormal&& from) noexcept
+    : ChatNormal() {
+    *this = ::std::move(from);
+  }
+
+  inline ChatNormal& operator=(const ChatNormal& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ChatNormal& operator=(ChatNormal&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ChatNormal& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ChatNormal* internal_default_instance() {
+    return reinterpret_cast<const ChatNormal*>(
+               &_ChatNormal_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(ChatNormal& a, ChatNormal& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ChatNormal* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ChatNormal* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChatNormal* New() const final {
+    return new ChatNormal();
+  }
+
+  ChatNormal* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ChatNormal>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const ChatNormal& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const ChatNormal& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ChatNormal* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "PacketTag.ChatNormal";
+  }
+  protected:
+  explicit ChatNormal(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   private:
   static void ArenaDtor(void* object);
@@ -406,7 +575,7 @@ class Chat_Normal final :
   std::string* _internal_mutable_data();
   public:
 
-  // @@protoc_insertion_point(class_scope:PacketTag.Chat_Normal)
+  // @@protoc_insertion_point(class_scope:PacketTag.ChatNormal)
  private:
   class _Internal;
 
@@ -419,24 +588,24 @@ class Chat_Normal final :
 };
 // -------------------------------------------------------------------
 
-class Chat_Whisper final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.Chat_Whisper) */ {
+class ChatWhisper final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.ChatWhisper) */ {
  public:
-  inline Chat_Whisper() : Chat_Whisper(nullptr) {}
-  ~Chat_Whisper() override;
-  explicit constexpr Chat_Whisper(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline ChatWhisper() : ChatWhisper(nullptr) {}
+  ~ChatWhisper() override;
+  explicit constexpr ChatWhisper(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  Chat_Whisper(const Chat_Whisper& from);
-  Chat_Whisper(Chat_Whisper&& from) noexcept
-    : Chat_Whisper() {
+  ChatWhisper(const ChatWhisper& from);
+  ChatWhisper(ChatWhisper&& from) noexcept
+    : ChatWhisper() {
     *this = ::std::move(from);
   }
 
-  inline Chat_Whisper& operator=(const Chat_Whisper& from) {
+  inline ChatWhisper& operator=(const ChatWhisper& from) {
     CopyFrom(from);
     return *this;
   }
-  inline Chat_Whisper& operator=(Chat_Whisper&& from) noexcept {
+  inline ChatWhisper& operator=(ChatWhisper&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -459,20 +628,20 @@ class Chat_Whisper final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const Chat_Whisper& default_instance() {
+  static const ChatWhisper& default_instance() {
     return *internal_default_instance();
   }
-  static inline const Chat_Whisper* internal_default_instance() {
-    return reinterpret_cast<const Chat_Whisper*>(
-               &_Chat_Whisper_default_instance_);
+  static inline const ChatWhisper* internal_default_instance() {
+    return reinterpret_cast<const ChatWhisper*>(
+               &_ChatWhisper_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
-  friend void swap(Chat_Whisper& a, Chat_Whisper& b) {
+  friend void swap(ChatWhisper& a, ChatWhisper& b) {
     a.Swap(&b);
   }
-  inline void Swap(Chat_Whisper* other) {
+  inline void Swap(ChatWhisper* other) {
     if (other == this) return;
     if (GetOwningArena() == other->GetOwningArena()) {
       InternalSwap(other);
@@ -480,7 +649,7 @@ class Chat_Whisper final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(Chat_Whisper* other) {
+  void UnsafeArenaSwap(ChatWhisper* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -488,17 +657,17 @@ class Chat_Whisper final :
 
   // implements Message ----------------------------------------------
 
-  inline Chat_Whisper* New() const final {
-    return new Chat_Whisper();
+  inline ChatWhisper* New() const final {
+    return new ChatWhisper();
   }
 
-  Chat_Whisper* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<Chat_Whisper>(arena);
+  ChatWhisper* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ChatWhisper>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const Chat_Whisper& from);
+  void CopyFrom(const ChatWhisper& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const Chat_Whisper& from);
+  void MergeFrom(const ChatWhisper& from);
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
   public:
@@ -515,13 +684,13 @@ class Chat_Whisper final :
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(Chat_Whisper* other);
+  void InternalSwap(ChatWhisper* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "PacketTag.Chat_Whisper";
+    return "PacketTag.ChatWhisper";
   }
   protected:
-  explicit Chat_Whisper(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit ChatWhisper(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   private:
   static void ArenaDtor(void* object);
@@ -569,7 +738,7 @@ class Chat_Whisper final :
   std::string* _internal_mutable_data();
   public:
 
-  // @@protoc_insertion_point(class_scope:PacketTag.Chat_Whisper)
+  // @@protoc_insertion_point(class_scope:PacketTag.ChatWhisper)
  private:
   class _Internal;
 
@@ -583,24 +752,24 @@ class Chat_Whisper final :
 };
 // -------------------------------------------------------------------
 
-class Room_User_List final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.Room_User_List) */ {
+class UserListRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.UserListRequest) */ {
  public:
-  inline Room_User_List() : Room_User_List(nullptr) {}
-  ~Room_User_List() override;
-  explicit constexpr Room_User_List(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline UserListRequest() : UserListRequest(nullptr) {}
+  ~UserListRequest() override;
+  explicit constexpr UserListRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  Room_User_List(const Room_User_List& from);
-  Room_User_List(Room_User_List&& from) noexcept
-    : Room_User_List() {
+  UserListRequest(const UserListRequest& from);
+  UserListRequest(UserListRequest&& from) noexcept
+    : UserListRequest() {
     *this = ::std::move(from);
   }
 
-  inline Room_User_List& operator=(const Room_User_List& from) {
+  inline UserListRequest& operator=(const UserListRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline Room_User_List& operator=(Room_User_List&& from) noexcept {
+  inline UserListRequest& operator=(UserListRequest&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -623,20 +792,20 @@ class Room_User_List final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const Room_User_List& default_instance() {
+  static const UserListRequest& default_instance() {
     return *internal_default_instance();
   }
-  static inline const Room_User_List* internal_default_instance() {
-    return reinterpret_cast<const Room_User_List*>(
-               &_Room_User_List_default_instance_);
+  static inline const UserListRequest* internal_default_instance() {
+    return reinterpret_cast<const UserListRequest*>(
+               &_UserListRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
-  friend void swap(Room_User_List& a, Room_User_List& b) {
+  friend void swap(UserListRequest& a, UserListRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(Room_User_List* other) {
+  inline void Swap(UserListRequest* other) {
     if (other == this) return;
     if (GetOwningArena() == other->GetOwningArena()) {
       InternalSwap(other);
@@ -644,7 +813,7 @@ class Room_User_List final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(Room_User_List* other) {
+  void UnsafeArenaSwap(UserListRequest* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -652,17 +821,17 @@ class Room_User_List final :
 
   // implements Message ----------------------------------------------
 
-  inline Room_User_List* New() const final {
-    return new Room_User_List();
+  inline UserListRequest* New() const final {
+    return new UserListRequest();
   }
 
-  Room_User_List* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<Room_User_List>(arena);
+  UserListRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<UserListRequest>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const Room_User_List& from);
+  void CopyFrom(const UserListRequest& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const Room_User_List& from);
+  void MergeFrom(const UserListRequest& from);
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
   public:
@@ -679,13 +848,13 @@ class Room_User_List final :
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(Room_User_List* other);
+  void InternalSwap(UserListRequest* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "PacketTag.Room_User_List";
+    return "PacketTag.UserListRequest";
   }
   protected:
-  explicit Room_User_List(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit UserListRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   private:
   static void ArenaDtor(void* object);
@@ -718,7 +887,7 @@ class Room_User_List final :
   std::string* _internal_mutable_data();
   public:
 
-  // @@protoc_insertion_point(class_scope:PacketTag.Room_User_List)
+  // @@protoc_insertion_point(class_scope:PacketTag.UserListRequest)
  private:
   class _Internal;
 
@@ -731,24 +900,24 @@ class Room_User_List final :
 };
 // -------------------------------------------------------------------
 
-class Exit_Request final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.Exit_Request) */ {
+class ExitRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.ExitRequest) */ {
  public:
-  inline Exit_Request() : Exit_Request(nullptr) {}
-  ~Exit_Request() override;
-  explicit constexpr Exit_Request(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline ExitRequest() : ExitRequest(nullptr) {}
+  ~ExitRequest() override;
+  explicit constexpr ExitRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  Exit_Request(const Exit_Request& from);
-  Exit_Request(Exit_Request&& from) noexcept
-    : Exit_Request() {
+  ExitRequest(const ExitRequest& from);
+  ExitRequest(ExitRequest&& from) noexcept
+    : ExitRequest() {
     *this = ::std::move(from);
   }
 
-  inline Exit_Request& operator=(const Exit_Request& from) {
+  inline ExitRequest& operator=(const ExitRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline Exit_Request& operator=(Exit_Request&& from) noexcept {
+  inline ExitRequest& operator=(ExitRequest&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -771,20 +940,20 @@ class Exit_Request final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const Exit_Request& default_instance() {
+  static const ExitRequest& default_instance() {
     return *internal_default_instance();
   }
-  static inline const Exit_Request* internal_default_instance() {
-    return reinterpret_cast<const Exit_Request*>(
-               &_Exit_Request_default_instance_);
+  static inline const ExitRequest* internal_default_instance() {
+    return reinterpret_cast<const ExitRequest*>(
+               &_ExitRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
-  friend void swap(Exit_Request& a, Exit_Request& b) {
+  friend void swap(ExitRequest& a, ExitRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(Exit_Request* other) {
+  inline void Swap(ExitRequest* other) {
     if (other == this) return;
     if (GetOwningArena() == other->GetOwningArena()) {
       InternalSwap(other);
@@ -792,7 +961,7 @@ class Exit_Request final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(Exit_Request* other) {
+  void UnsafeArenaSwap(ExitRequest* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -800,17 +969,17 @@ class Exit_Request final :
 
   // implements Message ----------------------------------------------
 
-  inline Exit_Request* New() const final {
-    return new Exit_Request();
+  inline ExitRequest* New() const final {
+    return new ExitRequest();
   }
 
-  Exit_Request* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<Exit_Request>(arena);
+  ExitRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ExitRequest>(arena);
   }
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const Exit_Request& from);
+  void CopyFrom(const ExitRequest& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const Exit_Request& from);
+  void MergeFrom(const ExitRequest& from);
   private:
   static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
   public:
@@ -827,13 +996,13 @@ class Exit_Request final :
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(Exit_Request* other);
+  void InternalSwap(ExitRequest* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "PacketTag.Exit_Request";
+    return "PacketTag.ExitRequest";
   }
   protected:
-  explicit Exit_Request(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+  explicit ExitRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                        bool is_message_owned = false);
   private:
   static void ArenaDtor(void* object);
@@ -866,7 +1035,7 @@ class Exit_Request final :
   std::string* _internal_mutable_data();
   public:
 
-  // @@protoc_insertion_point(class_scope:PacketTag.Exit_Request)
+  // @@protoc_insertion_point(class_scope:PacketTag.ExitRequest)
  private:
   class _Internal;
 
@@ -1002,44 +1171,90 @@ inline void PacketMsg::set_allocated_data(std::string* data) {
 
 // -------------------------------------------------------------------
 
-// Chat_Normal
+// LoginRequest
 
-// string data = 1;
-inline void Chat_Normal::clear_data() {
+// string nickname = 1;
+inline void LoginRequest::clear_nickname() {
+  nickname_.ClearToEmpty();
+}
+inline const std::string& LoginRequest::nickname() const {
+  // @@protoc_insertion_point(field_get:PacketTag.LoginRequest.nickname)
+  return _internal_nickname();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void LoginRequest::set_nickname(ArgT0&& arg0, ArgT... args) {
+ 
+ nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.LoginRequest.nickname)
+}
+inline std::string* LoginRequest::mutable_nickname() {
+  std::string* _s = _internal_mutable_nickname();
+  // @@protoc_insertion_point(field_mutable:PacketTag.LoginRequest.nickname)
+  return _s;
+}
+inline const std::string& LoginRequest::_internal_nickname() const {
+  return nickname_.Get();
+}
+inline void LoginRequest::_internal_set_nickname(const std::string& value) {
+  
+  nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* LoginRequest::_internal_mutable_nickname() {
+  
+  return nickname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* LoginRequest::release_nickname() {
+  // @@protoc_insertion_point(field_release:PacketTag.LoginRequest.nickname)
+  return nickname_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void LoginRequest::set_allocated_nickname(std::string* nickname) {
+  if (nickname != nullptr) {
+    
+  } else {
+    
+  }
+  nickname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), nickname,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.LoginRequest.nickname)
+}
+
+// string data = 2;
+inline void LoginRequest::clear_data() {
   data_.ClearToEmpty();
 }
-inline const std::string& Chat_Normal::data() const {
-  // @@protoc_insertion_point(field_get:PacketTag.Chat_Normal.data)
+inline const std::string& LoginRequest::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.LoginRequest.data)
   return _internal_data();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void Chat_Normal::set_data(ArgT0&& arg0, ArgT... args) {
+void LoginRequest::set_data(ArgT0&& arg0, ArgT... args) {
  
  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.Chat_Normal.data)
+  // @@protoc_insertion_point(field_set:PacketTag.LoginRequest.data)
 }
-inline std::string* Chat_Normal::mutable_data() {
+inline std::string* LoginRequest::mutable_data() {
   std::string* _s = _internal_mutable_data();
-  // @@protoc_insertion_point(field_mutable:PacketTag.Chat_Normal.data)
+  // @@protoc_insertion_point(field_mutable:PacketTag.LoginRequest.data)
   return _s;
 }
-inline const std::string& Chat_Normal::_internal_data() const {
+inline const std::string& LoginRequest::_internal_data() const {
   return data_.Get();
 }
-inline void Chat_Normal::_internal_set_data(const std::string& value) {
+inline void LoginRequest::_internal_set_data(const std::string& value) {
   
   data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* Chat_Normal::_internal_mutable_data() {
+inline std::string* LoginRequest::_internal_mutable_data() {
   
   return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* Chat_Normal::release_data() {
-  // @@protoc_insertion_point(field_release:PacketTag.Chat_Normal.data)
+inline std::string* LoginRequest::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.LoginRequest.data)
   return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void Chat_Normal::set_allocated_data(std::string* data) {
+inline void LoginRequest::set_allocated_data(std::string* data) {
   if (data != nullptr) {
     
   } else {
@@ -1047,49 +1262,99 @@ inline void Chat_Normal::set_allocated_data(std::string* data) {
   }
   data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.Chat_Normal.data)
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.LoginRequest.data)
 }
 
 // -------------------------------------------------------------------
 
-// Chat_Whisper
+// ChatNormal
+
+// string data = 1;
+inline void ChatNormal::clear_data() {
+  data_.ClearToEmpty();
+}
+inline const std::string& ChatNormal::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.ChatNormal.data)
+  return _internal_data();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void ChatNormal::set_data(ArgT0&& arg0, ArgT... args) {
+ 
+ data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.ChatNormal.data)
+}
+inline std::string* ChatNormal::mutable_data() {
+  std::string* _s = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:PacketTag.ChatNormal.data)
+  return _s;
+}
+inline const std::string& ChatNormal::_internal_data() const {
+  return data_.Get();
+}
+inline void ChatNormal::_internal_set_data(const std::string& value) {
+  
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* ChatNormal::_internal_mutable_data() {
+  
+  return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* ChatNormal::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.ChatNormal.data)
+  return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void ChatNormal::set_allocated_data(std::string* data) {
+  if (data != nullptr) {
+    
+  } else {
+    
+  }
+  data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.ChatNormal.data)
+}
+
+// -------------------------------------------------------------------
+
+// ChatWhisper
 
 // string targetNickname = 1;
-inline void Chat_Whisper::clear_targetnickname() {
+inline void ChatWhisper::clear_targetnickname() {
   targetnickname_.ClearToEmpty();
 }
-inline const std::string& Chat_Whisper::targetnickname() const {
-  // @@protoc_insertion_point(field_get:PacketTag.Chat_Whisper.targetNickname)
+inline const std::string& ChatWhisper::targetnickname() const {
+  // @@protoc_insertion_point(field_get:PacketTag.ChatWhisper.targetNickname)
   return _internal_targetnickname();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void Chat_Whisper::set_targetnickname(ArgT0&& arg0, ArgT... args) {
+void ChatWhisper::set_targetnickname(ArgT0&& arg0, ArgT... args) {
  
  targetnickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.Chat_Whisper.targetNickname)
+  // @@protoc_insertion_point(field_set:PacketTag.ChatWhisper.targetNickname)
 }
-inline std::string* Chat_Whisper::mutable_targetnickname() {
+inline std::string* ChatWhisper::mutable_targetnickname() {
   std::string* _s = _internal_mutable_targetnickname();
-  // @@protoc_insertion_point(field_mutable:PacketTag.Chat_Whisper.targetNickname)
+  // @@protoc_insertion_point(field_mutable:PacketTag.ChatWhisper.targetNickname)
   return _s;
 }
-inline const std::string& Chat_Whisper::_internal_targetnickname() const {
+inline const std::string& ChatWhisper::_internal_targetnickname() const {
   return targetnickname_.Get();
 }
-inline void Chat_Whisper::_internal_set_targetnickname(const std::string& value) {
+inline void ChatWhisper::_internal_set_targetnickname(const std::string& value) {
   
   targetnickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* Chat_Whisper::_internal_mutable_targetnickname() {
+inline std::string* ChatWhisper::_internal_mutable_targetnickname() {
   
   return targetnickname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* Chat_Whisper::release_targetnickname() {
-  // @@protoc_insertion_point(field_release:PacketTag.Chat_Whisper.targetNickname)
+inline std::string* ChatWhisper::release_targetnickname() {
+  // @@protoc_insertion_point(field_release:PacketTag.ChatWhisper.targetNickname)
   return targetnickname_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void Chat_Whisper::set_allocated_targetnickname(std::string* targetnickname) {
+inline void ChatWhisper::set_allocated_targetnickname(std::string* targetnickname) {
   if (targetnickname != nullptr) {
     
   } else {
@@ -1097,45 +1362,45 @@ inline void Chat_Whisper::set_allocated_targetnickname(std::string* targetnickna
   }
   targetnickname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), targetnickname,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.Chat_Whisper.targetNickname)
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.ChatWhisper.targetNickname)
 }
 
 // string data = 2;
-inline void Chat_Whisper::clear_data() {
+inline void ChatWhisper::clear_data() {
   data_.ClearToEmpty();
 }
-inline const std::string& Chat_Whisper::data() const {
-  // @@protoc_insertion_point(field_get:PacketTag.Chat_Whisper.data)
+inline const std::string& ChatWhisper::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.ChatWhisper.data)
   return _internal_data();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void Chat_Whisper::set_data(ArgT0&& arg0, ArgT... args) {
+void ChatWhisper::set_data(ArgT0&& arg0, ArgT... args) {
  
  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.Chat_Whisper.data)
+  // @@protoc_insertion_point(field_set:PacketTag.ChatWhisper.data)
 }
-inline std::string* Chat_Whisper::mutable_data() {
+inline std::string* ChatWhisper::mutable_data() {
   std::string* _s = _internal_mutable_data();
-  // @@protoc_insertion_point(field_mutable:PacketTag.Chat_Whisper.data)
+  // @@protoc_insertion_point(field_mutable:PacketTag.ChatWhisper.data)
   return _s;
 }
-inline const std::string& Chat_Whisper::_internal_data() const {
+inline const std::string& ChatWhisper::_internal_data() const {
   return data_.Get();
 }
-inline void Chat_Whisper::_internal_set_data(const std::string& value) {
+inline void ChatWhisper::_internal_set_data(const std::string& value) {
   
   data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* Chat_Whisper::_internal_mutable_data() {
+inline std::string* ChatWhisper::_internal_mutable_data() {
   
   return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* Chat_Whisper::release_data() {
-  // @@protoc_insertion_point(field_release:PacketTag.Chat_Whisper.data)
+inline std::string* ChatWhisper::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.ChatWhisper.data)
   return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void Chat_Whisper::set_allocated_data(std::string* data) {
+inline void ChatWhisper::set_allocated_data(std::string* data) {
   if (data != nullptr) {
     
   } else {
@@ -1143,49 +1408,49 @@ inline void Chat_Whisper::set_allocated_data(std::string* data) {
   }
   data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.Chat_Whisper.data)
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.ChatWhisper.data)
 }
 
 // -------------------------------------------------------------------
 
-// Room_User_List
+// UserListRequest
 
 // string data = 1;
-inline void Room_User_List::clear_data() {
+inline void UserListRequest::clear_data() {
   data_.ClearToEmpty();
 }
-inline const std::string& Room_User_List::data() const {
-  // @@protoc_insertion_point(field_get:PacketTag.Room_User_List.data)
+inline const std::string& UserListRequest::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.UserListRequest.data)
   return _internal_data();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void Room_User_List::set_data(ArgT0&& arg0, ArgT... args) {
+void UserListRequest::set_data(ArgT0&& arg0, ArgT... args) {
  
  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.Room_User_List.data)
+  // @@protoc_insertion_point(field_set:PacketTag.UserListRequest.data)
 }
-inline std::string* Room_User_List::mutable_data() {
+inline std::string* UserListRequest::mutable_data() {
   std::string* _s = _internal_mutable_data();
-  // @@protoc_insertion_point(field_mutable:PacketTag.Room_User_List.data)
+  // @@protoc_insertion_point(field_mutable:PacketTag.UserListRequest.data)
   return _s;
 }
-inline const std::string& Room_User_List::_internal_data() const {
+inline const std::string& UserListRequest::_internal_data() const {
   return data_.Get();
 }
-inline void Room_User_List::_internal_set_data(const std::string& value) {
+inline void UserListRequest::_internal_set_data(const std::string& value) {
   
   data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* Room_User_List::_internal_mutable_data() {
+inline std::string* UserListRequest::_internal_mutable_data() {
   
   return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* Room_User_List::release_data() {
-  // @@protoc_insertion_point(field_release:PacketTag.Room_User_List.data)
+inline std::string* UserListRequest::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.UserListRequest.data)
   return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void Room_User_List::set_allocated_data(std::string* data) {
+inline void UserListRequest::set_allocated_data(std::string* data) {
   if (data != nullptr) {
     
   } else {
@@ -1193,49 +1458,49 @@ inline void Room_User_List::set_allocated_data(std::string* data) {
   }
   data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.Room_User_List.data)
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.UserListRequest.data)
 }
 
 // -------------------------------------------------------------------
 
-// Exit_Request
+// ExitRequest
 
 // string data = 1;
-inline void Exit_Request::clear_data() {
+inline void ExitRequest::clear_data() {
   data_.ClearToEmpty();
 }
-inline const std::string& Exit_Request::data() const {
-  // @@protoc_insertion_point(field_get:PacketTag.Exit_Request.data)
+inline const std::string& ExitRequest::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.ExitRequest.data)
   return _internal_data();
 }
 template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
-void Exit_Request::set_data(ArgT0&& arg0, ArgT... args) {
+void ExitRequest::set_data(ArgT0&& arg0, ArgT... args) {
  
  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.Exit_Request.data)
+  // @@protoc_insertion_point(field_set:PacketTag.ExitRequest.data)
 }
-inline std::string* Exit_Request::mutable_data() {
+inline std::string* ExitRequest::mutable_data() {
   std::string* _s = _internal_mutable_data();
-  // @@protoc_insertion_point(field_mutable:PacketTag.Exit_Request.data)
+  // @@protoc_insertion_point(field_mutable:PacketTag.ExitRequest.data)
   return _s;
 }
-inline const std::string& Exit_Request::_internal_data() const {
+inline const std::string& ExitRequest::_internal_data() const {
   return data_.Get();
 }
-inline void Exit_Request::_internal_set_data(const std::string& value) {
+inline void ExitRequest::_internal_set_data(const std::string& value) {
   
   data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
 }
-inline std::string* Exit_Request::_internal_mutable_data() {
+inline std::string* ExitRequest::_internal_mutable_data() {
   
   return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
 }
-inline std::string* Exit_Request::release_data() {
-  // @@protoc_insertion_point(field_release:PacketTag.Exit_Request.data)
+inline std::string* ExitRequest::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.ExitRequest.data)
   return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
 }
-inline void Exit_Request::set_allocated_data(std::string* data) {
+inline void ExitRequest::set_allocated_data(std::string* data) {
   if (data != nullptr) {
     
   } else {
@@ -1243,12 +1508,14 @@ inline void Exit_Request::set_allocated_data(std::string* data) {
   }
   data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
       GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.Exit_Request.data)
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.ExitRequest.data)
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

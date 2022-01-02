@@ -38,9 +38,10 @@ void Init();
 void RunListenThread();
 void RunSendThread();
 void SendPacket(string serializedPacket);
+void SendLoginRequest(string data);
 void SendChatNormal(string msg);
 void SendChatWhisper(string targetNickname, string data);
-void SendRoomList(string data);
+void SendRoomListRequest(string data);
 void SendExitRequest(string data);
 vector<string> Split(string targetStr, char splitter);
 
@@ -82,11 +83,6 @@ int main()
 		return false;
 	}
 
-	std::cout << "Nickname : ";
-	std::cin >> nickname;
-
-
-
 	std::thread t1(RunListenThread);
 	std::thread t2(RunSendThread);
 
@@ -111,7 +107,7 @@ void RunListenThread()
 	{
 		int nRecvLen = recv(clientSocket, sz_socketbuf_, 1024, 0);
 		if (nRecvLen == 0) {
-			std::cout << "Client connection has been closed" << std::endl;
+			std::cout << "Server connection has been closed" << std::endl;
 			closesocket(clientSocket);
 			return;
 		}
@@ -131,6 +127,12 @@ void RunSendThread()
 {
 	char	szOutMsg[MAX_BUFFER];
 	string outMsg;
+
+	std::cout << "Nickname : ";
+	std::cin >> nickname;
+
+	SendLoginRequest("");
+
 	while (true) {
 		std::cout << ">>";
 		std::cin.getline(szOutMsg, MAX_BUFFER);
@@ -145,12 +147,12 @@ void RunSendThread()
 			case 'w':
 				for (int i = 2; i < splitted.size(); i++)
 				{
-					msg += splitted[i];
+					msg += splitted[i] + " ";
 				}
 				SendChatWhisper(splitted[INPUT_TARGET_NICKNAME_INDEX], msg);
 				break;
 			case 'l':
-				SendRoomList(splitted[INPUT_MESSAGE_INDEX]);
+				SendRoomListRequest(splitted[INPUT_MESSAGE_INDEX]);
 				break;
 			case 'e':
 				SendExitRequest(splitted[INPUT_MESSAGE_INDEX]);
@@ -179,9 +181,25 @@ void SendPacket(string serializedPacket)
 	}
 }
 
+void SendLoginRequest(string data)
+{
+	LoginRequest loginData;
+	loginData.set_nickname(nickname);
+	loginData.set_data(data);
+
+	PacketMsg packet;
+	packet.set_nickname(nickname);
+	packet.set_type(PacketType::LOGIN_REQUEST);
+	packet.set_data(loginData.SerializeAsString());
+
+	SendPacket(packet.SerializeAsString());
+
+	cout << "[LOGIN_REQUEST]" << endl;
+}
+
 void SendChatNormal(string msg)
 {
-	Chat_Normal chatData;
+	ChatNormal chatData;
 	chatData.set_data(msg);
 
 	PacketMsg packet;
@@ -197,7 +215,7 @@ void SendChatNormal(string msg)
 
 void SendChatWhisper(string targetNickname, string data)
 {
-	Chat_Whisper chatData;
+	ChatWhisper chatData;
 	chatData.set_targetnickname(targetNickname);
 	chatData.set_data(data);
 
@@ -212,14 +230,14 @@ void SendChatWhisper(string targetNickname, string data)
 		"to " << targetNickname << " : " << data << std::endl;
 }
 
-void SendRoomList(string data)
+void SendRoomListRequest(string data)
 {
-	Room_User_List roomList;
+	UserListRequest roomList;
 	roomList.set_data(data);
 
 	PacketMsg packet;
 	packet.set_nickname(nickname);
-	packet.set_type(PacketType::ROOM_USER_LIST);
+	packet.set_type(PacketType::USER_LIST_REQUEST);
 	packet.set_data(roomList.SerializeAsString());
 
 	SendPacket(packet.SerializeAsString());
@@ -229,7 +247,7 @@ void SendRoomList(string data)
 
 void SendExitRequest(string data)
 {
-	Exit_Request exitReq;
+	ExitRequest exitReq;
 	exitReq.set_data(data);
 
 	PacketMsg packet;

@@ -8,5 +8,3 @@ protoc --cpp_out=%ClientPath% ClientInfo.proto
 protoc --cpp_out=%ClientPath% PacketTag.proto
 protoc --cpp_out=%ServerPath% ClientInfo.proto
 protoc --cpp_out=%ServerPath% PacketTag.proto
-
-pause

@@ -42,6 +42,12 @@ public:
 	// 작업 스레드
 	void WorkerThread();
 
+	void OnRcvLoginRequest(stSOCKETINFO* socketInfo, string data);
+	void OnRcvChatNormal(stSOCKETINFO* socketInfo, string data);
+	void OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data);
+	void OnRcvRoomListRequest(stSOCKETINFO* socketInfo, string data);
+	void OnRcvExitRequest(stSOCKETINFO* socketInfo, string data);
+
 	vector<SOCKET*>* connectedClients;
 	vector<ClientInfo*>* clientInfoContainer;
 

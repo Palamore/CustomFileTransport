@@ -2,7 +2,6 @@
 #include "Debug.h"
 #include <process.h>
 
-void RemoveTag(char* buf, int length);
 bool Contain(vector<SOCKET*>& target, SOCKET value);
 
 unsigned int WINAPI CallWorkerThread(LPVOID p)
@@ -268,39 +267,20 @@ void IOCompletionPort::WorkerThread()
 		{
 			PacketMsg msg;
 			msg.ParseFromString(string(pSocketInfo->dataBuf.buf));
-			Chat_Normal chatData;
+			ChatNormal chatData;
 
 			switch (msg.type())
 			{
+			case PacketType::LOGIN_REQUEST:
+				OnRcvLoginRequest(pSocketInfo, msg.data());
+				break;
 			case PacketType::CHAT_NORMAL:
-				chatData.ParseFromString(msg.data());
-				pSocketInfo->dataBuf.buf = (CHAR*)(chatData.data().c_str());
-				pSocketInfo->dataBuf.len = strlen(chatData.data().c_str());
-				for (int i = 0; i < connectedClients->size(); i++)
-				{
-					nResult = WSASend(
-						*(connectedClients->at(i)),
-						&(pSocketInfo->dataBuf),
-						1,
-						&sendBytes,
-						dwFlags,
-						null,
-						null
-					);
-
-					if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-					{
-						Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
-					}
-
-					Debug::Log("Msg Sent : " + string(pSocketInfo->dataBuf.buf) + "\n");
-
-				}
+				OnRcvChatNormal(pSocketInfo, msg.data());
 				break;
 			case PacketType::CHAT_WHISPER:
 
 				break;
-			case PacketType::ROOM_USER_LIST:
+			case PacketType::USER_LIST_REQUEST:
 
 				break;
 			case PacketType::EXIT_REQUEST:
@@ -337,14 +317,69 @@ void IOCompletionPort::WorkerThread()
 	}
 }
 
-void RemoveTag(char* buf, int length)
+
+void IOCompletionPort::OnRcvLoginRequest(stSOCKETINFO* socketInfo, string data)
 {
-	for (int i = 0; i < length - 4; i++)
+	LoginRequest loginData;
+	if (!loginData.ParseFromString(data))
 	{
-		buf[i] = buf[i + 4];
+		Debug::LogError("ChatData Parsing Failed");
+		return;
 	}
-	for (int i = length - 4; i < length; i++)
+
+	for (int i = 0; i < clientInfoContainer->size(); i++)
 	{
-		buf[i] = '\0';
+		if (m_pSocketInfo->socket == clientInfoContainer->at(i)->socket())
+		{
+			clientInfoContainer->at(i)->set_nickname(loginData.nickname());
+			return;
+		}
 	}
+}
+void IOCompletionPort::OnRcvChatNormal(stSOCKETINFO* socketInfo, string data)
+{
+	ChatNormal chatData;
+	if (!chatData.ParseFromString(data))
+	{
+		Debug::LogError("ChatData Parsing Failed");
+		return;
+	}
+	int		nResult = 0;
+	DWORD	dwFlags = 0;
+	DWORD	sendBytes = 0;
+
+	socketInfo->dataBuf.buf = (CHAR*)(chatData.data().c_str());
+	socketInfo->dataBuf.len = strlen(chatData.data().c_str());
+	for (int i = 0; i < connectedClients->size(); i++)
+	{
+		nResult = WSASend(
+			*(connectedClients->at(i)),
+			&(socketInfo->dataBuf),
+			1,
+			&sendBytes,
+			dwFlags,
+			null,
+			null
+		);
+
+		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+		{
+			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
+		}
+
+		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
+
+	}
+}
+void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data)
+{
+
+}
+void IOCompletionPort::OnRcvRoomListRequest(stSOCKETINFO* socketInfo, string data)
+{
+
+}
+void IOCompletionPort::OnRcvExitRequest(stSOCKETINFO* socketInfo, string data)
+{
+
 }

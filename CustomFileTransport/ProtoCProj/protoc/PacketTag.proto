@@ -2,10 +2,11 @@ syntax = "proto3";
 package PacketTag;
 
 enum PacketType {
-  CHAT_NORMAL = 0;
-  CHAT_WHISPER = 1;
-  ROOM_USER_LIST = 2;
-  EXIT_REQUEST = 3;
+  LOGIN_REQUEST = 0;
+  CHAT_NORMAL = 1;
+  CHAT_WHISPER = 2;
+  USER_LIST_REQUEST = 3;
+  EXIT_REQUEST = 4;
 }
 
 message PacketMsg{
@@ -14,20 +15,25 @@ message PacketMsg{
   string data = 3;
 }
 
-message Chat_Normal {
+message LoginRequest{
+  string nickname = 1;
+  string data = 2;
+}
+
+message ChatNormal {
   string data = 1;
 }
 
-message Chat_Whisper {
+message ChatWhisper {
   string targetNickname = 1;
   string data = 2;
 }
 
-message Room_User_List {
+message UserListRequest {
   string data = 1;
 }
 
-message Exit_Request {
+message ExitRequest {
   string data = 1;
 }
 
