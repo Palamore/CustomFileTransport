@@ -278,13 +278,13 @@ void IOCompletionPort::WorkerThread()
 				OnRcvChatNormal(pSocketInfo, msg.data());
 				break;
 			case PacketType::CHAT_WHISPER:
-
+				OnRcvChatWhisper(pSocketInfo, msg.data());
 				break;
 			case PacketType::USER_LIST_REQUEST:
-
+				OnRcvRoomListRequest(pSocketInfo, msg.data());
 				break;
 			case PacketType::EXIT_REQUEST:
-
+				OnRcvExitRequest(pSocketInfo, msg.data());
 				break;
 			}
 
@@ -361,18 +361,59 @@ void IOCompletionPort::OnRcvChatNormal(stSOCKETINFO* socketInfo, string data)
 			null,
 			null
 		);
-
 		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
 		{
 			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
 		}
-
 		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
-
 	}
 }
 void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data)
 {
+	ChatWhisper chatData;
+	if (!chatData.ParseFromString(data))
+	{
+		Debug::LogError("ChatData Parsing Failed");
+		return;
+	}
+
+	int		nResult = 0;
+	DWORD	dwFlags = 0;
+	DWORD	sendBytes = 0;
+	string targetNickname = "";
+
+	for (int i = 0; i < clientInfoContainer->size(); i++)
+	{
+		if (clientInfoContainer->at(i)->nickname() == chatData.targetnickname())
+		{
+			targetNickname = chatData.targetnickname();
+		}
+	}
+
+	if (targetNickname == "")
+	{
+		string FailMsg("No one has that Nickname.");
+		socketInfo->dataBuf.buf = (CHAR*)(FailMsg.c_str());
+		socketInfo->dataBuf.len = FailMsg.length();
+		for (int i = 0; i < connectedClients->size(); i++)
+		{
+			nResult = WSASend(
+				*(connectedClients->at(i)),
+				&(socketInfo->dataBuf),
+				1,
+				&sendBytes,
+				dwFlags,
+				null,
+				null
+			);
+			if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+			{
+				Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
+			}
+			Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
+		}
+	}
+
 
 }
 void IOCompletionPort::OnRcvRoomListRequest(stSOCKETINFO* socketInfo, string data)
