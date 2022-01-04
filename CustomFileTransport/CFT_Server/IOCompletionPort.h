@@ -7,10 +7,9 @@
 #include "ClientInfo.pb.h"
 #include <WinSock2.h>
 #include <memory>
-#include <string>
-#include <vector>
-
+using namespace ServerPacket;
 using namespace std;
+using namespace PacketTag;
 
 #define	MAX_BUFFER		1024
 #define SERVER_PORT		8000
@@ -19,7 +18,7 @@ using namespace std;
 
 struct stSOCKETINFO
 {
-	OVERLAPPED		overlapped;
+	WSAOVERLAPPED	overlapped;
 	WSABUF			dataBuf;
 	SOCKET			socket;
 	char			messageBuffer[MAX_BUFFER];
@@ -50,7 +49,7 @@ public:
 	void OnRcvExitRequest(stSOCKETINFO* socketInfo, string data);
 
 	vector<SOCKET*>* connectedClients;
-	vector<ServerPacket::ClientInfo*>* clientInfoContainer;
+	vector<ClientInfo*>* clientInfoContainer;
 
 private:
 	stSOCKETINFO* m_pSocketInfo;		// 소켓 정보

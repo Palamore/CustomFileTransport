@@ -135,7 +135,10 @@ void RunSendThread()
 				break;
 			}
 		}
-		sendObject.SendChatNormal(szOutMsg);
+		else
+		{
+			sendObject.SendChatNormal(szOutMsg);
+		}
 	}
 }
 

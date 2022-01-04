@@ -1,6 +1,11 @@
+#include <stdio.h>
+#include <iostream>
+#include <WinSock2.h>
+#include <string>
 #include "IOCompletionPort.h"
+using namespace std;
+#pragma comment(lib, "ws2_32")
 
-#pragma comment(lib, "ws2_32.lib")
 #define PORT 4000
 #define PACKET_SIZE 1024
 

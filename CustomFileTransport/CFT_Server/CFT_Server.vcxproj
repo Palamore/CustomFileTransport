@@ -157,7 +157,6 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="IOCompletionPort.cpp" />
     <ClCompile Include="PacketTag.pb.cc" />
-    <ClCompile Include="Recv.cpp" />
     <ClCompile Include="ServerMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -167,7 +166,6 @@
     <ClInclude Include="IOCompletionPort.h" />
     <ClInclude Include="ProtocolTag.h" />
     <ClInclude Include="PacketTag.pb.h" />
-    <ClInclude Include="Recv.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
