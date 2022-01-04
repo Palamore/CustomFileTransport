@@ -1,6 +1,6 @@
 #include "IOCompletionPort.h"
 #include "Debug.h"
-#include <process.h>
+#include "Recv.h"
 
 bool Contain(vector<SOCKET*>& target, SOCKET value);
 
@@ -19,7 +19,7 @@ IOCompletionPort::IOCompletionPort()
 	, m_listenSocket(0)
 	, m_hIOCP(null)
 	, m_pWorkerHandle(null)
-	, clientInfoContainer(new vector<ClientInfo*>())
+	, clientInfoContainer(new vector<ServerPacket::ClientInfo*>())
 {
 	connectedClients->reserve(MAX_CLIENT);
 	clientInfoContainer->reserve(MAX_CLIENT);
@@ -171,7 +171,7 @@ void IOCompletionPort::StartServer()
 		if (!Contain(*connectedClients, m_pSocketInfo->socket))
 		{
 			connectedClients->push_back(&m_pSocketInfo->socket);
-			ClientInfo* cInfo = new ClientInfo();
+			ServerPacket::ClientInfo* cInfo = new ServerPacket::ClientInfo();
 			cInfo->set_socket(m_pSocketInfo->socket);
 			cInfo->set_nickname(to_string(m_pSocketInfo->socket));
 			clientInfoContainer->push_back(cInfo);
@@ -220,6 +220,8 @@ bool IOCompletionPort::CreateWorkerThread()
 
 void IOCompletionPort::WorkerThread()
 {
+	Recv::Network_Recv recv;
+	recv.Init(clientInfoContainer, connectedClients, m_pSocketInfo);
 	// 함수 호출 성공 여부
 	BOOL	bResult;
 	int		nResult;
@@ -229,7 +231,6 @@ void IOCompletionPort::WorkerThread()
 	// Completion Key를 받을 포인터 변수
 	stSOCKETINFO* pCompletionKey;
 	// I/O 작업을 위해 요청한 Overlapped 구조체를 받을 포인터	
-	stSOCKETINFO* pSocketInfo;
 	// 
 	DWORD	dwFlags = 0;
 
@@ -243,69 +244,69 @@ void IOCompletionPort::WorkerThread()
 		bResult = GetQueuedCompletionStatus(m_hIOCP,
 			&recvBytes,				// 실제로 전송된 바이트
 			(PULONG_PTR)&pCompletionKey,	// completion key
-			(LPOVERLAPPED*)&pSocketInfo,			// overlapped I/O 객체
+			(LPOVERLAPPED*)&recv.socketInfo,			// overlapped I/O 객체
 			INFINITE				// 대기할 시간
 		);
 
 		if (!bResult && recvBytes == 0)
 		{
-			Debug::Log("socket(" + to_string(pSocketInfo->socket) + ") 접속 끊김\n");
-			closesocket(pSocketInfo->socket);
-			free(pSocketInfo);
+			Debug::Log("socket(" + to_string(recv.socketInfo->socket) + ") 접속 끊김\n");
+			closesocket(recv.socketInfo->socket);
+			free(recv.socketInfo);
 			continue;
 		}
 
-		pSocketInfo->dataBuf.len = recvBytes;
+		recv.socketInfo->dataBuf.len = recvBytes;
 
 		if (recvBytes == 0)
 		{
-			closesocket(pSocketInfo->socket);
-			free(pSocketInfo);
+			closesocket(recv.socketInfo->socket);
+			free(recv.socketInfo);
 			continue;
 		}
 		else
 		{
-			PacketMsg msg;
-			msg.ParseFromString(string(pSocketInfo->dataBuf.buf));
-			ChatNormal chatData;
+			PacketTag::PacketMsg msg;
+			msg.ParseFromString(string(recv.socketInfo->dataBuf.buf));
+			PacketTag::ChatNormal chatData;
 
 			switch (msg.type())
 			{
-			case PacketType::LOGIN_REQUEST:
-				OnRcvLoginRequest(pSocketInfo, msg.data());
+			case PacketTag::PacketType::LOGIN_REQUEST:
+				recv.OnRcvLoginRequest(msg.data());
 				break;
-			case PacketType::CHAT_NORMAL:
-				OnRcvChatNormal(pSocketInfo, msg.data());
+			case PacketTag::PacketType::CHAT_NORMAL:
+				recv.OnRcvChatNormal(msg.data());
 				break;
-			case PacketType::CHAT_WHISPER:
-				OnRcvChatWhisper(pSocketInfo, msg.data());
+			case PacketTag::PacketType::CHAT_WHISPER:
+				recv.OnRcvChatWhisper(msg.data());
 				break;
-			case PacketType::USER_LIST_REQUEST:
-				OnRcvRoomListRequest(pSocketInfo, msg.data());
+			case PacketTag::PacketType::USER_LIST_REQUEST:
+				recv.OnRcvRoomListRequest(msg.data());
 				break;
-			case PacketType::EXIT_REQUEST:
-				OnRcvExitRequest(pSocketInfo, msg.data());
+			case PacketTag::PacketType::EXIT_REQUEST:
+				recv.OnRcvExitRequest(msg.data());
 				break;
 			}
 
 			// stSOCKETINFO 데이터 초기화
-			ZeroMemory(&(pSocketInfo->overlapped), sizeof(OVERLAPPED));
-			pSocketInfo->dataBuf.len = MAX_BUFFER;
-			pSocketInfo->dataBuf.buf = pSocketInfo->messageBuffer;
-			ZeroMemory(pSocketInfo->messageBuffer, MAX_BUFFER);
-			pSocketInfo->recvBytes = 0;
-			pSocketInfo->sendBytes = 0;
+			ZeroMemory(&(recv.socketInfo->overlapped), sizeof(OVERLAPPED));
+			recv.socketInfo->dataBuf.len = MAX_BUFFER;
+			recv.socketInfo->dataBuf.buf = recv.socketInfo->messageBuffer;
+			ZeroMemory(recv.socketInfo->messageBuffer, MAX_BUFFER);
+			recv.socketInfo->recvBytes = 0;
+			recv.socketInfo->sendBytes = 0;
 
 			dwFlags = 0;
 
 			// 클라이언트로부터 다시 응답을 받기 위해 WSARecv 를 호출해줌
 			nResult = WSARecv(
-				pSocketInfo->socket,
-				&(pSocketInfo->dataBuf),
+				recv.socketInfo->socket,
+				&(recv.socketInfo->dataBuf),
 				1,
 				&recvBytes,
 				&dwFlags,
-				(LPWSAOVERLAPPED) & (pSocketInfo->overlapped),
+				(LPWSAOVERLAPPED) & (recv.socketInfo->overlapped),
 				NULL
 			);
 
@@ -318,109 +319,109 @@ void IOCompletionPort::WorkerThread()
 }
 
 
-void IOCompletionPort::OnRcvLoginRequest(stSOCKETINFO* socketInfo, string data)
-{
-	LoginRequest loginData;
-	if (!loginData.ParseFromString(data))
-	{
-		Debug::LogError("ChatData Parsing Failed");
-		return;
-	}
-
-	for (int i = 0; i < clientInfoContainer->size(); i++)
-	{
-		if (m_pSocketInfo->socket == clientInfoContainer->at(i)->socket())
-		{
-			clientInfoContainer->at(i)->set_nickname(loginData.nickname());
-			return;
-		}
-	}
-}
-void IOCompletionPort::OnRcvChatNormal(stSOCKETINFO* socketInfo, string data)
-{
-	ChatNormal chatData;
-	if (!chatData.ParseFromString(data))
-	{
-		Debug::LogError("ChatData Parsing Failed");
-		return;
-	}
-	int		nResult = 0;
-	DWORD	dwFlags = 0;
-	DWORD	sendBytes = 0;
-
-	socketInfo->dataBuf.buf = (CHAR*)(chatData.data().c_str());
-	socketInfo->dataBuf.len = strlen(chatData.data().c_str());
-	for (int i = 0; i < connectedClients->size(); i++)
-	{
-		nResult = WSASend(
-			*(connectedClients->at(i)),
-			&(socketInfo->dataBuf),
-			1,
-			&sendBytes,
-			dwFlags,
-			null,
-			null
-		);
-		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-		{
-			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
-		}
-		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
-	}
-}
-void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data)
-{
-	ChatWhisper chatData;
-	if (!chatData.ParseFromString(data))
-	{
-		Debug::LogError("ChatData Parsing Failed");
-		return;
-	}
-
-	int		nResult = 0;
-	DWORD	dwFlags = 0;
-	DWORD	sendBytes = 0;
-	string targetNickname = "";
-
-	for (int i = 0; i < clientInfoContainer->size(); i++)
-	{
-		if (clientInfoContainer->at(i)->nickname() == chatData.targetnickname())
-		{
-			targetNickname = chatData.targetnickname();
-		}
-	}
-
-	if (targetNickname == "")
-	{
-		string FailMsg("No one has that Nickname.");
-		socketInfo->dataBuf.buf = (CHAR*)(FailMsg.c_str());
-		socketInfo->dataBuf.len = FailMsg.length();
-		for (int i = 0; i < connectedClients->size(); i++)
-		{
-			nResult = WSASend(
-				*(connectedClients->at(i)),
-				&(socketInfo->dataBuf),
-				1,
-				&sendBytes,
-				dwFlags,
-				null,
-				null
-			);
-			if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-			{
-				Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
-			}
-			Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
-		}
-	}
-
-
-}
-void IOCompletionPort::OnRcvRoomListRequest(stSOCKETINFO* socketInfo, string data)
-{
-
-}
-void IOCompletionPort::OnRcvExitRequest(stSOCKETINFO* socketInfo, string data)
-{
-
-}
+//void IOCompletionPort::OnRcvLoginRequest(stSOCKETINFO* socketInfo, string data)
+//{
+//	LoginRequest loginData;
+//	if (!loginData.ParseFromString(data))
+//	{
+//		Debug::LogError("ChatData Parsing Failed");
+//		return;
+//	}
+//
+//	for (int i = 0; i < clientInfoContainer->size(); i++)
+//	{
+//		if (m_pSocketInfo->socket == clientInfoContainer->at(i)->socket())
+//		{
+//			clientInfoContainer->at(i)->set_nickname(loginData.nickname());
+//			return;
+//		}
+//	}
+//}
+//void IOCompletionPort::OnRcvChatNormal(stSOCKETINFO* socketInfo, string data)
+//{
+//	ChatNormal chatData;
+//	if (!chatData.ParseFromString(data))
+//	{
+//		Debug::LogError("ChatData Parsing Failed");
+//		return;
+//	}
+//	int		nResult = 0;
+//	DWORD	dwFlags = 0;
+//	DWORD	sendBytes = 0;
+//
+//	socketInfo->dataBuf.buf = (CHAR*)(chatData.data().c_str());
+//	socketInfo->dataBuf.len = strlen(chatData.data().c_str());
+//	for (int i = 0; i < connectedClients->size(); i++)
+//	{
+//		nResult = WSASend(
+//			*(connectedClients->at(i)),
+//			&(socketInfo->dataBuf),
+//			1,
+//			&sendBytes,
+//			dwFlags,
+//			null,
+//			null
+//		);
+//		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+//		{
+//			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
+//		}
+//		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
+//	}
+//}
+//void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data)
+//{
+//	ChatWhisper chatData;
+//	if (!chatData.ParseFromString(data))
+//	{
+//		Debug::LogError("ChatData Parsing Failed");
+//		return;
+//	}
+//
+//	int		nResult = 0;
+//	DWORD	dwFlags = 0;
+//	DWORD	sendBytes = 0;
+//	string targetNickname = "";
+//
+//	for (int i = 0; i < clientInfoContainer->size(); i++)
+//	{
+//		if (clientInfoContainer->at(i)->nickname() == chatData.targetnickname())
+//		{
+//			targetNickname = chatData.targetnickname();
+//		}
+//	}
+//
+//	if (targetNickname == "")
+//	{
+//		string FailMsg("No one has that Nickname.");
+//		socketInfo->dataBuf.buf = (CHAR*)(FailMsg.c_str());
+//		socketInfo->dataBuf.len = FailMsg.length();
+//		for (int i = 0; i < connectedClients->size(); i++)
+//		{
+//			nResult = WSASend(
+//				*(connectedClients->at(i)),
+//				&(socketInfo->dataBuf),
+//				1,
+//				&sendBytes,
+//				dwFlags,
+//				null,
+//				null
+//			);
+//			if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+//			{
+//				Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
+//			}
+//			Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
+//		}
+//	}
+//
+//
+//}
+//void IOCompletionPort::OnRcvRoomListRequest(stSOCKETINFO* socketInfo, string data)
+//{
+//
+//}
+//void IOCompletionPort::OnRcvExitRequest(stSOCKETINFO* socketInfo, string data)
+//{
+//
+//}

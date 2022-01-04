@@ -1,19 +1,17 @@
 #pragma once
+#include "ProtocolTag.h"
+#include "ClientInfo.pb.h"
+#include "PacketTag.pb.h"
 #include <WinSock2.h>
 #include <iostream>
 #include <WS2tcpip.h>
 #include <thread>
 #include <vector>
 #include <string>
-#include "ProtocolTag.h"
-#include "ClientInfo.pb.h"
-#include "PacketTag.pb.h"
 #include "Send.h"
-
-using namespace ServerPacket;
-using namespace PacketTag;
 using namespace std;
-using namespace Send;
+
+
 #define	MAX_BUFFER		1024
 #define SERVER_PORT		8000
 #define SERVER_IP		"127.0.0.1"

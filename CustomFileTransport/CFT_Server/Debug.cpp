@@ -1,6 +1,5 @@
 #include "Debug.h"
 
-
 void Debug::Log(string str)
 {
 	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();

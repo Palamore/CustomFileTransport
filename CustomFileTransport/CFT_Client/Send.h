@@ -7,15 +7,14 @@ namespace Send
 	{
 		public:
 
+		void SendPacket(std::string serializedPacket);
+		void SendLoginRequest(std::string data);
+		void SendChatNormal(std::string msg);
+		void SendChatWhisper(std::string targetNickname, std::string data);
+		void SendRoomListRequest(std::string data);
+		void SendExitRequest(std::string data);
 
-			void SendPacket(string serializedPacket);
-			void SendLoginRequest(string data);
-		void SendChatNormal(string msg);
-		void SendChatWhisper(string targetNickname, string data);
-		void SendRoomListRequest(string data);
-		void SendExitRequest(string data);
-
-		string nickname;
+		std::string nickname;
 		SOCKET clientSocket;
 	};
 }

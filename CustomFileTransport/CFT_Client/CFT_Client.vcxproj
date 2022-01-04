@@ -149,11 +149,14 @@
     <ClCompile Include="ClientInfo.pb.cc" />
     <ClCompile Include="ClientMain.cpp" />
     <ClCompile Include="PacketTag.pb.cc" />
+    <ClCompile Include="Send.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientInfo.pb.h" />
+    <ClInclude Include="IncludeDefineNamespace.h" />
     <ClInclude Include="PacketTag.pb.h" />
     <ClInclude Include="ProtocolTag.h" />
+    <ClInclude Include="Send.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

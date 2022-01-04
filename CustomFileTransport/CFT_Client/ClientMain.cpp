@@ -13,7 +13,7 @@ struct stSOCKETINFO
 	int				sendBytes;
 };
 
-Network_Send send;
+Send::Network_Send sendObject;
 
 void RunListenThread();
 void RunSendThread();
@@ -31,8 +31,8 @@ int main()
 	}
 
 	// TCP 家南 积己
-	send.clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (send.clientSocket == INVALID_SOCKET) {
+	sendObject.clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (sendObject.clientSocket == INVALID_SOCKET) {
 		std::cout << "Error : " << WSAGetLastError() << std::endl;
 		return false;
 	}
@@ -50,7 +50,7 @@ int main()
 	//stServerAddr.sin_addr.s_addr = inet_addr(SERVER_IP);
 	inet_pton(stServerAddr.sin_family, SERVER_IP, &stServerAddr.sin_addr.s_addr);
 
-	nRet = connect(send.clientSocket, (sockaddr*)&stServerAddr, sizeof(sockaddr));
+	nRet = connect(sendObject.clientSocket, (sockaddr*)&stServerAddr, sizeof(sockaddr));
 	if (nRet == SOCKET_ERROR) {
 		std::cout << "Error : " << WSAGetLastError() << std::endl;
 		return false;
@@ -67,7 +67,7 @@ int main()
 
 	t1.join();
 	t2.join();
-	closesocket(send.clientSocket);
+	closesocket(sendObject.clientSocket);
 	std::cout << "Client has been terminated..." << std::endl;
 
 	return 0;
@@ -78,15 +78,15 @@ void RunListenThread()
 	char	sz_socketbuf_[MAX_BUFFER];
 	while (1)
 	{
-		int nRecvLen = recv(send.clientSocket, sz_socketbuf_, 1024, 0);
+		int nRecvLen = recv(sendObject.clientSocket, sz_socketbuf_, 1024, 0);
 		if (nRecvLen == 0) {
 			std::cout << "Server connection has been closed" << std::endl;
-			closesocket(send.clientSocket);
+			closesocket(sendObject.clientSocket);
 			return;
 		}
 		else if (nRecvLen == -1) {
 			std::cout << "Error : " << WSAGetLastError() << std::endl;
-			closesocket(send.clientSocket);
+			closesocket(sendObject.clientSocket);
 			return;
 		}
 
@@ -102,9 +102,9 @@ void RunSendThread()
 	string outMsg;
 
 	std::cout << "Nickname : ";
-	std::cin >> send.nickname;
+	std::cin >> sendObject.nickname;
 
-	send.SendLoginRequest("");
+	sendObject.SendLoginRequest("");
 
 	while (true) {
 		std::cout << ">>";
@@ -122,20 +122,20 @@ void RunSendThread()
 				{
 					msg += splitted[i] + " ";
 				}
-				send.SendChatWhisper(splitted[INPUT_TARGET_NICKNAME_INDEX], msg);
+				sendObject.SendChatWhisper(splitted[INPUT_TARGET_NICKNAME_INDEX], msg);
 				break;
 			case 'l':
-				send.SendRoomListRequest(splitted[INPUT_MESSAGE_INDEX]);
+				sendObject.SendRoomListRequest(splitted[INPUT_MESSAGE_INDEX]);
 				break;
 			case 'e':
-				send.SendExitRequest(splitted[INPUT_MESSAGE_INDEX]);
+				sendObject.SendExitRequest(splitted[INPUT_MESSAGE_INDEX]);
 				exit(0);
 				break;
 			default:
 				break;
 			}
 		}
-		send.SendChatNormal(szOutMsg);
+		sendObject.SendChatNormal(szOutMsg);
 	}
 }
 
