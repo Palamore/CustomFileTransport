@@ -30,10 +30,16 @@ message ChatWhisper {
 }
 
 message UserListRequest {
-  string data = 1;
+  repeated string data = 1;
+}
+
+enum ExitType {
+  EXIT_NORMAL = 0;
+  EXIT_DESTRUCTOR = 1;
 }
 
 message ExitRequest {
-  string data = 1;
+  ExitType type = 1;
+  string data = 2;
 }
 

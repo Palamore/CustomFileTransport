@@ -381,51 +381,145 @@ void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data)
 	DWORD	dwFlags = 0;
 	DWORD	sendBytes = 0;
 	string targetNickname = "";
+	int targetClientIndex = -1;
 
 	for (int i = 0; i < clientInfoContainer->size(); i++)
 	{
 		if (clientInfoContainer->at(i)->nickname() == chatData.targetnickname())
 		{
 			targetNickname = chatData.targetnickname();
+			targetClientIndex = i;
 		}
 	}
 
-	if (targetNickname == "")
+	if (targetClientIndex == -1)
 	{
 		string FailMsg("No one has that Nickname.");
 		socketInfo->dataBuf.buf = (CHAR*)(FailMsg.c_str());
 		socketInfo->dataBuf.len = FailMsg.length();
-		for (int i = 0; i < connectedClients->size(); i++)
+		nResult = WSASend(
+			socketInfo->socket,
+			&(socketInfo->dataBuf),
+			1,
+			&sendBytes,
+			dwFlags,
+			null,
+			null
+		);
+		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
 		{
-			nResult = WSASend(
-				*(connectedClients->at(i)),
-				&(socketInfo->dataBuf),
-				1,
-				&sendBytes,
-				dwFlags,
-				null,
-				null
-			);
-			if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-			{
-				Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
-			}
-			Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
+			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
 		}
 	}
 	else
 	{
+		socketInfo->dataBuf.buf = (CHAR*)(chatData.data().c_str());
+		socketInfo->dataBuf.len = chatData.data().length();
 
+		nResult = WSASend(
+			*(connectedClients->at(targetClientIndex)),
+			&(socketInfo->dataBuf),
+			1,
+			&sendBytes,
+			dwFlags,
+			null,
+			null
+			);
+		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+		{
+			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
+		}
+		else
+			Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
 	}
 
-	//TODO : 닉네임 찾아서 Send
+	
 
 }
 void IOCompletionPort::OnRcvRoomListRequest(stSOCKETINFO* socketInfo, string data)
 {
+	int		nResult = 0;
+	DWORD	dwFlags = 0;
+	DWORD	sendBytes = 0;
+	
+	UserListRequest listReq;
+	for (int i = 0; i < clientInfoContainer->size(); i++)
+	{
+		listReq.add_data(clientInfoContainer->at(i)->nickname());
+	}
+	string contents = listReq.SerializeAsString();
 
+	socketInfo->dataBuf.buf = (CHAR*)(contents.c_str());
+	socketInfo->dataBuf.len = contents.length();
+
+	nResult = WSASend(
+		socketInfo->socket,
+		&(socketInfo->dataBuf),
+		1,
+		&sendBytes,
+		dwFlags,
+		null,
+		null
+	);
+	if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+	{
+		Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
+	}
+	else
+		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
 }
 void IOCompletionPort::OnRcvExitRequest(stSOCKETINFO* socketInfo, string data)
 {
+	ExitRequest exitReq;
+	exitReq.ParseFromString(data);
+
+	int		nResult = 0;
+	DWORD	dwFlags = 0;
+	DWORD	sendBytes = 0;
+
+	int targetClientIndex = -1;
+	string exitedNickname = "";
+	for (int i = 0; i < clientInfoContainer->size(); i++)
+	{
+		if (socketInfo->socket == clientInfoContainer->at(i)->socket())
+		{
+			targetClientIndex = i;
+			exitedNickname = clientInfoContainer->at(i)->nickname();
+		}
+	}
+
+	switch (exitReq.type())
+	{
+	case EXIT_NORMAL:
+		clientInfoContainer->erase(clientInfoContainer->begin() + targetClientIndex);
+		connectedClients->erase(connectedClients->begin() + targetClientIndex);
+		break;
+	case EXIT_DESTRUCTOR:
+		clientInfoContainer->erase(clientInfoContainer->begin() + targetClientIndex);
+		connectedClients->erase(connectedClients->begin() + targetClientIndex);
+		break;
+	}
+
+	string msg(exitedNickname + " has left.");
+
+	socketInfo->dataBuf.buf = (CHAR*)(msg.c_str());
+	socketInfo->dataBuf.len = msg.length();
+	for (int i = 0; i < connectedClients->size(); i++)
+	{
+		nResult = WSASend(
+			*(connectedClients->at(i)),
+			&(socketInfo->dataBuf),
+			1,
+			&sendBytes,
+			dwFlags,
+			null,
+			null
+		);
+		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+		{
+			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
+		}
+		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
+	}
 
 }

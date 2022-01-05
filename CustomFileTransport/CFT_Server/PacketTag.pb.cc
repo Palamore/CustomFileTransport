@@ -72,7 +72,7 @@ struct ChatWhisperDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ChatWhisperDefaultTypeInternal _ChatWhisper_default_instance_;
 constexpr UserListRequest::UserListRequest(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+  : data_(){}
 struct UserListRequestDefaultTypeInternal {
   constexpr UserListRequestDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -84,7 +84,9 @@ struct UserListRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT UserListRequestDefaultTypeInternal _UserListRequest_default_instance_;
 constexpr ExitRequest::ExitRequest(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+  : data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , type_(0)
+{}
 struct ExitRequestDefaultTypeInternal {
   constexpr ExitRequestDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -96,7 +98,7 @@ struct ExitRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT ExitRequestDefaultTypeInternal _ExitRequest_default_instance_;
 }  // namespace PacketTag
 static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_PacketTag_2eproto[6];
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_PacketTag_2eproto[1];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_PacketTag_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_PacketTag_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_PacketTag_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -145,6 +147,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_PacketTag_2eproto::offsets[] P
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::PacketTag::ExitRequest, type_),
   PROTOBUF_FIELD_OFFSET(::PacketTag::ExitRequest, data_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -172,15 +175,17 @@ const char descriptor_table_protodef_PacketTag_2eproto[] PROTOBUF_SECTION_VARIAB
   "equest\022\020\n\010nickname\030\001 \001(\t\022\014\n\004data\030\002 \001(\t\"\032"
   "\n\nChatNormal\022\014\n\004data\030\001 \001(\t\"3\n\013ChatWhispe"
   "r\022\026\n\016targetNickname\030\001 \001(\t\022\014\n\004data\030\002 \001(\t\""
-  "\037\n\017UserListRequest\022\014\n\004data\030\001 \001(\t\"\033\n\013Exit"
-  "Request\022\014\n\004data\030\001 \001(\t*k\n\nPacketType\022\021\n\rL"
-  "OGIN_REQUEST\020\000\022\017\n\013CHAT_NORMAL\020\001\022\020\n\014CHAT_"
-  "WHISPER\020\002\022\025\n\021USER_LIST_REQUEST\020\003\022\020\n\014EXIT"
-  "_REQUEST\020\004b\006proto3"
+  "\037\n\017UserListRequest\022\014\n\004data\030\001 \003(\t\">\n\013Exit"
+  "Request\022!\n\004type\030\001 \001(\0162\023.PacketTag.ExitTy"
+  "pe\022\014\n\004data\030\002 \001(\t*k\n\nPacketType\022\021\n\rLOGIN_"
+  "REQUEST\020\000\022\017\n\013CHAT_NORMAL\020\001\022\020\n\014CHAT_WHISP"
+  "ER\020\002\022\025\n\021USER_LIST_REQUEST\020\003\022\020\n\014EXIT_REQU"
+  "EST\020\004*0\n\010ExitType\022\017\n\013EXIT_NORMAL\020\000\022\023\n\017EX"
+  "IT_DESTRUCTOR\020\001b\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_PacketTag_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_PacketTag_2eproto = {
-  false, false, 418, descriptor_table_protodef_PacketTag_2eproto, "PacketTag.proto", 
+  false, false, 503, descriptor_table_protodef_PacketTag_2eproto, "PacketTag.proto", 
   &descriptor_table_PacketTag_2eproto_once, nullptr, 0, 6,
   schemas, file_default_instances, TableStruct_PacketTag_2eproto::offsets,
   file_level_metadata_PacketTag_2eproto, file_level_enum_descriptors_PacketTag_2eproto, file_level_service_descriptors_PacketTag_2eproto,
@@ -203,6 +208,20 @@ bool PacketType_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ExitType_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_PacketTag_2eproto);
+  return file_level_enum_descriptors_PacketTag_2eproto[1];
+}
+bool ExitType_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
       return true;
     default:
       return false;
@@ -1164,7 +1183,8 @@ class UserListRequest::_Internal {
 
 UserListRequest::UserListRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
+  data_(arena) {
   SharedCtor();
   if (!is_message_owned) {
     RegisterArenaDtor(arena);
@@ -1172,18 +1192,13 @@ UserListRequest::UserListRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
   // @@protoc_insertion_point(arena_constructor:PacketTag.UserListRequest)
 }
 UserListRequest::UserListRequest(const UserListRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      data_(from.data_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_data().empty()) {
-    data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data(), 
-      GetArenaForAllocation());
-  }
   // @@protoc_insertion_point(copy_constructor:PacketTag.UserListRequest)
 }
 
 void UserListRequest::SharedCtor() {
-data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 UserListRequest::~UserListRequest() {
@@ -1195,7 +1210,6 @@ UserListRequest::~UserListRequest() {
 
 inline void UserListRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  data_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void UserListRequest::ArenaDtor(void* object) {
@@ -1214,7 +1228,7 @@ void UserListRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  data_.ClearToEmpty();
+  data_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1224,13 +1238,18 @@ const char* UserListRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string data = 1;
+      // repeated string data = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_data();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.UserListRequest.data"));
-          CHK_(ptr);
+          ptr -= 1;
+          do {
+            ptr += 1;
+            auto str = _internal_add_data();
+            ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+            CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.UserListRequest.data"));
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
         } else
           goto handle_unusual;
         continue;
@@ -1263,14 +1282,14 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string data = 1;
-  if (!this->_internal_data().empty()) {
+  // repeated string data = 1;
+  for (int i = 0, n = this->_internal_data_size(); i < n; i++) {
+    const auto& s = this->_internal_data(i);
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
+      s.data(), static_cast<int>(s.length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "PacketTag.UserListRequest.data");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_data(), target);
+    target = stream->WriteString(1, s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1289,11 +1308,12 @@ size_t UserListRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string data = 1;
-  if (!this->_internal_data().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_data());
+  // repeated string data = 1;
+  total_size += 1 *
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(data_.size());
+  for (int i = 0, n = data_.size(); i < n; i++) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      data_.Get(i));
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -1318,9 +1338,7 @@ void UserListRequest::MergeFrom(const UserListRequest& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_data().empty()) {
-    _internal_set_data(from._internal_data());
-  }
+  data_.MergeFrom(from.data_);
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1337,14 +1355,8 @@ bool UserListRequest::IsInitialized() const {
 
 void UserListRequest::InternalSwap(UserListRequest* other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &data_, lhs_arena,
-      &other->data_, rhs_arena
-  );
+  data_.InternalSwap(&other->data_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata UserListRequest::GetMetadata() const {
@@ -1376,11 +1388,13 @@ ExitRequest::ExitRequest(const ExitRequest& from)
     data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data(), 
       GetArenaForAllocation());
   }
+  type_ = from.type_;
   // @@protoc_insertion_point(copy_constructor:PacketTag.ExitRequest)
 }
 
 void ExitRequest::SharedCtor() {
 data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+type_ = 0;
 }
 
 ExitRequest::~ExitRequest() {
@@ -1412,6 +1426,7 @@ void ExitRequest::Clear() {
   (void) cached_has_bits;
 
   data_.ClearToEmpty();
+  type_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1421,9 +1436,18 @@ const char* ExitRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string data = 1;
+      // .PacketTag.ExitType type = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_type(static_cast<::PacketTag::ExitType>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      // string data = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_data();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.ExitRequest.data"));
@@ -1460,14 +1484,21 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string data = 1;
+  // .PacketTag.ExitType type = 1;
+  if (this->_internal_type() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      1, this->_internal_type(), target);
+  }
+
+  // string data = 2;
   if (!this->_internal_data().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "PacketTag.ExitRequest.data");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_data(), target);
+        2, this->_internal_data(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1486,11 +1517,17 @@ size_t ExitRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string data = 1;
+  // string data = 2;
   if (!this->_internal_data().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_data());
+  }
+
+  // .PacketTag.ExitType type = 1;
+  if (this->_internal_type() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_type());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -1518,6 +1555,9 @@ void ExitRequest::MergeFrom(const ExitRequest& from) {
   if (!from._internal_data().empty()) {
     _internal_set_data(from._internal_data());
   }
+  if (from._internal_type() != 0) {
+    _internal_set_type(from._internal_type());
+  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1542,6 +1582,7 @@ void ExitRequest::InternalSwap(ExitRequest* other) {
       &data_, lhs_arena,
       &other->data_, rhs_arena
   );
+  swap(type_, other->type_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ExitRequest::GetMetadata() const {

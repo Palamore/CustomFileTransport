@@ -1,6 +1,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 #include "IncludeDefineNamespace.h"
+#include "Send.h"
 
 
 struct stSOCKETINFO
@@ -118,6 +119,7 @@ void RunSendThread()
 			switch (splitted[INPUT_COMMAND_INDEX][INPUT_COMMAND_TYPE_INDEX])
 			{
 			case 'w':
+				
 				for (int i = 2; i < splitted.size(); i++)
 				{
 					msg += splitted[i] + " ";
@@ -125,10 +127,10 @@ void RunSendThread()
 				sendObject.SendChatWhisper(splitted[INPUT_TARGET_NICKNAME_INDEX], msg);
 				break;
 			case 'l':
-				sendObject.SendRoomListRequest(splitted[INPUT_MESSAGE_INDEX]);
+				sendObject.SendRoomListRequest(" ");
 				break;
 			case 'e':
-				sendObject.SendExitRequest(splitted[INPUT_MESSAGE_INDEX]);
+				sendObject.SendExitRequest(" ");
 				exit(0);
 				break;
 			default:

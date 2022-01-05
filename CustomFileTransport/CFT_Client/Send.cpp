@@ -64,7 +64,7 @@ namespace Send
 	void Network_Send::SendRoomListRequest(string data)
 	{
 		PacketTag::UserListRequest roomList;
-		roomList.set_data(data);
+		roomList.add_data(data);
 
 		PacketTag::PacketMsg packet;
 		packet.set_nickname(nickname);

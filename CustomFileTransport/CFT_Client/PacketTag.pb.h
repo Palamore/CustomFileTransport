@@ -99,6 +99,31 @@ inline bool PacketType_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PacketType>(
     PacketType_descriptor(), name, value);
 }
+enum ExitType : int {
+  EXIT_NORMAL = 0,
+  EXIT_DESTRUCTOR = 1,
+  ExitType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  ExitType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool ExitType_IsValid(int value);
+constexpr ExitType ExitType_MIN = EXIT_NORMAL;
+constexpr ExitType ExitType_MAX = EXIT_DESTRUCTOR;
+constexpr int ExitType_ARRAYSIZE = ExitType_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ExitType_descriptor();
+template<typename T>
+inline const std::string& ExitType_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, ExitType>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function ExitType_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    ExitType_descriptor(), enum_t_value);
+}
+inline bool ExitType_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, ExitType* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<ExitType>(
+    ExitType_descriptor(), name, value);
+}
 // ===================================================================
 
 class PacketMsg final :
@@ -873,18 +898,28 @@ class UserListRequest final :
   enum : int {
     kDataFieldNumber = 1,
   };
-  // string data = 1;
-  void clear_data();
-  const std::string& data() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_data(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_data();
-  PROTOBUF_MUST_USE_RESULT std::string* release_data();
-  void set_allocated_data(std::string* data);
+  // repeated string data = 1;
+  int data_size() const;
   private:
-  const std::string& _internal_data() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(const std::string& value);
-  std::string* _internal_mutable_data();
+  int _internal_data_size() const;
+  public:
+  void clear_data();
+  const std::string& data(int index) const;
+  std::string* mutable_data(int index);
+  void set_data(int index, const std::string& value);
+  void set_data(int index, std::string&& value);
+  void set_data(int index, const char* value);
+  void set_data(int index, const char* value, size_t size);
+  std::string* add_data();
+  void add_data(const std::string& value);
+  void add_data(std::string&& value);
+  void add_data(const char* value);
+  void add_data(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& data() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_data();
+  private:
+  const std::string& _internal_data(int index) const;
+  std::string* _internal_add_data();
   public:
 
   // @@protoc_insertion_point(class_scope:PacketTag.UserListRequest)
@@ -894,7 +929,7 @@ class UserListRequest final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> data_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_PacketTag_2eproto;
 };
@@ -1019,9 +1054,10 @@ class ExitRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDataFieldNumber = 1,
+    kDataFieldNumber = 2,
+    kTypeFieldNumber = 1,
   };
-  // string data = 1;
+  // string data = 2;
   void clear_data();
   const std::string& data() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -1035,6 +1071,15 @@ class ExitRequest final :
   std::string* _internal_mutable_data();
   public:
 
+  // .PacketTag.ExitType type = 1;
+  void clear_type();
+  ::PacketTag::ExitType type() const;
+  void set_type(::PacketTag::ExitType value);
+  private:
+  ::PacketTag::ExitType _internal_type() const;
+  void _internal_set_type(::PacketTag::ExitType value);
+  public:
+
   // @@protoc_insertion_point(class_scope:PacketTag.ExitRequest)
  private:
   class _Internal;
@@ -1043,6 +1088,7 @@ class ExitRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
+  int type_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_PacketTag_2eproto;
 };
@@ -1415,57 +1461,106 @@ inline void ChatWhisper::set_allocated_data(std::string* data) {
 
 // UserListRequest
 
-// string data = 1;
+// repeated string data = 1;
+inline int UserListRequest::_internal_data_size() const {
+  return data_.size();
+}
+inline int UserListRequest::data_size() const {
+  return _internal_data_size();
+}
 inline void UserListRequest::clear_data() {
-  data_.ClearToEmpty();
+  data_.Clear();
 }
-inline const std::string& UserListRequest::data() const {
-  // @@protoc_insertion_point(field_get:PacketTag.UserListRequest.data)
-  return _internal_data();
-}
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void UserListRequest::set_data(ArgT0&& arg0, ArgT... args) {
- 
- data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:PacketTag.UserListRequest.data)
-}
-inline std::string* UserListRequest::mutable_data() {
-  std::string* _s = _internal_mutable_data();
-  // @@protoc_insertion_point(field_mutable:PacketTag.UserListRequest.data)
+inline std::string* UserListRequest::add_data() {
+  std::string* _s = _internal_add_data();
+  // @@protoc_insertion_point(field_add_mutable:PacketTag.UserListRequest.data)
   return _s;
 }
-inline const std::string& UserListRequest::_internal_data() const {
-  return data_.Get();
+inline const std::string& UserListRequest::_internal_data(int index) const {
+  return data_.Get(index);
 }
-inline void UserListRequest::_internal_set_data(const std::string& value) {
-  
-  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+inline const std::string& UserListRequest::data(int index) const {
+  // @@protoc_insertion_point(field_get:PacketTag.UserListRequest.data)
+  return _internal_data(index);
 }
-inline std::string* UserListRequest::_internal_mutable_data() {
-  
-  return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+inline std::string* UserListRequest::mutable_data(int index) {
+  // @@protoc_insertion_point(field_mutable:PacketTag.UserListRequest.data)
+  return data_.Mutable(index);
 }
-inline std::string* UserListRequest::release_data() {
-  // @@protoc_insertion_point(field_release:PacketTag.UserListRequest.data)
-  return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+inline void UserListRequest::set_data(int index, const std::string& value) {
+  data_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set:PacketTag.UserListRequest.data)
 }
-inline void UserListRequest::set_allocated_data(std::string* data) {
-  if (data != nullptr) {
-    
-  } else {
-    
-  }
-  data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
-      GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:PacketTag.UserListRequest.data)
+inline void UserListRequest::set_data(int index, std::string&& value) {
+  data_.Mutable(index)->assign(std::move(value));
+  // @@protoc_insertion_point(field_set:PacketTag.UserListRequest.data)
+}
+inline void UserListRequest::set_data(int index, const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  data_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:PacketTag.UserListRequest.data)
+}
+inline void UserListRequest::set_data(int index, const char* value, size_t size) {
+  data_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:PacketTag.UserListRequest.data)
+}
+inline std::string* UserListRequest::_internal_add_data() {
+  return data_.Add();
+}
+inline void UserListRequest::add_data(const std::string& value) {
+  data_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:PacketTag.UserListRequest.data)
+}
+inline void UserListRequest::add_data(std::string&& value) {
+  data_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:PacketTag.UserListRequest.data)
+}
+inline void UserListRequest::add_data(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  data_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:PacketTag.UserListRequest.data)
+}
+inline void UserListRequest::add_data(const char* value, size_t size) {
+  data_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:PacketTag.UserListRequest.data)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
+UserListRequest::data() const {
+  // @@protoc_insertion_point(field_list:PacketTag.UserListRequest.data)
+  return data_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
+UserListRequest::mutable_data() {
+  // @@protoc_insertion_point(field_mutable_list:PacketTag.UserListRequest.data)
+  return &data_;
 }
 
 // -------------------------------------------------------------------
 
 // ExitRequest
 
-// string data = 1;
+// .PacketTag.ExitType type = 1;
+inline void ExitRequest::clear_type() {
+  type_ = 0;
+}
+inline ::PacketTag::ExitType ExitRequest::_internal_type() const {
+  return static_cast< ::PacketTag::ExitType >(type_);
+}
+inline ::PacketTag::ExitType ExitRequest::type() const {
+  // @@protoc_insertion_point(field_get:PacketTag.ExitRequest.type)
+  return _internal_type();
+}
+inline void ExitRequest::_internal_set_type(::PacketTag::ExitType value) {
+  
+  type_ = value;
+}
+inline void ExitRequest::set_type(::PacketTag::ExitType value) {
+  _internal_set_type(value);
+  // @@protoc_insertion_point(field_set:PacketTag.ExitRequest.type)
+}
+
+// string data = 2;
 inline void ExitRequest::clear_data() {
   data_.ClearToEmpty();
 }
@@ -1535,6 +1630,11 @@ template <> struct is_proto_enum< ::PacketTag::PacketType> : ::std::true_type {}
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::PacketTag::PacketType>() {
   return ::PacketTag::PacketType_descriptor();
+}
+template <> struct is_proto_enum< ::PacketTag::ExitType> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::PacketTag::ExitType>() {
+  return ::PacketTag::ExitType_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

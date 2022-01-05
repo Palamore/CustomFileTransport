@@ -8,7 +8,6 @@
 #include <thread>
 #include <vector>
 #include <string>
-#include "Send.h"
 using namespace std;
 
 
