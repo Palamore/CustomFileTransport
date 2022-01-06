@@ -17,11 +17,26 @@ message PacketMsg{
 
 message LoginRequest{
   string nickname = 1;
-  string data = 2;
+  string password = 2;
+}
+
+enum LoginResultType{
+  LOGIN_SUCCESS = 0;
+  LOGIN_FAIL = 1;
+}
+
+message AnsLoginRequest{
+	string nickname = 1;
+	LoginResultType type = 2;
 }
 
 message ChatNormal {
   string data = 1;
+}
+
+message AnsChatNormal {
+	string data = 1;
+	string nickname = 2;
 }
 
 message ChatWhisper {
@@ -29,7 +44,17 @@ message ChatWhisper {
   string data = 2;
 }
 
+message AnsChatWhisper{
+  string targetNickname = 1;
+  string data = 2;
+  string nickname = 3;
+}
+
 message UserListRequest {
+  repeated string data = 1;
+}
+
+message AnsUserListRequest{
   repeated string data = 1;
 }
 
@@ -43,3 +68,7 @@ message ExitRequest {
   string data = 2;
 }
 
+message AnsExitRequest{
+	ExitType type = 1;
+	string data = 2;
+}

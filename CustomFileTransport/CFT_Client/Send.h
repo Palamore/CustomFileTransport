@@ -8,7 +8,7 @@ namespace Send
 		public:
 
 		void SendPacket(std::string serializedPacket);
-		void SendLoginRequest(std::string data);
+		void SendLoginRequest(std::string pwd);
 		void SendChatNormal(std::string msg);
 		void SendChatWhisper(std::string targetNickname, std::string data);
 		void SendRoomListRequest(std::string data);

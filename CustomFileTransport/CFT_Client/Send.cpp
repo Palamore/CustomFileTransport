@@ -12,11 +12,11 @@ namespace Send
 		}
 	}
 
-	void Network_Send::SendLoginRequest(string data)
+	void Network_Send::SendLoginRequest(string pwd)
 	{
 		PacketTag::LoginRequest loginData;
 		loginData.set_nickname(nickname);
-		loginData.set_data(data);
+		loginData.set_password(pwd);
 
 		PacketTag::PacketMsg packet;
 		packet.set_nickname(nickname);

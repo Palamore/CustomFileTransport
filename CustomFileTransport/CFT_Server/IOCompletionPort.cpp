@@ -11,6 +11,88 @@ unsigned int WINAPI CallWorkerThread(LPVOID p)
 	return 0;
 }
 
+bool IOCompletionPort::BroadCastPacket(stSOCKETINFO* socketInfo, string serializedMsg)
+{
+	int		nResult = 0;
+	DWORD	dwFlags = 0;
+	DWORD	sendBytes = 0;
+
+	socketInfo->dataBuf.buf = (CHAR*)(serializedMsg.c_str());
+	socketInfo->dataBuf.len = serializedMsg.length();
+	for (int i = 0; i < connectedClients->size(); i++)
+	{
+		nResult = WSASend(
+			*(connectedClients->at(i)),
+			&(socketInfo->dataBuf),
+			1,
+			&sendBytes,
+			dwFlags,
+			null,
+			null
+		);
+		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+		{
+			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
+			return false;
+		}
+		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
+		return true;
+	}
+}
+
+bool IOCompletionPort::SendPacket(stSOCKETINFO* socketInfo, SOCKET target, string serializedMsg)
+{
+	int		nResult = 0;
+	DWORD	dwFlags = 0;
+	DWORD	sendBytes = 0;
+
+	socketInfo->dataBuf.buf = (CHAR*)(serializedMsg.c_str());
+	socketInfo->dataBuf.len = serializedMsg.length();
+	nResult = WSASend(
+		target,
+		&(socketInfo->dataBuf),
+		1,
+		&sendBytes,
+		dwFlags,
+		null,
+		null
+	);
+	if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+	{
+		Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
+		return false;
+	}
+	Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
+	return true;
+}
+
+bool IOCompletionPort::ReplyPacket(stSOCKETINFO* socketInfo, string serializedMsg)
+{
+	int		nResult = 0;
+	DWORD	dwFlags = 0;
+	DWORD	sendBytes = 0;
+
+	socketInfo->dataBuf.buf = (CHAR*)(serializedMsg.c_str());
+	socketInfo->dataBuf.len = serializedMsg.length();
+	nResult = WSASend(
+		socketInfo->socket,
+		&(socketInfo->dataBuf),
+		1,
+		&sendBytes,
+		dwFlags,
+		null,
+		null
+	);
+	if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+	{
+		Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
+		return false;
+	}
+	Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
+	return true;
+}
+
+
 IOCompletionPort::IOCompletionPort()
 	:m_bWorkerThread(true)
 	, m_bAccept(true)
@@ -267,7 +349,6 @@ void IOCompletionPort::WorkerThread()
 		{
 			PacketMsg msg;
 			msg.ParseFromString(string(pSocketInfo->dataBuf.buf));
-			ChatNormal chatData;
 
 			switch (msg.type())
 			{
@@ -275,13 +356,13 @@ void IOCompletionPort::WorkerThread()
 				OnRcvLoginRequest(pSocketInfo, msg.data());
 				break;
 			case PacketType::CHAT_NORMAL:
-				OnRcvChatNormal(pSocketInfo, msg.data());
+				OnRcvChatNormal(pSocketInfo, msg.data(), msg.nickname());
 				break;
 			case PacketType::CHAT_WHISPER:
-				OnRcvChatWhisper(pSocketInfo, msg.data());
+				OnRcvChatWhisper(pSocketInfo, msg.data(), msg.nickname());
 				break;
 			case PacketType::USER_LIST_REQUEST:
-				OnRcvRoomListRequest(pSocketInfo, msg.data());
+				OnRcvUserListRequest(pSocketInfo, msg.data());
 				break;
 			case PacketType::EXIT_REQUEST:
 				OnRcvExitRequest(pSocketInfo, msg.data());
@@ -326,17 +407,30 @@ void IOCompletionPort::OnRcvLoginRequest(stSOCKETINFO* socketInfo, string data)
 		Debug::LogError("ChatData Parsing Failed");
 		return;
 	}
+	bool isSuccess = false;
 
 	for (int i = 0; i < clientInfoContainer->size(); i++)
 	{
 		if (m_pSocketInfo->socket == clientInfoContainer->at(i)->socket())
 		{
 			clientInfoContainer->at(i)->set_nickname(loginData.nickname());
-			return;
+			isSuccess = true;
 		}
 	}
+
+	AnsLoginRequest ansData;
+	ansData.set_nickname(loginData.nickname());
+	if (isSuccess)
+	{
+		ansData.set_type(LoginResultType::LOGIN_SUCCESS);
+	}
+	else
+	{
+		ansData.set_type(LoginResultType::LOGIN_FAIL);
+	}
+	SendAnsLoginRequest(socketInfo, ansData);
 }
-void IOCompletionPort::OnRcvChatNormal(stSOCKETINFO* socketInfo, string data)
+void IOCompletionPort::OnRcvChatNormal(stSOCKETINFO* socketInfo, string data, string nickname)
 {
 	ChatNormal chatData;
 	if (!chatData.ParseFromString(data))
@@ -344,31 +438,14 @@ void IOCompletionPort::OnRcvChatNormal(stSOCKETINFO* socketInfo, string data)
 		Debug::LogError("ChatData Parsing Failed");
 		return;
 	}
-	int		nResult = 0;
-	DWORD	dwFlags = 0;
-	DWORD	sendBytes = 0;
 
-	socketInfo->dataBuf.buf = (CHAR*)(chatData.data().c_str());
-	socketInfo->dataBuf.len = strlen(chatData.data().c_str());
-	for (int i = 0; i < connectedClients->size(); i++)
-	{
-		nResult = WSASend(
-			*(connectedClients->at(i)),
-			&(socketInfo->dataBuf),
-			1,
-			&sendBytes,
-			dwFlags,
-			null,
-			null
-		);
-		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-		{
-			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
-		}
-		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
-	}
+	AnsChatNormal ansData;
+	ansData.set_data(chatData.data());
+	ansData.set_nickname(nickname);
+
+	SendAnsChatNormal(socketInfo, ansData);
 }
-void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data)
+void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data, string nickname)
 {
 	ChatWhisper chatData;
 	if (!chatData.ParseFromString(data))
@@ -377,9 +454,6 @@ void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data)
 		return;
 	}
 
-	int		nResult = 0;
-	DWORD	dwFlags = 0;
-	DWORD	sendBytes = 0;
 	string targetNickname = "";
 	int targetClientIndex = -1;
 
@@ -392,81 +466,33 @@ void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data)
 		}
 	}
 
+	//TODO :: 유효한 target인지 검증. 검증 후 맞으면 전송, 아니면 실패 답장
 	if (targetClientIndex == -1)
 	{
-		string FailMsg("No one has that Nickname.");
-		socketInfo->dataBuf.buf = (CHAR*)(FailMsg.c_str());
-		socketInfo->dataBuf.len = FailMsg.length();
-		nResult = WSASend(
-			socketInfo->socket,
-			&(socketInfo->dataBuf),
-			1,
-			&sendBytes,
-			dwFlags,
-			null,
-			null
-		);
-		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-		{
-			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
-		}
+
 	}
 	else
 	{
-		socketInfo->dataBuf.buf = (CHAR*)(chatData.data().c_str());
-		socketInfo->dataBuf.len = chatData.data().length();
 
-		nResult = WSASend(
-			*(connectedClients->at(targetClientIndex)),
-			&(socketInfo->dataBuf),
-			1,
-			&sendBytes,
-			dwFlags,
-			null,
-			null
-			);
-		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-		{
-			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
-		}
-		else
-			Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
 	}
 
-	
+	AnsChatWhisper ansData;
+	ansData.set_data(chatData.data());
+	ansData.set_nickname(nickname);
+	ansData.set_targetnickname(chatData.targetnickname());
 
+	SendAnsChatWhisper(socketInfo, ansData);
 }
-void IOCompletionPort::OnRcvRoomListRequest(stSOCKETINFO* socketInfo, string data)
+
+void IOCompletionPort::OnRcvUserListRequest(stSOCKETINFO* socketInfo, string data)
 {
-	int		nResult = 0;
-	DWORD	dwFlags = 0;
-	DWORD	sendBytes = 0;
-	
-	UserListRequest listReq;
+	AnsUserListRequest ansData;
 	for (int i = 0; i < clientInfoContainer->size(); i++)
 	{
-		listReq.add_data(clientInfoContainer->at(i)->nickname());
+		ansData.add_data(clientInfoContainer->at(i)->nickname());
 	}
-	string contents = listReq.SerializeAsString();
 
-	socketInfo->dataBuf.buf = (CHAR*)(contents.c_str());
-	socketInfo->dataBuf.len = contents.length();
-
-	nResult = WSASend(
-		socketInfo->socket,
-		&(socketInfo->dataBuf),
-		1,
-		&sendBytes,
-		dwFlags,
-		null,
-		null
-	);
-	if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-	{
-		Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
-	}
-	else
-		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
+	SendAnsUserListRequest(socketInfo, ansData);
 }
 void IOCompletionPort::OnRcvExitRequest(stSOCKETINFO* socketInfo, string data)
 {
@@ -521,5 +547,64 @@ void IOCompletionPort::OnRcvExitRequest(stSOCKETINFO* socketInfo, string data)
 		}
 		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
 	}
+
+}
+
+void IOCompletionPort::SendAnsLoginRequest(stSOCKETINFO* socketInfo, AnsLoginRequest loginData)
+{
+	PacketMsg msg;
+	msg.set_type(PacketType::LOGIN_REQUEST);
+	msg.set_data(loginData.SerializeAsString());
+
+	string serializedMsg = msg.SerializeAsString();
+
+	ReplyPacket(socketInfo, serializedMsg);
+}
+
+void IOCompletionPort::SendAnsChatNormal(stSOCKETINFO* socketInfo, AnsChatNormal chatData)
+{
+	PacketMsg msg;
+	msg.set_type(PacketType::CHAT_NORMAL);
+	msg.set_data(chatData.SerializeAsString());
+
+	string serializedMsg = msg.SerializeAsString();
+
+	BroadCastPacket(socketInfo, serializedMsg);
+}
+
+void IOCompletionPort::SendAnsChatWhisper(stSOCKETINFO* socketInfo, AnsChatWhisper chatData)
+{
+	
+}
+
+void IOCompletionPort::SendAnsUserListRequest(stSOCKETINFO* socketInfo, AnsUserListRequest listData)
+{
+	int		nResult = 0;
+	DWORD	dwFlags = 0;
+	DWORD	sendBytes = 0;
+	string contents = listData.SerializeAsString();
+
+	socketInfo->dataBuf.buf = (CHAR*)(contents.c_str());
+	socketInfo->dataBuf.len = contents.length();
+
+	nResult = WSASend(
+		socketInfo->socket,
+		&(socketInfo->dataBuf),
+		1,
+		&sendBytes,
+		dwFlags,
+		null,
+		null
+	);
+	if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+	{
+		Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
+	}
+	else
+		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
+}
+
+void IOCompletionPort::SendAnsExitRequest(stSOCKETINFO* socketInfo, AnsExitRequest exitData)
+{
 
 }

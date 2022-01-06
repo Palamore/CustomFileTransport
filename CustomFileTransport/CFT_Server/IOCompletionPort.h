@@ -42,11 +42,21 @@ public:
 	// 작업 스레드
 	void WorkerThread();
 
+	bool BroadCastPacket(stSOCKETINFO* socketInfo, string serializedMsg);
+	bool SendPacket(stSOCKETINFO* socketInfo, SOCKET target, string serializedMsg);
+	bool ReplyPacket(stSOCKETINFO* socketInfo, string serializedMsg);
+
 	void OnRcvLoginRequest(stSOCKETINFO* socketInfo, string data);
-	void OnRcvChatNormal(stSOCKETINFO* socketInfo, string data);
-	void OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data);
-	void OnRcvRoomListRequest(stSOCKETINFO* socketInfo, string data);
+	void OnRcvChatNormal(stSOCKETINFO* socketInfo, string data, string nickname);
+	void OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data, string nickname);
+	void OnRcvUserListRequest(stSOCKETINFO* socketInfo, string data);
 	void OnRcvExitRequest(stSOCKETINFO* socketInfo, string data);
+
+	void SendAnsLoginRequest(stSOCKETINFO* socketInfo, AnsLoginRequest loginData);
+	void SendAnsChatNormal(stSOCKETINFO* socketInfo, AnsChatNormal chatData);
+	void SendAnsChatWhisper(stSOCKETINFO* socketInfo, AnsChatWhisper chatData);
+	void SendAnsUserListRequest(stSOCKETINFO* socketInfo, AnsUserListRequest listData);
+	void SendAnsExitRequest(stSOCKETINFO* socketInfo, AnsExitRequest exitData);
 
 	vector<SOCKET*>* connectedClients;
 	vector<ClientInfo*>* clientInfoContainer;
