@@ -11,7 +11,7 @@ unsigned int WINAPI CallWorkerThread(LPVOID p)
 	return 0;
 }
 
-bool IOCompletionPort::BroadCastPacket(stSOCKETINFO* socketInfo, string serializedMsg)
+bool IOCompletionPort::BroadcastPacket(stSOCKETINFO* socketInfo, string serializedMsg) // 연결된 클라(같은 Room 내의) 전체에 전송
 {
 	int		nResult = 0;
 	DWORD	dwFlags = 0;
@@ -40,7 +40,7 @@ bool IOCompletionPort::BroadCastPacket(stSOCKETINFO* socketInfo, string serializ
 	}
 }
 
-bool IOCompletionPort::SendPacket(stSOCKETINFO* socketInfo, SOCKET target, string serializedMsg)
+bool IOCompletionPort::SendPacket(stSOCKETINFO* socketInfo, SOCKET target, string serializedMsg) // target 클라에 전송 : 송신자, 수신자가 다름
 {
 	int		nResult = 0;
 	DWORD	dwFlags = 0;
@@ -66,7 +66,7 @@ bool IOCompletionPort::SendPacket(stSOCKETINFO* socketInfo, SOCKET target, strin
 	return true;
 }
 
-bool IOCompletionPort::ReplyPacket(stSOCKETINFO* socketInfo, string serializedMsg)
+bool IOCompletionPort::ReplyPacket(stSOCKETINFO* socketInfo, string serializedMsg) // 요청을 보냈던 클라에 답장 : 송신자, 수신자가 같음
 {
 	int		nResult = 0;
 	DWORD	dwFlags = 0;
@@ -456,24 +456,25 @@ void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data, s
 
 	string targetNickname = "";
 	int targetClientIndex = -1;
-
+	SOCKET targetSocket = NULL;
+	
 	for (int i = 0; i < clientInfoContainer->size(); i++)
 	{
 		if (clientInfoContainer->at(i)->nickname() == chatData.targetnickname())
 		{
 			targetNickname = chatData.targetnickname();
 			targetClientIndex = i;
+			targetSocket = clientInfoContainer->at(i)->socket();
 		}
 	}
 
-	//TODO :: 유효한 target인지 검증. 검증 후 맞으면 전송, 아니면 실패 답장
 	if (targetClientIndex == -1)
 	{
+		AnsRequestFail failData;
+		failData.set_data("Nickname " + chatData.targetnickname() + " does not exist in room.");
 
-	}
-	else
-	{
-
+		SendAnsRequestFail(socketInfo, failData);
+		return;
 	}
 
 	AnsChatWhisper ansData;
@@ -481,7 +482,7 @@ void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data, s
 	ansData.set_nickname(nickname);
 	ansData.set_targetnickname(chatData.targetnickname());
 
-	SendAnsChatWhisper(socketInfo, ansData);
+	SendAnsChatWhisper(socketInfo, targetSocket, ansData);
 }
 
 void IOCompletionPort::OnRcvUserListRequest(stSOCKETINFO* socketInfo, string data)
@@ -528,26 +529,11 @@ void IOCompletionPort::OnRcvExitRequest(stSOCKETINFO* socketInfo, string data)
 
 	string msg(exitedNickname + " has left.");
 
-	socketInfo->dataBuf.buf = (CHAR*)(msg.c_str());
-	socketInfo->dataBuf.len = msg.length();
-	for (int i = 0; i < connectedClients->size(); i++)
-	{
-		nResult = WSASend(
-			*(connectedClients->at(i)),
-			&(socketInfo->dataBuf),
-			1,
-			&sendBytes,
-			dwFlags,
-			null,
-			null
-		);
-		if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-		{
-			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
-		}
-		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
-	}
+	AnsExitRequest ansData;
+	ansData.set_type(ExitType::EXIT_NORMAL);
+	ansData.set_data(msg);
 
+	SendAnsExitRequest(socketInfo, ansData);
 }
 
 void IOCompletionPort::SendAnsLoginRequest(stSOCKETINFO* socketInfo, AnsLoginRequest loginData)
@@ -561,6 +547,17 @@ void IOCompletionPort::SendAnsLoginRequest(stSOCKETINFO* socketInfo, AnsLoginReq
 	ReplyPacket(socketInfo, serializedMsg);
 }
 
+void IOCompletionPort::SendAnsRequestFail(stSOCKETINFO* socketInfo, AnsRequestFail failData)
+{
+	PacketMsg msg;
+	msg.set_type(PacketType::REQUEST_FAIL);
+	msg.set_data(failData.SerializeAsString());
+	
+	string serializedMsg = msg.SerializeAsString();
+
+	ReplyPacket(socketInfo, serializedMsg);
+}
+
 void IOCompletionPort::SendAnsChatNormal(stSOCKETINFO* socketInfo, AnsChatNormal chatData)
 {
 	PacketMsg msg;
@@ -569,42 +566,38 @@ void IOCompletionPort::SendAnsChatNormal(stSOCKETINFO* socketInfo, AnsChatNormal
 
 	string serializedMsg = msg.SerializeAsString();
 
-	BroadCastPacket(socketInfo, serializedMsg);
+	BroadcastPacket(socketInfo, serializedMsg);
 }
 
-void IOCompletionPort::SendAnsChatWhisper(stSOCKETINFO* socketInfo, AnsChatWhisper chatData)
+void IOCompletionPort::SendAnsChatWhisper(stSOCKETINFO* socketInfo, SOCKET target, AnsChatWhisper chatData)
 {
-	
+	PacketMsg msg;
+	msg.set_type(PacketType::CHAT_WHISPER);
+	msg.set_data(chatData.SerializeAsString());
+
+	string serializedMsg = msg.SerializeAsString();
+
+	SendPacket(socketInfo, target, serializedMsg);
 }
 
 void IOCompletionPort::SendAnsUserListRequest(stSOCKETINFO* socketInfo, AnsUserListRequest listData)
 {
-	int		nResult = 0;
-	DWORD	dwFlags = 0;
-	DWORD	sendBytes = 0;
-	string contents = listData.SerializeAsString();
+	PacketMsg msg;
+	msg.set_type(PacketType::USER_LIST_REQUEST);
+	msg.set_data(listData.SerializeAsString());
 
-	socketInfo->dataBuf.buf = (CHAR*)(contents.c_str());
-	socketInfo->dataBuf.len = contents.length();
+	string serializedMsg = msg.SerializeAsString();
 
-	nResult = WSASend(
-		socketInfo->socket,
-		&(socketInfo->dataBuf),
-		1,
-		&sendBytes,
-		dwFlags,
-		null,
-		null
-	);
-	if (nResult == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
-	{
-		Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
-	}
-	else
-		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
+	ReplyPacket(socketInfo, serializedMsg);
 }
 
 void IOCompletionPort::SendAnsExitRequest(stSOCKETINFO* socketInfo, AnsExitRequest exitData)
 {
+	PacketMsg msg;
+	msg.set_type(PacketType::EXIT_REQUEST);
+	msg.set_data(exitData.SerializeAsString());
 
+	string serializedMsg = msg.SerializeAsString();
+
+	BroadcastPacket(socketInfo, serializedMsg);
 }

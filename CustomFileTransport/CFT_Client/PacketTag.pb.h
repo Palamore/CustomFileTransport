@@ -7,6 +7,7 @@
 #include <limits>
 #include <string>
 
+
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/arena.h>
 #include <google/protobuf/arenastring.h>
@@ -34,7 +35,7 @@ struct TableStruct_PacketTag_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[11]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[12]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -54,6 +55,9 @@ extern AnsExitRequestDefaultTypeInternal _AnsExitRequest_default_instance_;
 class AnsLoginRequest;
 struct AnsLoginRequestDefaultTypeInternal;
 extern AnsLoginRequestDefaultTypeInternal _AnsLoginRequest_default_instance_;
+class AnsRequestFail;
+struct AnsRequestFailDefaultTypeInternal;
+extern AnsRequestFailDefaultTypeInternal _AnsRequestFail_default_instance_;
 class AnsUserListRequest;
 struct AnsUserListRequestDefaultTypeInternal;
 extern AnsUserListRequestDefaultTypeInternal _AnsUserListRequest_default_instance_;
@@ -81,6 +85,7 @@ template<> ::PacketTag::AnsChatNormal* Arena::CreateMaybeMessage<::PacketTag::An
 template<> ::PacketTag::AnsChatWhisper* Arena::CreateMaybeMessage<::PacketTag::AnsChatWhisper>(Arena*);
 template<> ::PacketTag::AnsExitRequest* Arena::CreateMaybeMessage<::PacketTag::AnsExitRequest>(Arena*);
 template<> ::PacketTag::AnsLoginRequest* Arena::CreateMaybeMessage<::PacketTag::AnsLoginRequest>(Arena*);
+template<> ::PacketTag::AnsRequestFail* Arena::CreateMaybeMessage<::PacketTag::AnsRequestFail>(Arena*);
 template<> ::PacketTag::AnsUserListRequest* Arena::CreateMaybeMessage<::PacketTag::AnsUserListRequest>(Arena*);
 template<> ::PacketTag::ChatNormal* Arena::CreateMaybeMessage<::PacketTag::ChatNormal>(Arena*);
 template<> ::PacketTag::ChatWhisper* Arena::CreateMaybeMessage<::PacketTag::ChatWhisper>(Arena*);
@@ -97,12 +102,13 @@ enum PacketType : int {
   CHAT_WHISPER = 2,
   USER_LIST_REQUEST = 3,
   EXIT_REQUEST = 4,
+  REQUEST_FAIL = 5,
   PacketType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   PacketType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool PacketType_IsValid(int value);
 constexpr PacketType PacketType_MIN = LOGIN_REQUEST;
-constexpr PacketType PacketType_MAX = EXIT_REQUEST;
+constexpr PacketType PacketType_MAX = REQUEST_FAIL;
 constexpr int PacketType_ARRAYSIZE = PacketType_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PacketType_descriptor();
@@ -669,6 +675,154 @@ class AnsLoginRequest final :
 };
 // -------------------------------------------------------------------
 
+class AnsRequestFail final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.AnsRequestFail) */ {
+ public:
+  inline AnsRequestFail() : AnsRequestFail(nullptr) {}
+  ~AnsRequestFail() override;
+  explicit constexpr AnsRequestFail(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  AnsRequestFail(const AnsRequestFail& from);
+  AnsRequestFail(AnsRequestFail&& from) noexcept
+    : AnsRequestFail() {
+    *this = ::std::move(from);
+  }
+
+  inline AnsRequestFail& operator=(const AnsRequestFail& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AnsRequestFail& operator=(AnsRequestFail&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AnsRequestFail& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AnsRequestFail* internal_default_instance() {
+    return reinterpret_cast<const AnsRequestFail*>(
+               &_AnsRequestFail_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(AnsRequestFail& a, AnsRequestFail& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AnsRequestFail* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AnsRequestFail* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline AnsRequestFail* New() const final {
+    return new AnsRequestFail();
+  }
+
+  AnsRequestFail* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<AnsRequestFail>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const AnsRequestFail& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const AnsRequestFail& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AnsRequestFail* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "PacketTag.AnsRequestFail";
+  }
+  protected:
+  explicit AnsRequestFail(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kDataFieldNumber = 1,
+  };
+  // string data = 1;
+  void clear_data();
+  const std::string& data() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_data(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_data();
+  PROTOBUF_MUST_USE_RESULT std::string* release_data();
+  void set_allocated_data(std::string* data);
+  private:
+  const std::string& _internal_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(const std::string& value);
+  std::string* _internal_mutable_data();
+  public:
+
+  // @@protoc_insertion_point(class_scope:PacketTag.AnsRequestFail)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_PacketTag_2eproto;
+};
+// -------------------------------------------------------------------
+
 class ChatNormal final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.ChatNormal) */ {
  public:
@@ -717,7 +871,7 @@ class ChatNormal final :
                &_ChatNormal_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(ChatNormal& a, ChatNormal& b) {
     a.Swap(&b);
@@ -865,7 +1019,7 @@ class AnsChatNormal final :
                &_AnsChatNormal_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(AnsChatNormal& a, AnsChatNormal& b) {
     a.Swap(&b);
@@ -1029,7 +1183,7 @@ class ChatWhisper final :
                &_ChatWhisper_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(ChatWhisper& a, ChatWhisper& b) {
     a.Swap(&b);
@@ -1193,7 +1347,7 @@ class AnsChatWhisper final :
                &_AnsChatWhisper_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(AnsChatWhisper& a, AnsChatWhisper& b) {
     a.Swap(&b);
@@ -1373,7 +1527,7 @@ class UserListRequest final :
                &_UserListRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   friend void swap(UserListRequest& a, UserListRequest& b) {
     a.Swap(&b);
@@ -1531,7 +1685,7 @@ class AnsUserListRequest final :
                &_AnsUserListRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   friend void swap(AnsUserListRequest& a, AnsUserListRequest& b) {
     a.Swap(&b);
@@ -1689,7 +1843,7 @@ class ExitRequest final :
                &_ExitRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   friend void swap(ExitRequest& a, ExitRequest& b) {
     a.Swap(&b);
@@ -1848,7 +2002,7 @@ class AnsExitRequest final :
                &_AnsExitRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(AnsExitRequest& a, AnsExitRequest& b) {
     a.Swap(&b);
@@ -2244,6 +2398,56 @@ inline void AnsLoginRequest::_internal_set_type(::PacketTag::LoginResultType val
 inline void AnsLoginRequest::set_type(::PacketTag::LoginResultType value) {
   _internal_set_type(value);
   // @@protoc_insertion_point(field_set:PacketTag.AnsLoginRequest.type)
+}
+
+// -------------------------------------------------------------------
+
+// AnsRequestFail
+
+// string data = 1;
+inline void AnsRequestFail::clear_data() {
+  data_.ClearToEmpty();
+}
+inline const std::string& AnsRequestFail::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.AnsRequestFail.data)
+  return _internal_data();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AnsRequestFail::set_data(ArgT0&& arg0, ArgT... args) {
+ 
+ data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.AnsRequestFail.data)
+}
+inline std::string* AnsRequestFail::mutable_data() {
+  std::string* _s = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:PacketTag.AnsRequestFail.data)
+  return _s;
+}
+inline const std::string& AnsRequestFail::_internal_data() const {
+  return data_.Get();
+}
+inline void AnsRequestFail::_internal_set_data(const std::string& value) {
+  
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* AnsRequestFail::_internal_mutable_data() {
+  
+  return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* AnsRequestFail::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.AnsRequestFail.data)
+  return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void AnsRequestFail::set_allocated_data(std::string* data) {
+  if (data != nullptr) {
+    
+  } else {
+    
+  }
+  data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.AnsRequestFail.data)
 }
 
 // -------------------------------------------------------------------
@@ -2931,6 +3135,8 @@ inline void AnsExitRequest::set_allocated_data(std::string* data) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

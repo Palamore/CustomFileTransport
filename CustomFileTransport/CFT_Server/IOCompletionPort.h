@@ -42,7 +42,7 @@ public:
 	// 작업 스레드
 	void WorkerThread();
 
-	bool BroadCastPacket(stSOCKETINFO* socketInfo, string serializedMsg);
+	bool BroadcastPacket(stSOCKETINFO* socketInfo, string serializedMsg);
 	bool SendPacket(stSOCKETINFO* socketInfo, SOCKET target, string serializedMsg);
 	bool ReplyPacket(stSOCKETINFO* socketInfo, string serializedMsg);
 
@@ -53,8 +53,9 @@ public:
 	void OnRcvExitRequest(stSOCKETINFO* socketInfo, string data);
 
 	void SendAnsLoginRequest(stSOCKETINFO* socketInfo, AnsLoginRequest loginData);
+	void SendAnsRequestFail(stSOCKETINFO* socketInfo, AnsRequestFail failData);
 	void SendAnsChatNormal(stSOCKETINFO* socketInfo, AnsChatNormal chatData);
-	void SendAnsChatWhisper(stSOCKETINFO* socketInfo, AnsChatWhisper chatData);
+	void SendAnsChatWhisper(stSOCKETINFO* socketInfo, SOCKET target, AnsChatWhisper chatData);
 	void SendAnsUserListRequest(stSOCKETINFO* socketInfo, AnsUserListRequest listData);
 	void SendAnsExitRequest(stSOCKETINFO* socketInfo, AnsExitRequest exitData);
 

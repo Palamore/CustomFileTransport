@@ -59,6 +59,18 @@ struct AnsLoginRequestDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AnsLoginRequestDefaultTypeInternal _AnsLoginRequest_default_instance_;
+constexpr AnsRequestFail::AnsRequestFail(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+struct AnsRequestFailDefaultTypeInternal {
+  constexpr AnsRequestFailDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~AnsRequestFailDefaultTypeInternal() {}
+  union {
+    AnsRequestFail _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AnsRequestFailDefaultTypeInternal _AnsRequestFail_default_instance_;
 constexpr ChatNormal::ChatNormal(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
@@ -164,7 +176,7 @@ struct AnsExitRequestDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AnsExitRequestDefaultTypeInternal _AnsExitRequest_default_instance_;
 }  // namespace PacketTag
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_PacketTag_2eproto[11];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_PacketTag_2eproto[12];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_PacketTag_2eproto[3];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_PacketTag_2eproto = nullptr;
 
@@ -194,6 +206,13 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_PacketTag_2eproto::offsets[] P
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::PacketTag::AnsLoginRequest, nickname_),
   PROTOBUF_FIELD_OFFSET(::PacketTag::AnsLoginRequest, type_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::PacketTag::AnsRequestFail, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::PacketTag::AnsRequestFail, data_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::PacketTag::ChatNormal, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -261,20 +280,22 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 0, -1, -1, sizeof(::PacketTag::PacketMsg)},
   { 9, -1, -1, sizeof(::PacketTag::LoginRequest)},
   { 17, -1, -1, sizeof(::PacketTag::AnsLoginRequest)},
-  { 25, -1, -1, sizeof(::PacketTag::ChatNormal)},
-  { 32, -1, -1, sizeof(::PacketTag::AnsChatNormal)},
-  { 40, -1, -1, sizeof(::PacketTag::ChatWhisper)},
-  { 48, -1, -1, sizeof(::PacketTag::AnsChatWhisper)},
-  { 57, -1, -1, sizeof(::PacketTag::UserListRequest)},
-  { 64, -1, -1, sizeof(::PacketTag::AnsUserListRequest)},
-  { 71, -1, -1, sizeof(::PacketTag::ExitRequest)},
-  { 79, -1, -1, sizeof(::PacketTag::AnsExitRequest)},
+  { 25, -1, -1, sizeof(::PacketTag::AnsRequestFail)},
+  { 32, -1, -1, sizeof(::PacketTag::ChatNormal)},
+  { 39, -1, -1, sizeof(::PacketTag::AnsChatNormal)},
+  { 47, -1, -1, sizeof(::PacketTag::ChatWhisper)},
+  { 55, -1, -1, sizeof(::PacketTag::AnsChatWhisper)},
+  { 64, -1, -1, sizeof(::PacketTag::UserListRequest)},
+  { 71, -1, -1, sizeof(::PacketTag::AnsUserListRequest)},
+  { 78, -1, -1, sizeof(::PacketTag::ExitRequest)},
+  { 86, -1, -1, sizeof(::PacketTag::AnsExitRequest)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_PacketMsg_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_LoginRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_AnsLoginRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_AnsRequestFail_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_ChatNormal_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_AnsChatNormal_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_ChatWhisper_default_instance_),
@@ -292,27 +313,28 @@ const char descriptor_table_protodef_PacketTag_2eproto[] PROTOBUF_SECTION_VARIAB
   "equest\022\020\n\010nickname\030\001 \001(\t\022\020\n\010password\030\002 \001"
   "(\t\"M\n\017AnsLoginRequest\022\020\n\010nickname\030\001 \001(\t\022"
   "(\n\004type\030\002 \001(\0162\032.PacketTag.LoginResultTyp"
-  "e\"\032\n\nChatNormal\022\014\n\004data\030\001 \001(\t\"/\n\rAnsChat"
-  "Normal\022\014\n\004data\030\001 \001(\t\022\020\n\010nickname\030\002 \001(\t\"3"
-  "\n\013ChatWhisper\022\026\n\016targetNickname\030\001 \001(\t\022\014\n"
-  "\004data\030\002 \001(\t\"H\n\016AnsChatWhisper\022\026\n\016targetN"
-  "ickname\030\001 \001(\t\022\014\n\004data\030\002 \001(\t\022\020\n\010nickname\030"
-  "\003 \001(\t\"\037\n\017UserListRequest\022\014\n\004data\030\001 \003(\t\"\""
-  "\n\022AnsUserListRequest\022\014\n\004data\030\001 \003(\t\">\n\013Ex"
-  "itRequest\022!\n\004type\030\001 \001(\0162\023.PacketTag.Exit"
-  "Type\022\014\n\004data\030\002 \001(\t\"A\n\016AnsExitRequest\022!\n\004"
-  "type\030\001 \001(\0162\023.PacketTag.ExitType\022\014\n\004data\030"
-  "\002 \001(\t*k\n\nPacketType\022\021\n\rLOGIN_REQUEST\020\000\022\017"
-  "\n\013CHAT_NORMAL\020\001\022\020\n\014CHAT_WHISPER\020\002\022\025\n\021USE"
-  "R_LIST_REQUEST\020\003\022\020\n\014EXIT_REQUEST\020\004*4\n\017Lo"
-  "ginResultType\022\021\n\rLOGIN_SUCCESS\020\000\022\016\n\nLOGI"
-  "N_FAIL\020\001*0\n\010ExitType\022\017\n\013EXIT_NORMAL\020\000\022\023\n"
-  "\017EXIT_DESTRUCTOR\020\001b\006proto3"
+  "e\"\036\n\016AnsRequestFail\022\014\n\004data\030\001 \001(\t\"\032\n\nCha"
+  "tNormal\022\014\n\004data\030\001 \001(\t\"/\n\rAnsChatNormal\022\014"
+  "\n\004data\030\001 \001(\t\022\020\n\010nickname\030\002 \001(\t\"3\n\013ChatWh"
+  "isper\022\026\n\016targetNickname\030\001 \001(\t\022\014\n\004data\030\002 "
+  "\001(\t\"H\n\016AnsChatWhisper\022\026\n\016targetNickname\030"
+  "\001 \001(\t\022\014\n\004data\030\002 \001(\t\022\020\n\010nickname\030\003 \001(\t\"\037\n"
+  "\017UserListRequest\022\014\n\004data\030\001 \003(\t\"\"\n\022AnsUse"
+  "rListRequest\022\014\n\004data\030\001 \003(\t\">\n\013ExitReques"
+  "t\022!\n\004type\030\001 \001(\0162\023.PacketTag.ExitType\022\014\n\004"
+  "data\030\002 \001(\t\"A\n\016AnsExitRequest\022!\n\004type\030\001 \001"
+  "(\0162\023.PacketTag.ExitType\022\014\n\004data\030\002 \001(\t*}\n"
+  "\nPacketType\022\021\n\rLOGIN_REQUEST\020\000\022\017\n\013CHAT_N"
+  "ORMAL\020\001\022\020\n\014CHAT_WHISPER\020\002\022\025\n\021USER_LIST_R"
+  "EQUEST\020\003\022\020\n\014EXIT_REQUEST\020\004\022\020\n\014REQUEST_FA"
+  "IL\020\005*4\n\017LoginResultType\022\021\n\rLOGIN_SUCCESS"
+  "\020\000\022\016\n\nLOGIN_FAIL\020\001*0\n\010ExitType\022\017\n\013EXIT_N"
+  "ORMAL\020\000\022\023\n\017EXIT_DESTRUCTOR\020\001b\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_PacketTag_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_PacketTag_2eproto = {
-  false, false, 866, descriptor_table_protodef_PacketTag_2eproto, "PacketTag.proto", 
-  &descriptor_table_PacketTag_2eproto_once, nullptr, 0, 11,
+  false, false, 916, descriptor_table_protodef_PacketTag_2eproto, "PacketTag.proto", 
+  &descriptor_table_PacketTag_2eproto_once, nullptr, 0, 12,
   schemas, file_default_instances, TableStruct_PacketTag_2eproto::offsets,
   file_level_metadata_PacketTag_2eproto, file_level_enum_descriptors_PacketTag_2eproto, file_level_service_descriptors_PacketTag_2eproto,
 };
@@ -334,6 +356,7 @@ bool PacketType_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+    case 5:
       return true;
     default:
       return false;
@@ -1106,6 +1129,203 @@ void AnsLoginRequest::InternalSwap(AnsLoginRequest* other) {
 
 // ===================================================================
 
+class AnsRequestFail::_Internal {
+ public:
+};
+
+AnsRequestFail::AnsRequestFail(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:PacketTag.AnsRequestFail)
+}
+AnsRequestFail::AnsRequestFail(const AnsRequestFail& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_data().empty()) {
+    data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data(), 
+      GetArenaForAllocation());
+  }
+  // @@protoc_insertion_point(copy_constructor:PacketTag.AnsRequestFail)
+}
+
+void AnsRequestFail::SharedCtor() {
+data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+AnsRequestFail::~AnsRequestFail() {
+  // @@protoc_insertion_point(destructor:PacketTag.AnsRequestFail)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void AnsRequestFail::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  data_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void AnsRequestFail::ArenaDtor(void* object) {
+  AnsRequestFail* _this = reinterpret_cast< AnsRequestFail* >(object);
+  (void)_this;
+}
+void AnsRequestFail::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void AnsRequestFail::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void AnsRequestFail::Clear() {
+// @@protoc_insertion_point(message_clear_start:PacketTag.AnsRequestFail)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  data_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* AnsRequestFail::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string data = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_data();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.AnsRequestFail.data"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* AnsRequestFail::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:PacketTag.AnsRequestFail)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string data = 1;
+  if (!this->_internal_data().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PacketTag.AnsRequestFail.data");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_data(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:PacketTag.AnsRequestFail)
+  return target;
+}
+
+size_t AnsRequestFail::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:PacketTag.AnsRequestFail)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string data = 1;
+  if (!this->_internal_data().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_data());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AnsRequestFail::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    AnsRequestFail::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AnsRequestFail::GetClassData() const { return &_class_data_; }
+
+void AnsRequestFail::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<AnsRequestFail *>(to)->MergeFrom(
+      static_cast<const AnsRequestFail &>(from));
+}
+
+
+void AnsRequestFail::MergeFrom(const AnsRequestFail& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:PacketTag.AnsRequestFail)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_data().empty()) {
+    _internal_set_data(from._internal_data());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void AnsRequestFail::CopyFrom(const AnsRequestFail& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:PacketTag.AnsRequestFail)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AnsRequestFail::IsInitialized() const {
+  return true;
+}
+
+void AnsRequestFail::InternalSwap(AnsRequestFail* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &data_, lhs_arena,
+      &other->data_, rhs_arena
+  );
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata AnsRequestFail::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
+      file_level_metadata_PacketTag_2eproto[3]);
+}
+
+// ===================================================================
+
 class ChatNormal::_Internal {
  public:
 };
@@ -1298,7 +1518,7 @@ void ChatNormal::InternalSwap(ChatNormal* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ChatNormal::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
-      file_level_metadata_PacketTag_2eproto[3]);
+      file_level_metadata_PacketTag_2eproto[4]);
 }
 
 // ===================================================================
@@ -1538,7 +1758,7 @@ void AnsChatNormal::InternalSwap(AnsChatNormal* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AnsChatNormal::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
-      file_level_metadata_PacketTag_2eproto[4]);
+      file_level_metadata_PacketTag_2eproto[5]);
 }
 
 // ===================================================================
@@ -1778,7 +1998,7 @@ void ChatWhisper::InternalSwap(ChatWhisper* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ChatWhisper::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
-      file_level_metadata_PacketTag_2eproto[5]);
+      file_level_metadata_PacketTag_2eproto[6]);
 }
 
 // ===================================================================
@@ -2061,7 +2281,7 @@ void AnsChatWhisper::InternalSwap(AnsChatWhisper* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AnsChatWhisper::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
-      file_level_metadata_PacketTag_2eproto[6]);
+      file_level_metadata_PacketTag_2eproto[7]);
 }
 
 // ===================================================================
@@ -2251,7 +2471,7 @@ void UserListRequest::InternalSwap(UserListRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata UserListRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
-      file_level_metadata_PacketTag_2eproto[7]);
+      file_level_metadata_PacketTag_2eproto[8]);
 }
 
 // ===================================================================
@@ -2441,7 +2661,7 @@ void AnsUserListRequest::InternalSwap(AnsUserListRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AnsUserListRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
-      file_level_metadata_PacketTag_2eproto[8]);
+      file_level_metadata_PacketTag_2eproto[9]);
 }
 
 // ===================================================================
@@ -2667,7 +2887,7 @@ void ExitRequest::InternalSwap(ExitRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ExitRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
-      file_level_metadata_PacketTag_2eproto[9]);
+      file_level_metadata_PacketTag_2eproto[10]);
 }
 
 // ===================================================================
@@ -2893,7 +3113,7 @@ void AnsExitRequest::InternalSwap(AnsExitRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AnsExitRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
-      file_level_metadata_PacketTag_2eproto[10]);
+      file_level_metadata_PacketTag_2eproto[11]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -2907,6 +3127,9 @@ template<> PROTOBUF_NOINLINE ::PacketTag::LoginRequest* Arena::CreateMaybeMessag
 }
 template<> PROTOBUF_NOINLINE ::PacketTag::AnsLoginRequest* Arena::CreateMaybeMessage< ::PacketTag::AnsLoginRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::PacketTag::AnsLoginRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::PacketTag::AnsRequestFail* Arena::CreateMaybeMessage< ::PacketTag::AnsRequestFail >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::PacketTag::AnsRequestFail >(arena);
 }
 template<> PROTOBUF_NOINLINE ::PacketTag::ChatNormal* Arena::CreateMaybeMessage< ::PacketTag::ChatNormal >(Arena* arena) {
   return Arena::CreateMessageInternal< ::PacketTag::ChatNormal >(arena);

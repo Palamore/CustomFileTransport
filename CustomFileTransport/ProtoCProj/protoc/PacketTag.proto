@@ -7,6 +7,7 @@ enum PacketType {
   CHAT_WHISPER = 2;
   USER_LIST_REQUEST = 3;
   EXIT_REQUEST = 4;
+  REQUEST_FAIL = 5;
 }
 
 message PacketMsg{
@@ -28,6 +29,10 @@ enum LoginResultType{
 message AnsLoginRequest{
 	string nickname = 1;
 	LoginResultType type = 2;
+}
+
+message AnsRequestFail {
+	string data = 1;
 }
 
 message ChatNormal {
@@ -72,3 +77,4 @@ message AnsExitRequest{
 	ExitType type = 1;
 	string data = 2;
 }
+
