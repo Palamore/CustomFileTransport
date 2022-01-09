@@ -36,8 +36,9 @@ bool IOCompletionPort::BroadcastPacket(stSOCKETINFO* socketInfo, string serializ
 			return false;
 		}
 		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
-		return true;
+		
 	}
+	return true;
 }
 
 bool IOCompletionPort::SendPacket(stSOCKETINFO* socketInfo, SOCKET target, string serializedMsg) // target 클라에 전송 : 송신자, 수신자가 다름

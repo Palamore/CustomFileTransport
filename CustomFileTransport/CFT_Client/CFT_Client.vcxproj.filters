@@ -27,6 +27,12 @@
     <ClCompile Include="Send.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Recv.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ProtocolTag.h">
@@ -42,6 +48,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="IncludeDefineNamespace.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Recv.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

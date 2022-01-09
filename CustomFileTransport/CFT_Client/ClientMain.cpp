@@ -2,7 +2,7 @@
 #pragma comment(lib, "ws2_32.lib")
 #include "IncludeDefineNamespace.h"
 #include "Send.h"
-
+#include "Recv.h"
 
 struct stSOCKETINFO
 {
@@ -15,7 +15,8 @@ struct stSOCKETINFO
 };
 
 Send::Network_Send sendObject;
-
+Recv::Network_Recv recvObject;
+bool exitFlag = false;
 void RunListenThread();
 void RunSendThread();
 vector<string> Split(string targetStr, char splitter);
@@ -57,14 +58,12 @@ int main()
 		return false;
 	}
 
+	recvObject.clientSocket = sendObject.clientSocket;
+
 	std::thread t1(RunListenThread);
 	std::thread t2(RunSendThread);
 
 	std::cout << "Connection success..." << std::endl;
-	while (true) {
-
-
-	}
 
 	t1.join();
 	t2.join();
@@ -77,6 +76,8 @@ int main()
 void RunListenThread()
 {
 	char	sz_socketbuf_[MAX_BUFFER];
+	
+
 	while (1)
 	{
 		int nRecvLen = recv(sendObject.clientSocket, sz_socketbuf_, 1024, 0);
@@ -91,10 +92,17 @@ void RunListenThread()
 			return;
 		}
 
+		if (!recvObject.OnRecvPacket(sz_socketbuf_))
+		{
+			exitFlag = true;
+			cout << "ExitFlag set" << endl;
+			break;
+		}
+
 		sz_socketbuf_[nRecvLen] = NULL;
-		std::cout << "Message received : bytes[" << nRecvLen << "], message : [" <<
-			sz_socketbuf_ << "]" << std::endl;
+
 	}
+	cout << "ListenThread End" << endl;
 }
 
 void RunSendThread()
@@ -107,7 +115,7 @@ void RunSendThread()
 
 	sendObject.SendLoginRequest("");
 
-	while (true) {
+	while (!exitFlag) {
 		std::cout << ">>";
 		std::cin.getline(szOutMsg, MAX_BUFFER);
 
@@ -127,11 +135,11 @@ void RunSendThread()
 				sendObject.SendChatWhisper(splitted[INPUT_TARGET_NICKNAME_INDEX], msg);
 				break;
 			case 'l':
-				sendObject.SendRoomListRequest(" ");
+				sendObject.SendUserListRequest(" ");
 				break;
 			case 'e':
 				sendObject.SendExitRequest(" ");
-				exit(0);
+				exitFlag = true;
 				break;
 			default:
 				break;
@@ -142,6 +150,7 @@ void RunSendThread()
 			sendObject.SendChatNormal(szOutMsg);
 		}
 	}
+	cout << "SendThread End" << endl;
 }
 
 vector<string> Split(string targetStr, char splitter)

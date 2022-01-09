@@ -29,6 +29,7 @@ enum LoginResultType{
 message AnsLoginRequest{
 	string nickname = 1;
 	LoginResultType type = 2;
+	string data = 3;
 }
 
 message AnsRequestFail {

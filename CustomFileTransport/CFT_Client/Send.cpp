@@ -61,7 +61,7 @@ namespace Send
 			"to " << targetNickname << " : " << data << std::endl;
 	}
 
-	void Network_Send::SendRoomListRequest(string data)
+	void Network_Send::SendUserListRequest(string data)
 	{
 		PacketTag::UserListRequest roomList;
 		roomList.add_data(data);

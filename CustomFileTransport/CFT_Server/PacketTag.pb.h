@@ -636,6 +636,7 @@ class AnsLoginRequest final :
 
   enum : int {
     kNicknameFieldNumber = 1,
+    kDataFieldNumber = 3,
     kTypeFieldNumber = 2,
   };
   // string nickname = 1;
@@ -650,6 +651,20 @@ class AnsLoginRequest final :
   const std::string& _internal_nickname() const;
   inline PROTOBUF_ALWAYS_INLINE void _internal_set_nickname(const std::string& value);
   std::string* _internal_mutable_nickname();
+  public:
+
+  // string data = 3;
+  void clear_data();
+  const std::string& data() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_data(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_data();
+  PROTOBUF_MUST_USE_RESULT std::string* release_data();
+  void set_allocated_data(std::string* data);
+  private:
+  const std::string& _internal_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(const std::string& value);
+  std::string* _internal_mutable_data();
   public:
 
   // .PacketTag.LoginResultType type = 2;
@@ -669,6 +684,7 @@ class AnsLoginRequest final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr nickname_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
   int type_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_PacketTag_2eproto;
@@ -2398,6 +2414,52 @@ inline void AnsLoginRequest::_internal_set_type(::PacketTag::LoginResultType val
 inline void AnsLoginRequest::set_type(::PacketTag::LoginResultType value) {
   _internal_set_type(value);
   // @@protoc_insertion_point(field_set:PacketTag.AnsLoginRequest.type)
+}
+
+// string data = 3;
+inline void AnsLoginRequest::clear_data() {
+  data_.ClearToEmpty();
+}
+inline const std::string& AnsLoginRequest::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.AnsLoginRequest.data)
+  return _internal_data();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AnsLoginRequest::set_data(ArgT0&& arg0, ArgT... args) {
+ 
+ data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.AnsLoginRequest.data)
+}
+inline std::string* AnsLoginRequest::mutable_data() {
+  std::string* _s = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:PacketTag.AnsLoginRequest.data)
+  return _s;
+}
+inline const std::string& AnsLoginRequest::_internal_data() const {
+  return data_.Get();
+}
+inline void AnsLoginRequest::_internal_set_data(const std::string& value) {
+  
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* AnsLoginRequest::_internal_mutable_data() {
+  
+  return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* AnsLoginRequest::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.AnsLoginRequest.data)
+  return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void AnsLoginRequest::set_allocated_data(std::string* data) {
+  if (data != nullptr) {
+    
+  } else {
+    
+  }
+  data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.AnsLoginRequest.data)
 }
 
 // -------------------------------------------------------------------
