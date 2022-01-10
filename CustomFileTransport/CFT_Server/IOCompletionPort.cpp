@@ -35,7 +35,6 @@ bool IOCompletionPort::BroadcastPacket(stSOCKETINFO* socketInfo, string serializ
 			Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
 			return false;
 		}
-		Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
 		
 	}
 	return true;
@@ -63,7 +62,6 @@ bool IOCompletionPort::SendPacket(stSOCKETINFO* socketInfo, SOCKET target, strin
 		Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
 		return false;
 	}
-	Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
 	return true;
 }
 
@@ -89,7 +87,6 @@ bool IOCompletionPort::ReplyPacket(stSOCKETINFO* socketInfo, string serializedMs
 		Debug::LogError("WSASend Failed : " + to_string(WSAGetLastError()));
 		return false;
 	}
-	Debug::Log("Msg Sent : " + string(socketInfo->dataBuf.buf) + "\n");
 	return true;
 }
 
@@ -332,7 +329,21 @@ void IOCompletionPort::WorkerThread()
 
 		if (!bResult && recvBytes == 0)
 		{
-			Debug::Log("socket(" + to_string(pSocketInfo->socket) + ") 立加 谗辫\n");
+			Debug::LogError("socket(" + to_string(pSocketInfo->socket) + ") 立加 谗辫\n");
+			string nickname = "";
+			for (int i = 0; i < clientInfoContainer->size(); i++)
+			{
+				if (pSocketInfo->socket == clientInfoContainer->at(i)->socket())
+				{
+					nickname = clientInfoContainer->at(i)->nickname();
+				}
+			}
+			LoginRequest loginData;
+			loginData.set_nickname(nickname);
+			loginData.set_password("");
+
+			OnRcvExitRequest(pSocketInfo, loginData.SerializeAsString());
+
 			closesocket(pSocketInfo->socket);
 			free(pSocketInfo);
 			continue;
@@ -408,6 +419,8 @@ void IOCompletionPort::OnRcvLoginRequest(stSOCKETINFO* socketInfo, string data)
 		Debug::LogError("ChatData Parsing Failed");
 		return;
 	}
+	Debug::Log("[OnRcvLoginRequest] " + loginData.nickname());
+	
 	bool isSuccess = false;
 
 	for (int i = 0; i < clientInfoContainer->size(); i++)
@@ -439,6 +452,7 @@ void IOCompletionPort::OnRcvChatNormal(stSOCKETINFO* socketInfo, string data, st
 		Debug::LogError("ChatData Parsing Failed");
 		return;
 	}
+	Debug::Log("[OnRcvChatNormal] " + nickname + " : " + chatData.data());
 
 	AnsChatNormal ansData;
 	ansData.set_data(chatData.data());
@@ -454,6 +468,7 @@ void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data, s
 		Debug::LogError("ChatData Parsing Failed");
 		return;
 	}
+	Debug::Log("[OnRcvChatWhisper] " + nickname + " - " + chatData.targetnickname() + " : " + chatData.data());
 
 	string targetNickname = "";
 	int targetClientIndex = -1;
@@ -488,6 +503,8 @@ void IOCompletionPort::OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data, s
 
 void IOCompletionPort::OnRcvUserListRequest(stSOCKETINFO* socketInfo, string data)
 {
+	Debug::Log("[OnRcvUserListRequest] ");
+
 	AnsUserListRequest ansData;
 	for (int i = 0; i < clientInfoContainer->size(); i++)
 	{
@@ -499,7 +516,12 @@ void IOCompletionPort::OnRcvUserListRequest(stSOCKETINFO* socketInfo, string dat
 void IOCompletionPort::OnRcvExitRequest(stSOCKETINFO* socketInfo, string data)
 {
 	ExitRequest exitReq;
-	exitReq.ParseFromString(data);
+	if (!exitReq.ParseFromString(data))
+	{
+		Debug::LogError("exitReqData Parsing Failed");
+		return;
+	}
+	Debug::Log("[OnRcvExitRequest] " + exitReq.type());
 
 	int		nResult = 0;
 	DWORD	dwFlags = 0;
@@ -545,7 +567,10 @@ void IOCompletionPort::SendAnsLoginRequest(stSOCKETINFO* socketInfo, AnsLoginReq
 
 	string serializedMsg = msg.SerializeAsString();
 
-	ReplyPacket(socketInfo, serializedMsg);
+	if (ReplyPacket(socketInfo, serializedMsg))
+	{
+		Debug::Log("[SendAnsLoginRequest] " + loginData.data());
+	}
 }
 
 void IOCompletionPort::SendAnsRequestFail(stSOCKETINFO* socketInfo, AnsRequestFail failData)
@@ -556,7 +581,10 @@ void IOCompletionPort::SendAnsRequestFail(stSOCKETINFO* socketInfo, AnsRequestFa
 	
 	string serializedMsg = msg.SerializeAsString();
 
-	ReplyPacket(socketInfo, serializedMsg);
+	if (ReplyPacket(socketInfo, serializedMsg))
+	{
+		Debug::Log("[SendAnsRequestFail] " + failData.data());
+	}
 }
 
 void IOCompletionPort::SendAnsChatNormal(stSOCKETINFO* socketInfo, AnsChatNormal chatData)
@@ -567,7 +595,10 @@ void IOCompletionPort::SendAnsChatNormal(stSOCKETINFO* socketInfo, AnsChatNormal
 
 	string serializedMsg = msg.SerializeAsString();
 
-	BroadcastPacket(socketInfo, serializedMsg);
+	if (BroadcastPacket(socketInfo, serializedMsg))
+	{
+		Debug::Log("[SendAnsChatNormal] " + chatData.data());
+	}
 }
 
 void IOCompletionPort::SendAnsChatWhisper(stSOCKETINFO* socketInfo, SOCKET target, AnsChatWhisper chatData)
@@ -578,7 +609,10 @@ void IOCompletionPort::SendAnsChatWhisper(stSOCKETINFO* socketInfo, SOCKET targe
 
 	string serializedMsg = msg.SerializeAsString();
 
-	SendPacket(socketInfo, target, serializedMsg);
+	if (SendPacket(socketInfo, target, serializedMsg))
+	{
+		Debug::Log("[SendAnsChatWhisper] " + chatData.data());
+	}
 }
 
 void IOCompletionPort::SendAnsUserListRequest(stSOCKETINFO* socketInfo, AnsUserListRequest listData)
@@ -589,7 +623,10 @@ void IOCompletionPort::SendAnsUserListRequest(stSOCKETINFO* socketInfo, AnsUserL
 
 	string serializedMsg = msg.SerializeAsString();
 
-	ReplyPacket(socketInfo, serializedMsg);
+	if (ReplyPacket(socketInfo, serializedMsg))
+	{
+		Debug::Log("[SendAnsUserListRequest]");
+	}
 }
 
 void IOCompletionPort::SendAnsExitRequest(stSOCKETINFO* socketInfo, AnsExitRequest exitData)
@@ -600,5 +637,8 @@ void IOCompletionPort::SendAnsExitRequest(stSOCKETINFO* socketInfo, AnsExitReque
 
 	string serializedMsg = msg.SerializeAsString();
 
-	BroadcastPacket(socketInfo, serializedMsg);
+	if (BroadcastPacket(socketInfo, serializedMsg))
+	{
+		Debug::Log("[SendAnsExitRequest] " + exitData.data());
+	}
 }

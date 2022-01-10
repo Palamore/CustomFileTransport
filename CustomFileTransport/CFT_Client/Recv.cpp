@@ -76,8 +76,8 @@ namespace Recv
 		AnsRequestFail failData;
 		failData.ParseFromString(data);
 
-		Debug::LogError("Request Failed : " + failData.data());
-		return false;
+		Debug::Log("Request Failed : " + failData.data());
+		return true;
 	}
 
 	bool Network_Recv::OnRecvChatNormal(std::string data)

@@ -118,7 +118,7 @@ void RunSendThread()
 	while (!exitFlag) {
 		std::cout << ">>";
 		std::cin.getline(szOutMsg, MAX_BUFFER);
-
+		if (exitFlag) break;
 		if (szOutMsg[INPUT_COMMAND_INDEX] == '/')
 		{
 			vector<string> splitted;
