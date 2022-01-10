@@ -121,7 +121,7 @@ namespace Recv
 
 		cout << "Logout result : " << exitData.data() << endl;
 
-		return false;
+		return true;
 	}
 
 }
