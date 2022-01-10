@@ -329,7 +329,7 @@ void IOCompletionPort::WorkerThread()
 
 		if (!bResult && recvBytes == 0)
 		{
-			Debug::LogError("socket(" + to_string(pSocketInfo->socket) + ") Á¢¼Ó ²÷±è\n");
+			Debug::LogError("socket(" + to_string(pSocketInfo->socket) + ") Disconnected\n");
 			string nickname = "";
 			for (int i = 0; i < clientInfoContainer->size(); i++)
 			{
@@ -537,6 +537,7 @@ void IOCompletionPort::OnRcvExitRequest(stSOCKETINFO* socketInfo, string data)
 			exitedNickname = clientInfoContainer->at(i)->nickname();
 		}
 	}
+	if (clientInfoContainer->size() == 0) return;
 
 	switch (exitReq.type())
 	{
