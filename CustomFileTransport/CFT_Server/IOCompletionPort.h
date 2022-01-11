@@ -7,6 +7,12 @@
 #include "ClientInfo.pb.h"
 #include <WinSock2.h>
 #include <memory>
+#include <direct.h>
+#include <io.h>
+#include <time.h>
+#include <ctime>
+#include <iostream>
+#include <fstream>
 using namespace ServerPacket;
 using namespace std;
 using namespace PacketTag;

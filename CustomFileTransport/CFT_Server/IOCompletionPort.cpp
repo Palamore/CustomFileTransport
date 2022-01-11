@@ -4,6 +4,35 @@
 
 bool Contain(vector<SOCKET*>& target, SOCKET value);
 
+string GetCurrentDay()
+{
+	time_t timer = time(NULL);
+	struct tm t; 
+	localtime_s(&t, &timer);
+	string year = to_string(t.tm_year + 1900);
+	int mon = t.tm_mon + 1;
+	string month = "";
+	if (mon < 10)
+	{
+		month = "0" + to_string(mon);
+	}
+	else
+	{
+		month = to_string(mon);
+	}
+	int da = t.tm_mday;
+	string day = "";
+	if (da < 10)
+	{
+		day = "0" + to_string(da);
+	}
+	else
+	{
+		day = to_string(da);
+	}
+	return (year + "_" + month + "_" + day);
+}
+
 unsigned int WINAPI CallWorkerThread(LPVOID p)
 {
 	IOCompletionPort* pOverlappedEvent = (IOCompletionPort*)p;
@@ -437,6 +466,24 @@ void IOCompletionPort::OnRcvLoginRequest(stSOCKETINFO* socketInfo, string data)
 	if (isSuccess)
 	{
 		ansData.set_type(LoginResultType::LOGIN_SUCCESS);
+
+		int dirExist = 0;
+		dirExist = _access(loginData.nickname().c_str(), 0);
+		if (dirExist != 0)
+		{
+			int makeDir = 0;
+			makeDir = _mkdir(loginData.nickname().c_str());
+		}
+
+		string logFileStr = loginData.nickname() + "/" + GetCurrentDay() + ".txt";
+		dirExist = _access(logFileStr.c_str(), 0);
+		if (dirExist != 0)
+		{
+			ofstream makeFile(logFileStr.c_str());
+			makeFile.close();
+		}
+
+
 	}
 	else
 	{
