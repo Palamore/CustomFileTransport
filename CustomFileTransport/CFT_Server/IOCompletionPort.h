@@ -67,6 +67,7 @@ public:
 
 	vector<SOCKET*>* connectedClients;
 	vector<ClientInfo*>* clientInfoContainer;
+	//vector<ofstream*>* loggingStream;
 
 private:
 	stSOCKETINFO* m_pSocketInfo;		// 소켓 정보

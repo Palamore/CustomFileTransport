@@ -4,6 +4,9 @@
 #include <iostream>
 #include <ctime>
 #include <chrono>
+#include <direct.h>
+#include <io.h>
+#include <fstream>
 using namespace std;
 
 static class Debug
