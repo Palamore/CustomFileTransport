@@ -9,23 +9,15 @@ string GetCurrentDay()
 	int mon = t.tm_mon + 1;
 	string month = "";
 	if (mon < 10)
-	{
 		month = "0" + to_string(mon);
-	}
 	else
-	{
 		month = to_string(mon);
-	}
 	int da = t.tm_mday;
 	string day = "";
 	if (da < 10)
-	{
 		day = "0" + to_string(da);
-	}
 	else
-	{
 		day = to_string(da);
-	}
 	return (year + "_" + month + "_" + day);
 }
 
