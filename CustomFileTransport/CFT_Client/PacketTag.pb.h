@@ -35,7 +35,7 @@ struct TableStruct_PacketTag_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[12]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[14]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -52,6 +52,9 @@ extern AnsChatWhisperDefaultTypeInternal _AnsChatWhisper_default_instance_;
 class AnsExitRequest;
 struct AnsExitRequestDefaultTypeInternal;
 extern AnsExitRequestDefaultTypeInternal _AnsExitRequest_default_instance_;
+class AnsFileSendRequest;
+struct AnsFileSendRequestDefaultTypeInternal;
+extern AnsFileSendRequestDefaultTypeInternal _AnsFileSendRequest_default_instance_;
 class AnsLoginRequest;
 struct AnsLoginRequestDefaultTypeInternal;
 extern AnsLoginRequestDefaultTypeInternal _AnsLoginRequest_default_instance_;
@@ -70,6 +73,9 @@ extern ChatWhisperDefaultTypeInternal _ChatWhisper_default_instance_;
 class ExitRequest;
 struct ExitRequestDefaultTypeInternal;
 extern ExitRequestDefaultTypeInternal _ExitRequest_default_instance_;
+class FileSendRequest;
+struct FileSendRequestDefaultTypeInternal;
+extern FileSendRequestDefaultTypeInternal _FileSendRequest_default_instance_;
 class LoginRequest;
 struct LoginRequestDefaultTypeInternal;
 extern LoginRequestDefaultTypeInternal _LoginRequest_default_instance_;
@@ -84,12 +90,14 @@ PROTOBUF_NAMESPACE_OPEN
 template<> ::PacketTag::AnsChatNormal* Arena::CreateMaybeMessage<::PacketTag::AnsChatNormal>(Arena*);
 template<> ::PacketTag::AnsChatWhisper* Arena::CreateMaybeMessage<::PacketTag::AnsChatWhisper>(Arena*);
 template<> ::PacketTag::AnsExitRequest* Arena::CreateMaybeMessage<::PacketTag::AnsExitRequest>(Arena*);
+template<> ::PacketTag::AnsFileSendRequest* Arena::CreateMaybeMessage<::PacketTag::AnsFileSendRequest>(Arena*);
 template<> ::PacketTag::AnsLoginRequest* Arena::CreateMaybeMessage<::PacketTag::AnsLoginRequest>(Arena*);
 template<> ::PacketTag::AnsRequestFail* Arena::CreateMaybeMessage<::PacketTag::AnsRequestFail>(Arena*);
 template<> ::PacketTag::AnsUserListRequest* Arena::CreateMaybeMessage<::PacketTag::AnsUserListRequest>(Arena*);
 template<> ::PacketTag::ChatNormal* Arena::CreateMaybeMessage<::PacketTag::ChatNormal>(Arena*);
 template<> ::PacketTag::ChatWhisper* Arena::CreateMaybeMessage<::PacketTag::ChatWhisper>(Arena*);
 template<> ::PacketTag::ExitRequest* Arena::CreateMaybeMessage<::PacketTag::ExitRequest>(Arena*);
+template<> ::PacketTag::FileSendRequest* Arena::CreateMaybeMessage<::PacketTag::FileSendRequest>(Arena*);
 template<> ::PacketTag::LoginRequest* Arena::CreateMaybeMessage<::PacketTag::LoginRequest>(Arena*);
 template<> ::PacketTag::PacketMsg* Arena::CreateMaybeMessage<::PacketTag::PacketMsg>(Arena*);
 template<> ::PacketTag::UserListRequest* Arena::CreateMaybeMessage<::PacketTag::UserListRequest>(Arena*);
@@ -103,12 +111,14 @@ enum PacketType : int {
   USER_LIST_REQUEST = 3,
   EXIT_REQUEST = 4,
   REQUEST_FAIL = 5,
+  FILE_SEND_REQUEST = 6,
+  FILE_SEND_REQUEST_ANSWER = 7,
   PacketType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   PacketType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool PacketType_IsValid(int value);
 constexpr PacketType PacketType_MIN = LOGIN_REQUEST;
-constexpr PacketType PacketType_MAX = REQUEST_FAIL;
+constexpr PacketType PacketType_MAX = FILE_SEND_REQUEST_ANSWER;
 constexpr int PacketType_ARRAYSIZE = PacketType_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PacketType_descriptor();
@@ -1811,6 +1821,329 @@ class AnsUserListRequest final :
 };
 // -------------------------------------------------------------------
 
+class FileSendRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.FileSendRequest) */ {
+ public:
+  inline FileSendRequest() : FileSendRequest(nullptr) {}
+  ~FileSendRequest() override;
+  explicit constexpr FileSendRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  FileSendRequest(const FileSendRequest& from);
+  FileSendRequest(FileSendRequest&& from) noexcept
+    : FileSendRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline FileSendRequest& operator=(const FileSendRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FileSendRequest& operator=(FileSendRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FileSendRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FileSendRequest* internal_default_instance() {
+    return reinterpret_cast<const FileSendRequest*>(
+               &_FileSendRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    10;
+
+  friend void swap(FileSendRequest& a, FileSendRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(FileSendRequest* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FileSendRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline FileSendRequest* New() const final {
+    return new FileSendRequest();
+  }
+
+  FileSendRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<FileSendRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const FileSendRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const FileSendRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(FileSendRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "PacketTag.FileSendRequest";
+  }
+  protected:
+  explicit FileSendRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kFileNameFieldNumber = 1,
+    kDataFieldNumber = 3,
+    kFileSizeFieldNumber = 2,
+  };
+  // string fileName = 1;
+  void clear_filename();
+  const std::string& filename() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_filename(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_filename();
+  PROTOBUF_MUST_USE_RESULT std::string* release_filename();
+  void set_allocated_filename(std::string* filename);
+  private:
+  const std::string& _internal_filename() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_filename(const std::string& value);
+  std::string* _internal_mutable_filename();
+  public:
+
+  // string data = 3;
+  void clear_data();
+  const std::string& data() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_data(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_data();
+  PROTOBUF_MUST_USE_RESULT std::string* release_data();
+  void set_allocated_data(std::string* data);
+  private:
+  const std::string& _internal_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(const std::string& value);
+  std::string* _internal_mutable_data();
+  public:
+
+  // int32 fileSize = 2;
+  void clear_filesize();
+  ::PROTOBUF_NAMESPACE_ID::int32 filesize() const;
+  void set_filesize(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_filesize() const;
+  void _internal_set_filesize(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:PacketTag.FileSendRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr filename_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
+  ::PROTOBUF_NAMESPACE_ID::int32 filesize_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_PacketTag_2eproto;
+};
+// -------------------------------------------------------------------
+
+class AnsFileSendRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.AnsFileSendRequest) */ {
+ public:
+  inline AnsFileSendRequest() : AnsFileSendRequest(nullptr) {}
+  ~AnsFileSendRequest() override;
+  explicit constexpr AnsFileSendRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  AnsFileSendRequest(const AnsFileSendRequest& from);
+  AnsFileSendRequest(AnsFileSendRequest&& from) noexcept
+    : AnsFileSendRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline AnsFileSendRequest& operator=(const AnsFileSendRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AnsFileSendRequest& operator=(AnsFileSendRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AnsFileSendRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AnsFileSendRequest* internal_default_instance() {
+    return reinterpret_cast<const AnsFileSendRequest*>(
+               &_AnsFileSendRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    11;
+
+  friend void swap(AnsFileSendRequest& a, AnsFileSendRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AnsFileSendRequest* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AnsFileSendRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline AnsFileSendRequest* New() const final {
+    return new AnsFileSendRequest();
+  }
+
+  AnsFileSendRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<AnsFileSendRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const AnsFileSendRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom(const AnsFileSendRequest& from);
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(AnsFileSendRequest* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "PacketTag.AnsFileSendRequest";
+  }
+  protected:
+  explicit AnsFileSendRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kDataFieldNumber = 1,
+  };
+  // string data = 1;
+  void clear_data();
+  const std::string& data() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_data(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_data();
+  PROTOBUF_MUST_USE_RESULT std::string* release_data();
+  void set_allocated_data(std::string* data);
+  private:
+  const std::string& _internal_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(const std::string& value);
+  std::string* _internal_mutable_data();
+  public:
+
+  // @@protoc_insertion_point(class_scope:PacketTag.AnsFileSendRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_PacketTag_2eproto;
+};
+// -------------------------------------------------------------------
+
 class ExitRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:PacketTag.ExitRequest) */ {
  public:
@@ -1859,7 +2192,7 @@ class ExitRequest final :
                &_ExitRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    12;
 
   friend void swap(ExitRequest& a, ExitRequest& b) {
     a.Swap(&b);
@@ -2018,7 +2351,7 @@ class AnsExitRequest final :
                &_AnsExitRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    13;
 
   friend void swap(AnsExitRequest& a, AnsExitRequest& b) {
     a.Swap(&b);
@@ -3056,6 +3389,172 @@ AnsUserListRequest::mutable_data() {
 
 // -------------------------------------------------------------------
 
+// FileSendRequest
+
+// string fileName = 1;
+inline void FileSendRequest::clear_filename() {
+  filename_.ClearToEmpty();
+}
+inline const std::string& FileSendRequest::filename() const {
+  // @@protoc_insertion_point(field_get:PacketTag.FileSendRequest.fileName)
+  return _internal_filename();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void FileSendRequest::set_filename(ArgT0&& arg0, ArgT... args) {
+ 
+ filename_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.FileSendRequest.fileName)
+}
+inline std::string* FileSendRequest::mutable_filename() {
+  std::string* _s = _internal_mutable_filename();
+  // @@protoc_insertion_point(field_mutable:PacketTag.FileSendRequest.fileName)
+  return _s;
+}
+inline const std::string& FileSendRequest::_internal_filename() const {
+  return filename_.Get();
+}
+inline void FileSendRequest::_internal_set_filename(const std::string& value) {
+  
+  filename_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* FileSendRequest::_internal_mutable_filename() {
+  
+  return filename_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* FileSendRequest::release_filename() {
+  // @@protoc_insertion_point(field_release:PacketTag.FileSendRequest.fileName)
+  return filename_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void FileSendRequest::set_allocated_filename(std::string* filename) {
+  if (filename != nullptr) {
+    
+  } else {
+    
+  }
+  filename_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), filename,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.FileSendRequest.fileName)
+}
+
+// int32 fileSize = 2;
+inline void FileSendRequest::clear_filesize() {
+  filesize_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 FileSendRequest::_internal_filesize() const {
+  return filesize_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 FileSendRequest::filesize() const {
+  // @@protoc_insertion_point(field_get:PacketTag.FileSendRequest.fileSize)
+  return _internal_filesize();
+}
+inline void FileSendRequest::_internal_set_filesize(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  filesize_ = value;
+}
+inline void FileSendRequest::set_filesize(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_filesize(value);
+  // @@protoc_insertion_point(field_set:PacketTag.FileSendRequest.fileSize)
+}
+
+// string data = 3;
+inline void FileSendRequest::clear_data() {
+  data_.ClearToEmpty();
+}
+inline const std::string& FileSendRequest::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.FileSendRequest.data)
+  return _internal_data();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void FileSendRequest::set_data(ArgT0&& arg0, ArgT... args) {
+ 
+ data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.FileSendRequest.data)
+}
+inline std::string* FileSendRequest::mutable_data() {
+  std::string* _s = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:PacketTag.FileSendRequest.data)
+  return _s;
+}
+inline const std::string& FileSendRequest::_internal_data() const {
+  return data_.Get();
+}
+inline void FileSendRequest::_internal_set_data(const std::string& value) {
+  
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* FileSendRequest::_internal_mutable_data() {
+  
+  return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* FileSendRequest::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.FileSendRequest.data)
+  return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void FileSendRequest::set_allocated_data(std::string* data) {
+  if (data != nullptr) {
+    
+  } else {
+    
+  }
+  data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.FileSendRequest.data)
+}
+
+// -------------------------------------------------------------------
+
+// AnsFileSendRequest
+
+// string data = 1;
+inline void AnsFileSendRequest::clear_data() {
+  data_.ClearToEmpty();
+}
+inline const std::string& AnsFileSendRequest::data() const {
+  // @@protoc_insertion_point(field_get:PacketTag.AnsFileSendRequest.data)
+  return _internal_data();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AnsFileSendRequest::set_data(ArgT0&& arg0, ArgT... args) {
+ 
+ data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:PacketTag.AnsFileSendRequest.data)
+}
+inline std::string* AnsFileSendRequest::mutable_data() {
+  std::string* _s = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:PacketTag.AnsFileSendRequest.data)
+  return _s;
+}
+inline const std::string& AnsFileSendRequest::_internal_data() const {
+  return data_.Get();
+}
+inline void AnsFileSendRequest::_internal_set_data(const std::string& value) {
+  
+  data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* AnsFileSendRequest::_internal_mutable_data() {
+  
+  return data_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* AnsFileSendRequest::release_data() {
+  // @@protoc_insertion_point(field_release:PacketTag.AnsFileSendRequest.data)
+  return data_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void AnsFileSendRequest::set_allocated_data(std::string* data) {
+  if (data != nullptr) {
+    
+  } else {
+    
+  }
+  data_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), data,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:PacketTag.AnsFileSendRequest.data)
+}
+
+// -------------------------------------------------------------------
+
 // ExitRequest
 
 // .PacketTag.ExitType type = 1;
@@ -3197,6 +3696,10 @@ inline void AnsExitRequest::set_allocated_data(std::string* data) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -76,6 +76,38 @@ namespace Send
 		cout << "[ROOM_USER_LIST]" << endl;
 	}
 
+	// INPUT_FILENAME_INDEX
+	void Network_Send::SendFileSendRequest(std::string fileName)
+	{
+		ifstream openFile(fileName, ios::binary);
+		int length;
+		//char* buffer;
+		openFile.seekg(0, ios::end);
+		length = openFile.tellg();
+		openFile.seekg(0, ios::beg);
+		//buffer = new char[length];
+		//openFile.read(buffer, length);
+		openFile.close();
+
+		PacketTag::FileSendRequest sendData;
+		sendData.set_filename(fileName);
+		sendData.set_filesize(length);
+
+		PacketTag::PacketMsg packet;
+		packet.set_nickname(nickname);
+		packet.set_type(PacketTag::PacketType::FILE_SEND_REQUEST);
+		packet.set_data(sendData.SerializeAsString());
+
+		SendPacket(packet.SerializeAsString());
+
+		cout << "[SendFileSendRequest] " << fileName << endl;
+	}
+
+	void Network_Send::SendAnsFileSendRequest(std::string data)
+	{
+
+	}
+
 	void Network_Send::SendExitRequest(string data)
 	{
 		PacketTag::ExitRequest exitReq;

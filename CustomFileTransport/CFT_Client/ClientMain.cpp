@@ -127,7 +127,6 @@ void RunSendThread()
 			switch (splitted[INPUT_COMMAND_INDEX][INPUT_COMMAND_TYPE_INDEX])
 			{
 			case 'w':
-				
 				for (int i = 2; i < splitted.size(); i++)
 				{
 					msg += splitted[i] + " ";
@@ -140,6 +139,9 @@ void RunSendThread()
 			case 'e':
 				sendObject.SendExitRequest(" ");
 				exitFlag = true;
+				break;
+			case 'f':
+				sendObject.SendFileSendRequest(splitted[INPUT_FILENAME_INDEX]);
 				break;
 			default:
 				break;

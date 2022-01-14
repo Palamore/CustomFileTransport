@@ -13,6 +13,8 @@ namespace Recv
 		bool OnRecvChatNormal(std::string data);
 		bool OnRecvChatWhisper(std::string data);
 		bool OnRecvUserListRequest(std::string data);
+		bool OnRecvFileSendRequest(std::string data);
+		bool OnRecvFileSendRequestAnswer(std::string data);
 		bool OnRecvExitRequest(std::string data);
 
 

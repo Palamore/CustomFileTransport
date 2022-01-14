@@ -8,6 +8,9 @@
 #include <thread>
 #include <vector>
 #include <string>
+#include <fstream>
+#include <ostream>
+#include <io.h>
 using namespace std;
 
 
@@ -17,4 +20,5 @@ using namespace std;
 #define INPUT_COMMAND_INDEX 0
 #define INPUT_COMMAND_TYPE_INDEX 1
 #define INPUT_TARGET_NICKNAME_INDEX 1
+#define INPUT_FILENAME_INDEX 1
 #define INPUT_MESSAGE_INDEX 2

@@ -56,6 +56,8 @@ public:
 	void OnRcvChatNormal(stSOCKETINFO* socketInfo, string data, string nickname);
 	void OnRcvChatWhisper(stSOCKETINFO* socketInfo, string data, string nickname);
 	void OnRcvUserListRequest(stSOCKETINFO* socketInfo, string data);
+	void OnRcvFileSendRequest(stSOCKETINFO* socketInfo, string data);
+	void OnRcvAnsFileSendRequest(stSOCKETINFO* socketInfo, string data);
 	void OnRcvExitRequest(stSOCKETINFO* socketInfo, string data);
 
 	void SendAnsLoginRequest(stSOCKETINFO* socketInfo, AnsLoginRequest loginData);
@@ -63,6 +65,8 @@ public:
 	void SendAnsChatNormal(stSOCKETINFO* socketInfo, AnsChatNormal chatData);
 	void SendAnsChatWhisper(stSOCKETINFO* socketInfo, SOCKET target, AnsChatWhisper chatData);
 	void SendAnsUserListRequest(stSOCKETINFO* socketInfo, AnsUserListRequest listData);
+	void SendFileSendRequest(stSOCKETINFO* socketInfo, string fileName);
+	void SendAnsFileSendRequest(stSOCKETINFO* socketInfo, AnsFileSendRequest fileData);
 	void SendAnsExitRequest(stSOCKETINFO* socketInfo, AnsExitRequest exitData);
 
 	vector<SOCKET*>* connectedClients;

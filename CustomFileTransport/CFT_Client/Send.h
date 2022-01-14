@@ -12,6 +12,8 @@ namespace Send
 		void SendChatNormal(std::string msg);
 		void SendChatWhisper(std::string targetNickname, std::string data);
 		void SendUserListRequest(std::string data);
+		void SendFileSendRequest(std::string fileName);
+		void SendAnsFileSendRequest(std::string data);
 		void SendExitRequest(std::string data);
 
 		std::string nickname;

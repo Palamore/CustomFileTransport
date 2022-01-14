@@ -8,6 +8,8 @@ enum PacketType {
   USER_LIST_REQUEST = 3;
   EXIT_REQUEST = 4;
   REQUEST_FAIL = 5;
+  FILE_SEND_REQUEST = 6;
+  FILE_SEND_REQUEST_ANSWER = 7;
 }
 
 message PacketMsg{
@@ -64,6 +66,16 @@ message AnsUserListRequest{
   repeated string data = 1;
 }
 
+message FileSendRequest {
+	string fileName = 1;
+	int32 fileSize = 2;
+	string data = 3;
+}
+
+message AnsFileSendRequest {
+	string data = 1;
+}
+
 enum ExitType {
   EXIT_NORMAL = 0;
   EXIT_DESTRUCTOR = 1;
@@ -78,4 +90,5 @@ message AnsExitRequest{
 	ExitType type = 1;
 	string data = 2;
 }
+
 

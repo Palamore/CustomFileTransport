@@ -148,6 +148,32 @@ struct AnsUserListRequestDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AnsUserListRequestDefaultTypeInternal _AnsUserListRequest_default_instance_;
+constexpr FileSendRequest::FileSendRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : filename_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , filesize_(0){}
+struct FileSendRequestDefaultTypeInternal {
+  constexpr FileSendRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~FileSendRequestDefaultTypeInternal() {}
+  union {
+    FileSendRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT FileSendRequestDefaultTypeInternal _FileSendRequest_default_instance_;
+constexpr AnsFileSendRequest::AnsFileSendRequest(
+  ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
+  : data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string){}
+struct AnsFileSendRequestDefaultTypeInternal {
+  constexpr AnsFileSendRequestDefaultTypeInternal()
+    : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
+  ~AnsFileSendRequestDefaultTypeInternal() {}
+  union {
+    AnsFileSendRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AnsFileSendRequestDefaultTypeInternal _AnsFileSendRequest_default_instance_;
 constexpr ExitRequest::ExitRequest(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : data_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
@@ -177,7 +203,7 @@ struct AnsExitRequestDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT AnsExitRequestDefaultTypeInternal _AnsExitRequest_default_instance_;
 }  // namespace PacketTag
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_PacketTag_2eproto[12];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_PacketTag_2eproto[14];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_PacketTag_2eproto[3];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_PacketTag_2eproto = nullptr;
 
@@ -262,6 +288,22 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_PacketTag_2eproto::offsets[] P
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::PacketTag::AnsUserListRequest, data_),
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::PacketTag::FileSendRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::PacketTag::FileSendRequest, filename_),
+  PROTOBUF_FIELD_OFFSET(::PacketTag::FileSendRequest, filesize_),
+  PROTOBUF_FIELD_OFFSET(::PacketTag::FileSendRequest, data_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::PacketTag::AnsFileSendRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::PacketTag::AnsFileSendRequest, data_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::PacketTag::ExitRequest, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -289,8 +331,10 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 56, -1, -1, sizeof(::PacketTag::AnsChatWhisper)},
   { 65, -1, -1, sizeof(::PacketTag::UserListRequest)},
   { 72, -1, -1, sizeof(::PacketTag::AnsUserListRequest)},
-  { 79, -1, -1, sizeof(::PacketTag::ExitRequest)},
-  { 87, -1, -1, sizeof(::PacketTag::AnsExitRequest)},
+  { 79, -1, -1, sizeof(::PacketTag::FileSendRequest)},
+  { 88, -1, -1, sizeof(::PacketTag::AnsFileSendRequest)},
+  { 95, -1, -1, sizeof(::PacketTag::ExitRequest)},
+  { 103, -1, -1, sizeof(::PacketTag::AnsExitRequest)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -304,6 +348,8 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_AnsChatWhisper_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_UserListRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_AnsUserListRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_FileSendRequest_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_AnsFileSendRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_ExitRequest_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::PacketTag::_AnsExitRequest_default_instance_),
 };
@@ -323,21 +369,25 @@ const char descriptor_table_protodef_PacketTag_2eproto[] PROTOBUF_SECTION_VARIAB
   "argetNickname\030\001 \001(\t\022\014\n\004data\030\002 \001(\t\022\020\n\010nic"
   "kname\030\003 \001(\t\"\037\n\017UserListRequest\022\014\n\004data\030\001"
   " \003(\t\"\"\n\022AnsUserListRequest\022\014\n\004data\030\001 \003(\t"
-  "\">\n\013ExitRequest\022!\n\004type\030\001 \001(\0162\023.PacketTa"
-  "g.ExitType\022\014\n\004data\030\002 \001(\t\"A\n\016AnsExitReque"
-  "st\022!\n\004type\030\001 \001(\0162\023.PacketTag.ExitType\022\014\n"
-  "\004data\030\002 \001(\t*}\n\nPacketType\022\021\n\rLOGIN_REQUE"
-  "ST\020\000\022\017\n\013CHAT_NORMAL\020\001\022\020\n\014CHAT_WHISPER\020\002\022"
-  "\025\n\021USER_LIST_REQUEST\020\003\022\020\n\014EXIT_REQUEST\020\004"
-  "\022\020\n\014REQUEST_FAIL\020\005*4\n\017LoginResultType\022\021\n"
-  "\rLOGIN_SUCCESS\020\000\022\016\n\nLOGIN_FAIL\020\001*0\n\010Exit"
-  "Type\022\017\n\013EXIT_NORMAL\020\000\022\023\n\017EXIT_DESTRUCTOR"
-  "\020\001b\006proto3"
+  "\"C\n\017FileSendRequest\022\020\n\010fileName\030\001 \001(\t\022\020\n"
+  "\010fileSize\030\002 \001(\005\022\014\n\004data\030\003 \001(\t\"\"\n\022AnsFile"
+  "SendRequest\022\014\n\004data\030\001 \001(\t\">\n\013ExitRequest"
+  "\022!\n\004type\030\001 \001(\0162\023.PacketTag.ExitType\022\014\n\004d"
+  "ata\030\002 \001(\t\"A\n\016AnsExitRequest\022!\n\004type\030\001 \001("
+  "\0162\023.PacketTag.ExitType\022\014\n\004data\030\002 \001(\t*\262\001\n"
+  "\nPacketType\022\021\n\rLOGIN_REQUEST\020\000\022\017\n\013CHAT_N"
+  "ORMAL\020\001\022\020\n\014CHAT_WHISPER\020\002\022\025\n\021USER_LIST_R"
+  "EQUEST\020\003\022\020\n\014EXIT_REQUEST\020\004\022\020\n\014REQUEST_FA"
+  "IL\020\005\022\025\n\021FILE_SEND_REQUEST\020\006\022\034\n\030FILE_SEND"
+  "_REQUEST_ANSWER\020\007*4\n\017LoginResultType\022\021\n\r"
+  "LOGIN_SUCCESS\020\000\022\016\n\nLOGIN_FAIL\020\001*0\n\010ExitT"
+  "ype\022\017\n\013EXIT_NORMAL\020\000\022\023\n\017EXIT_DESTRUCTOR\020"
+  "\001b\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_PacketTag_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_PacketTag_2eproto = {
-  false, false, 930, descriptor_table_protodef_PacketTag_2eproto, "PacketTag.proto", 
-  &descriptor_table_PacketTag_2eproto_once, nullptr, 0, 12,
+  false, false, 1089, descriptor_table_protodef_PacketTag_2eproto, "PacketTag.proto", 
+  &descriptor_table_PacketTag_2eproto_once, nullptr, 0, 14,
   schemas, file_default_instances, TableStruct_PacketTag_2eproto::offsets,
   file_level_metadata_PacketTag_2eproto, file_level_enum_descriptors_PacketTag_2eproto, file_level_service_descriptors_PacketTag_2eproto,
 };
@@ -360,6 +410,8 @@ bool PacketType_IsValid(int value) {
     case 3:
     case 4:
     case 5:
+    case 6:
+    case 7:
       return true;
     default:
       return false;
@@ -2712,6 +2764,469 @@ void AnsUserListRequest::InternalSwap(AnsUserListRequest* other) {
 
 // ===================================================================
 
+class FileSendRequest::_Internal {
+ public:
+};
+
+FileSendRequest::FileSendRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:PacketTag.FileSendRequest)
+}
+FileSendRequest::FileSendRequest(const FileSendRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  filename_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_filename().empty()) {
+    filename_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_filename(), 
+      GetArenaForAllocation());
+  }
+  data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_data().empty()) {
+    data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data(), 
+      GetArenaForAllocation());
+  }
+  filesize_ = from.filesize_;
+  // @@protoc_insertion_point(copy_constructor:PacketTag.FileSendRequest)
+}
+
+void FileSendRequest::SharedCtor() {
+filename_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+filesize_ = 0;
+}
+
+FileSendRequest::~FileSendRequest() {
+  // @@protoc_insertion_point(destructor:PacketTag.FileSendRequest)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void FileSendRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  filename_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  data_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void FileSendRequest::ArenaDtor(void* object) {
+  FileSendRequest* _this = reinterpret_cast< FileSendRequest* >(object);
+  (void)_this;
+}
+void FileSendRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void FileSendRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void FileSendRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:PacketTag.FileSendRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  filename_.ClearToEmpty();
+  data_.ClearToEmpty();
+  filesize_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* FileSendRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string fileName = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_filename();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.FileSendRequest.fileName"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int32 fileSize = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          filesize_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // string data = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          auto str = _internal_mutable_data();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.FileSendRequest.data"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* FileSendRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:PacketTag.FileSendRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string fileName = 1;
+  if (!this->_internal_filename().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_filename().data(), static_cast<int>(this->_internal_filename().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PacketTag.FileSendRequest.fileName");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_filename(), target);
+  }
+
+  // int32 fileSize = 2;
+  if (this->_internal_filesize() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_filesize(), target);
+  }
+
+  // string data = 3;
+  if (!this->_internal_data().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PacketTag.FileSendRequest.data");
+    target = stream->WriteStringMaybeAliased(
+        3, this->_internal_data(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:PacketTag.FileSendRequest)
+  return target;
+}
+
+size_t FileSendRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:PacketTag.FileSendRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string fileName = 1;
+  if (!this->_internal_filename().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_filename());
+  }
+
+  // string data = 3;
+  if (!this->_internal_data().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_data());
+  }
+
+  // int32 fileSize = 2;
+  if (this->_internal_filesize() != 0) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32SizePlusOne(this->_internal_filesize());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FileSendRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    FileSendRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FileSendRequest::GetClassData() const { return &_class_data_; }
+
+void FileSendRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<FileSendRequest *>(to)->MergeFrom(
+      static_cast<const FileSendRequest &>(from));
+}
+
+
+void FileSendRequest::MergeFrom(const FileSendRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:PacketTag.FileSendRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_filename().empty()) {
+    _internal_set_filename(from._internal_filename());
+  }
+  if (!from._internal_data().empty()) {
+    _internal_set_data(from._internal_data());
+  }
+  if (from._internal_filesize() != 0) {
+    _internal_set_filesize(from._internal_filesize());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void FileSendRequest::CopyFrom(const FileSendRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:PacketTag.FileSendRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool FileSendRequest::IsInitialized() const {
+  return true;
+}
+
+void FileSendRequest::InternalSwap(FileSendRequest* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &filename_, lhs_arena,
+      &other->filename_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &data_, lhs_arena,
+      &other->data_, rhs_arena
+  );
+  swap(filesize_, other->filesize_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata FileSendRequest::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
+      file_level_metadata_PacketTag_2eproto[10]);
+}
+
+// ===================================================================
+
+class AnsFileSendRequest::_Internal {
+ public:
+};
+
+AnsFileSendRequest::AnsFileSendRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor();
+  if (!is_message_owned) {
+    RegisterArenaDtor(arena);
+  }
+  // @@protoc_insertion_point(arena_constructor:PacketTag.AnsFileSendRequest)
+}
+AnsFileSendRequest::AnsFileSendRequest(const AnsFileSendRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_data().empty()) {
+    data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_data(), 
+      GetArenaForAllocation());
+  }
+  // @@protoc_insertion_point(copy_constructor:PacketTag.AnsFileSendRequest)
+}
+
+void AnsFileSendRequest::SharedCtor() {
+data_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+AnsFileSendRequest::~AnsFileSendRequest() {
+  // @@protoc_insertion_point(destructor:PacketTag.AnsFileSendRequest)
+  if (GetArenaForAllocation() != nullptr) return;
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+inline void AnsFileSendRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  data_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void AnsFileSendRequest::ArenaDtor(void* object) {
+  AnsFileSendRequest* _this = reinterpret_cast< AnsFileSendRequest* >(object);
+  (void)_this;
+}
+void AnsFileSendRequest::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void AnsFileSendRequest::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+
+void AnsFileSendRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:PacketTag.AnsFileSendRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  data_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* AnsFileSendRequest::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string data = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_data();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.AnsFileSendRequest.data"));
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* AnsFileSendRequest::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:PacketTag.AnsFileSendRequest)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string data = 1;
+  if (!this->_internal_data().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "PacketTag.AnsFileSendRequest.data");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_data(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:PacketTag.AnsFileSendRequest)
+  return target;
+}
+
+size_t AnsFileSendRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:PacketTag.AnsFileSendRequest)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string data = 1;
+  if (!this->_internal_data().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_data());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AnsFileSendRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    AnsFileSendRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AnsFileSendRequest::GetClassData() const { return &_class_data_; }
+
+void AnsFileSendRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
+                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+  static_cast<AnsFileSendRequest *>(to)->MergeFrom(
+      static_cast<const AnsFileSendRequest &>(from));
+}
+
+
+void AnsFileSendRequest::MergeFrom(const AnsFileSendRequest& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:PacketTag.AnsFileSendRequest)
+  GOOGLE_DCHECK_NE(&from, this);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_data().empty()) {
+    _internal_set_data(from._internal_data());
+  }
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void AnsFileSendRequest::CopyFrom(const AnsFileSendRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:PacketTag.AnsFileSendRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AnsFileSendRequest::IsInitialized() const {
+  return true;
+}
+
+void AnsFileSendRequest::InternalSwap(AnsFileSendRequest* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &data_, lhs_arena,
+      &other->data_, rhs_arena
+  );
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata AnsFileSendRequest::GetMetadata() const {
+  return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
+      file_level_metadata_PacketTag_2eproto[11]);
+}
+
+// ===================================================================
+
 class ExitRequest::_Internal {
  public:
 };
@@ -2933,7 +3448,7 @@ void ExitRequest::InternalSwap(ExitRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ExitRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
-      file_level_metadata_PacketTag_2eproto[10]);
+      file_level_metadata_PacketTag_2eproto[12]);
 }
 
 // ===================================================================
@@ -3159,7 +3674,7 @@ void AnsExitRequest::InternalSwap(AnsExitRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AnsExitRequest::GetMetadata() const {
   return ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
       &descriptor_table_PacketTag_2eproto_getter, &descriptor_table_PacketTag_2eproto_once,
-      file_level_metadata_PacketTag_2eproto[11]);
+      file_level_metadata_PacketTag_2eproto[13]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
@@ -3194,6 +3709,12 @@ template<> PROTOBUF_NOINLINE ::PacketTag::UserListRequest* Arena::CreateMaybeMes
 }
 template<> PROTOBUF_NOINLINE ::PacketTag::AnsUserListRequest* Arena::CreateMaybeMessage< ::PacketTag::AnsUserListRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::PacketTag::AnsUserListRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::PacketTag::FileSendRequest* Arena::CreateMaybeMessage< ::PacketTag::FileSendRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::PacketTag::FileSendRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::PacketTag::AnsFileSendRequest* Arena::CreateMaybeMessage< ::PacketTag::AnsFileSendRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::PacketTag::AnsFileSendRequest >(arena);
 }
 template<> PROTOBUF_NOINLINE ::PacketTag::ExitRequest* Arena::CreateMaybeMessage< ::PacketTag::ExitRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::PacketTag::ExitRequest >(arena);

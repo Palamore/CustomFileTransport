@@ -408,6 +408,12 @@ void IOCompletionPort::WorkerThread()
 			case PacketType::USER_LIST_REQUEST:
 				OnRcvUserListRequest(pSocketInfo, msg.data());
 				break;
+			case PacketType::FILE_SEND_REQUEST:
+				OnRcvFileSendRequest(pSocketInfo, msg.data());
+				break;
+			case PacketType::FILE_SEND_REQUEST_ANSWER:
+				OnRcvAnsFileSendRequest(pSocketInfo, msg.data());
+				break;
 			case PacketType::EXIT_REQUEST:
 				OnRcvExitRequest(pSocketInfo, msg.data());
 				break;
@@ -571,6 +577,41 @@ void IOCompletionPort::OnRcvUserListRequest(stSOCKETINFO* socketInfo, string dat
 
 	SendAnsUserListRequest(socketInfo, ansData);
 }
+
+void IOCompletionPort::OnRcvFileSendRequest(stSOCKETINFO* socketInfo, string data)
+{
+	FileSendRequest fileData;
+	if (!fileData.ParseFromString(data))
+	{
+		Debug::LogError("fileData Parsing Failed");
+		return;
+	}
+	Debug::Log("[OnRcvFileSendRequest] " + fileData.SerializeAsString());
+
+	// TODO :: 받는 쪽 UDP 실행파일 실행. 
+
+	AnsFileSendRequest ansData;
+	ansData.set_data("true");
+	// 보내는 쪽에 Answer 패킷 전송
+	SendAnsFileSendRequest(socketInfo, ansData);
+}
+
+void IOCompletionPort::OnRcvAnsFileSendRequest(stSOCKETINFO* socketInfo, string data)
+{
+	AnsFileSendRequest fileData;
+	if (!fileData.ParseFromString(data))
+	{
+		Debug::LogError("fileData Parsing Failed");
+		return;
+	}
+	Debug::Log("[OnRcvAnsFileSendRequest] " + fileData.SerializeAsString());
+
+	// TODO :: 보내는 쪽 UDP 실행파일 실행.
+
+}
+
+
+
 void IOCompletionPort::OnRcvExitRequest(stSOCKETINFO* socketInfo, string data)
 {
 	ExitRequest exitReq;
@@ -687,6 +728,45 @@ void IOCompletionPort::SendAnsUserListRequest(stSOCKETINFO* socketInfo, AnsUserL
 		Debug::Log("[SendAnsUserListRequest]" + listData.SerializeAsString());
 	}
 }
+
+void IOCompletionPort::SendFileSendRequest(stSOCKETINFO* socketInfo, string fileName)
+{
+	ifstream openFile(fileName, ios::binary);
+	int length;
+	//char* buffer;
+	openFile.seekg(0, ios::end);
+	length = openFile.tellg();
+	openFile.seekg(0, ios::beg);
+	//buffer = new char[length];
+	//openFile.read(buffer, length);
+	openFile.close();
+
+	FileSendRequest fileData;
+	fileData.set_filename(fileName);
+	fileData.set_filesize(length);
+
+	PacketMsg msg;
+	msg.set_type(PacketType::FILE_SEND_REQUEST);
+	msg.set_data(fileData.SerializeAsString());
+
+	// TODO:: 보낼 대상 데이터 받아야함.
+
+}
+
+void IOCompletionPort::SendAnsFileSendRequest(stSOCKETINFO* socketInfo, AnsFileSendRequest fileData)
+{
+	PacketMsg msg;
+	msg.set_type(PacketType::FILE_SEND_REQUEST_ANSWER);
+	msg.set_data(fileData.SerializeAsString());
+
+	string serializedMsg = msg.SerializeAsString();
+
+	if (ReplyPacket(socketInfo, serializedMsg))
+	{
+		Debug::Log("[SendAnsFileSendRequest]" + fileData.SerializeAsString());
+	}
+}
+
 
 void IOCompletionPort::SendAnsExitRequest(stSOCKETINFO* socketInfo, AnsExitRequest exitData)
 {

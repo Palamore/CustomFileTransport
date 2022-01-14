@@ -42,6 +42,10 @@ namespace Recv
 				return false;
 			}
 			break;
+		case PacketType::FILE_SEND_REQUEST:
+
+			break;
+
 		case PacketType::EXIT_REQUEST:
 			if(!OnRecvExitRequest(packet.data()))
 			{
@@ -56,7 +60,11 @@ namespace Recv
 	bool Network_Recv::OnRecvLoginRequest(std::string data)
 	{
 		AnsLoginRequest loginData;
-		loginData.ParseFromString(data);
+		if (!loginData.ParseFromString(data))
+		{
+			Debug::LogError("loginData Parsing Failed");
+			return false;
+		}
 
 		switch (loginData.type())
 		{
@@ -74,7 +82,11 @@ namespace Recv
 	bool Network_Recv::OnRecvRequestFail(std::string data)
 	{
 		AnsRequestFail failData;
-		failData.ParseFromString(data);
+		if (!failData.ParseFromString(data))
+		{
+			Debug::LogError("failData Parsing Failed");
+			return false;
+		}
 
 		Debug::Log("Request Failed : " + failData.data());
 		return true;
@@ -83,7 +95,11 @@ namespace Recv
 	bool Network_Recv::OnRecvChatNormal(std::string data)
 	{
 		AnsChatNormal chatData;
-		chatData.ParseFromString(data);
+		if (!chatData.ParseFromString(data))
+		{
+			Debug::LogError("chatData Parsing Failed");
+			return false;
+		}
 
 		cout << chatData.nickname() << " : " << chatData.data() << endl;
 
@@ -93,7 +109,11 @@ namespace Recv
 	bool Network_Recv::OnRecvChatWhisper(std::string data)
 	{
 		AnsChatWhisper chatData;
-		chatData.ParseFromString(data);
+		if (!chatData.ParseFromString(data))
+		{
+			Debug::LogError("chatData Parsing Failed");
+			return false;
+		}
 
 		cout << chatData.nickname() << " : " << chatData.data() << endl;
 
@@ -103,7 +123,11 @@ namespace Recv
 	bool Network_Recv::OnRecvUserListRequest(std::string data)
 	{
 		AnsUserListRequest listData;
-		listData.ParseFromString(data);
+		if (!listData.ParseFromString(data))
+		{
+			Debug::LogError("listData Parsing Failed");
+			return false;
+		}
 
 		cout << "--------User List--------" << endl;
 		for (int i = 0; i < listData.data_size(); i++)
@@ -114,10 +138,42 @@ namespace Recv
 		return true;
 	}
 
+	bool Network_Recv::OnRecvFileSendRequest(std::string data)
+	{
+		FileSendRequest fileData;
+		if (!fileData.ParseFromString(data))
+		{
+			Debug::LogError("fileData Parsing Failed");
+			return false;
+		}
+		// TODO :: 받는 쪽 UDP 실행파일 실행. 이후 보내는 쪽에 Answer 패킷 전송
+		// 파일 받는게 끝났음은 어떻게 판단?
+
+		return true;
+	}
+
+	bool Network_Recv::OnRecvFileSendRequestAnswer(std::string data)
+	{
+		AnsFileSendRequest fileData;
+		if (!fileData.ParseFromString(data))
+		{
+			Debug::LogError("fileData Parsing Failed");
+			return false;
+		}
+		// TODO :: 보내는 쪽 UDP 실행파일 실행, 보내기 시작
+		// 보내기가 끝났음은 어떻게 판단?
+
+		return true;
+	}
+
 	bool Network_Recv::OnRecvExitRequest(std::string data)
 	{
 		AnsExitRequest exitData;
-		exitData.ParseFromString(data);
+		if (!exitData.ParseFromString(data))
+		{
+			Debug::LogError("exitData Parsing Failed");
+			return false;
+		}
 
 		cout << "Logout result : " << exitData.data() << endl;
 
