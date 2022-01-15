@@ -588,7 +588,13 @@ void IOCompletionPort::OnRcvFileSendRequest(stSOCKETINFO* socketInfo, string dat
 	}
 	Debug::Log("[OnRcvFileSendRequest] " + fileData.SerializeAsString());
 
-	// TODO :: 받는 쪽 UDP 실행파일 실행. 
+
+	// TODO :: 메타파일 Parser 만들어야됨
+	ofstream metaFile(METAFILE_PATH);
+	metaFile << fileData.filename();
+	metaFile.close();
+
+	ShellExecute(NULL, TEXT("open"), TEXT(UDP_SERVER_PATH), NULL, NULL, SW_SHOW);
 
 	AnsFileSendRequest ansData;
 	ansData.set_data("true");
@@ -607,6 +613,7 @@ void IOCompletionPort::OnRcvAnsFileSendRequest(stSOCKETINFO* socketInfo, string 
 	Debug::Log("[OnRcvAnsFileSendRequest] " + fileData.SerializeAsString());
 
 	// TODO :: 보내는 쪽 UDP 실행파일 실행.
+	// https://3001ssw.tistory.com/71
 
 }
 
@@ -758,7 +765,6 @@ void IOCompletionPort::SendAnsFileSendRequest(stSOCKETINFO* socketInfo, AnsFileS
 	PacketMsg msg;
 	msg.set_type(PacketType::FILE_SEND_REQUEST_ANSWER);
 	msg.set_data(fileData.SerializeAsString());
-
 	string serializedMsg = msg.SerializeAsString();
 
 	if (ReplyPacket(socketInfo, serializedMsg))

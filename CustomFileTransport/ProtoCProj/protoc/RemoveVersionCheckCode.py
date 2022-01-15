@@ -13,6 +13,8 @@ def TryRemove(targetFilePath, RemoveTargetText) :
 
 ClientPath = "C:/CustomFileTransport/CustomFileTransport/CFT_Client/"
 ServerPath = "C:/CustomFileTransport/CustomFileTransport/CFT_Server/"
+ClientUDPPath = "C:/CustomFileTransport/CustomFileTransport/CFT_UDP_Client/"
+ServerUDPPath = "C:/CustomFileTransport/CustomFileTransport/CFT_UDP_Server/"
 
 ClientInfoProtoFile = "ClientInfo.pb.h"
 PacketTagProtoFile = "PacketTag.pb.h"
@@ -27,6 +29,11 @@ TryRemove(ClientPath + ClientInfoProtoFile, RemoveTargetText)
 TryRemove(ClientPath + PacketTagProtoFile, RemoveTargetText)
 TryRemove(ServerPath + ClientInfoProtoFile, RemoveTargetText)
 TryRemove(ServerPath + PacketTagProtoFile, RemoveTargetText)
+
+TryRemove(ClientUDPPath + ClientInfoProtoFile, RemoveTargetText)
+TryRemove(ClientUDPPath + PacketTagProtoFile, RemoveTargetText)
+TryRemove(ServerUDPPath + ClientInfoProtoFile, RemoveTargetText)
+TryRemove(ServerUDPPath + PacketTagProtoFile, RemoveTargetText)
 
 print("done")
 

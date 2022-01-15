@@ -324,7 +324,7 @@ class PacketMsg final :
   std::string* _internal_mutable_nickname();
   public:
 
-  // string data = 3;
+  // bytes data = 3;
   void clear_data();
   const std::string& data() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -2537,7 +2537,7 @@ inline void PacketMsg::set_allocated_nickname(std::string* nickname) {
   // @@protoc_insertion_point(field_set_allocated:PacketTag.PacketMsg.nickname)
 }
 
-// string data = 3;
+// bytes data = 3;
 inline void PacketMsg::clear_data() {
   data_.ClearToEmpty();
 }
@@ -2549,7 +2549,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void PacketMsg::set_data(ArgT0&& arg0, ArgT... args) {
  
- data_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ data_.SetBytes(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:PacketTag.PacketMsg.data)
 }
 inline std::string* PacketMsg::mutable_data() {

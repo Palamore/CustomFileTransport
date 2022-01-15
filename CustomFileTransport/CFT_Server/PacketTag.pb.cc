@@ -357,7 +357,7 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 const char descriptor_table_protodef_PacketTag_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\017PacketTag.proto\022\tPacketTag\"P\n\tPacketMs"
   "g\022#\n\004type\030\001 \001(\0162\025.PacketTag.PacketType\022\020"
-  "\n\010nickname\030\002 \001(\t\022\014\n\004data\030\003 \001(\t\"2\n\014LoginR"
+  "\n\010nickname\030\002 \001(\t\022\014\n\004data\030\003 \001(\014\"2\n\014LoginR"
   "equest\022\020\n\010nickname\030\001 \001(\t\022\020\n\010password\030\002 \001"
   "(\t\"[\n\017AnsLoginRequest\022\020\n\010nickname\030\001 \001(\t\022"
   "(\n\004type\030\002 \001(\0162\032.PacketTag.LoginResultTyp"
@@ -545,12 +545,11 @@ const char* PacketMsg::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
         } else
           goto handle_unusual;
         continue;
-      // string data = 3;
+      // bytes data = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           auto str = _internal_mutable_data();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "PacketTag.PacketMsg.data"));
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -601,13 +600,9 @@ failure:
         2, this->_internal_nickname(), target);
   }
 
-  // string data = 3;
+  // bytes data = 3;
   if (!this->_internal_data().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_data().data(), static_cast<int>(this->_internal_data().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "PacketTag.PacketMsg.data");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         3, this->_internal_data(), target);
   }
 
@@ -634,10 +629,10 @@ size_t PacketMsg::ByteSizeLong() const {
         this->_internal_nickname());
   }
 
-  // string data = 3;
+  // bytes data = 3;
   if (!this->_internal_data().empty()) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
         this->_internal_data());
   }
 

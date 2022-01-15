@@ -6,15 +6,22 @@
 #include <memory>
 #include <direct.h>
 #include <io.h>
+#include "PacketTag.pb.h"
+#include "ClientInfo.pb.h"
 
 using namespace std;
 #define UDP_PORT		8001
 #define	MAX_BUFFER		1024
+#define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
+#define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
+#define METAFILE_PATH "C:\\CustomFileTransport\\CustomFileTransport\\tmp\\meta.txt"
+
 
 void RunServer(short nPort);
 
-int main(int _fileSize)
+int main(const char* arg)
 {
+	
 	WORD versionWord = MAKEWORD(1, 1);
 	WSADATA wsaData;
 	int nRet;
@@ -30,7 +37,6 @@ int main(int _fileSize)
 	}
 	
 	RunServer(nPort);
-
 
 	return 0;
 }
@@ -75,6 +81,25 @@ void RunServer(short nPort)
 	}
 
 	SOCKADDR_IN clientAddr;
+
+	// Read MetaFile
+	ifstream metaFile(METAFILE_PATH, ios::binary);
+	int fileLength;
+	char* buffer;
+	metaFile.seekg(0, ios::end);
+	fileLength = metaFile.tellg();
+	metaFile.seekg(0, ios::beg);
+	buffer = new char[fileLength];
+	metaFile.read(buffer, fileLength);
+	metaFile.close();
+
+	PacketTag::FileSendRequest fileData;
+	fileData.ParseFromArray(buffer, fileLength);
+
+	cout << "buffer : " << buffer << endl;
+
+	cout << "FileName : " << fileData.filename() << endl;
+	cout << "FileSize : " << fileData.filesize() << endl;
 
 	while (1)
 	{

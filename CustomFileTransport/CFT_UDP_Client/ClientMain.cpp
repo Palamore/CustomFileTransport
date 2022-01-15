@@ -9,6 +9,9 @@
 #include <direct.h>
 #include <io.h>
 #include <string>
+#include <shellapi.h>
+#include "PacketTag.pb.h"
+#include "ClientInfo.pb.h"
 
 using namespace std;
 #define SERVER_IP		"127.0.0.1"
@@ -20,6 +23,7 @@ void RunClient(const char* szServer, short nPort);
 
 int main()
 {
+
 	WORD versionWord = MAKEWORD(1, 1);
 	WSADATA wsaData;
 	int nRet;
@@ -70,6 +74,8 @@ void RunClient(const char* szServer, short nPort)
 	char szBuf[MAX_BUFFER];
 
 	int nRet;
+
+
 
 	strcpy(szBuf, "Test Message. senttt");
 

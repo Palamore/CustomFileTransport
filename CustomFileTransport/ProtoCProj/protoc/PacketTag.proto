@@ -15,7 +15,7 @@ enum PacketType {
 message PacketMsg{
   PacketType type = 1;
   string nickname = 2;
-  string data = 3;
+  bytes data = 3;
 }
 
 message LoginRequest{

@@ -113,11 +113,18 @@ namespace Send
 		PacketTag::ExitRequest exitReq;
 		exitReq.set_data(data);
 
+		int length = exitReq.ByteSizeLong();
+		
+		//TODO :: PacktMsg의 data bytes로 수정
+		void* buffer = malloc(length);
+		exitReq.SerializeToArray(buffer, length);
+
 		PacketTag::PacketMsg packet;
 		packet.set_nickname(nickname);
 		packet.set_type(PacketTag::PacketType::EXIT_REQUEST);
 		packet.set_data(exitReq.SerializeAsString());
 
+		
 		SendPacket(packet.SerializeAsString());
 
 		cout << "[EXIT_REQUEST]" << endl;
