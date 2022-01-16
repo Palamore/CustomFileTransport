@@ -19,7 +19,6 @@ Recv::Network_Recv recvObject;
 bool exitFlag = false;
 void RunListenThread();
 void RunSendThread();
-vector<string> Split(string targetStr, char splitter);
 
 
 int main()
@@ -122,7 +121,7 @@ void RunSendThread()
 		if (szOutMsg[INPUT_COMMAND_INDEX] == '/')
 		{
 			vector<string> splitted;
-			splitted = Split(szOutMsg, ' ');
+			splitted = CommonTools::Split(szOutMsg, ' ');
 			string msg = "";
 			switch (splitted[INPUT_COMMAND_INDEX][INPUT_COMMAND_TYPE_INDEX])
 			{
@@ -153,24 +152,4 @@ void RunSendThread()
 		}
 	}
 	cout << "SendThread End" << endl;
-}
-
-vector<string> Split(string targetStr, char splitter)
-{
-	vector<string> vect;
-	string e = "";
-	for (int i = 0; i < targetStr.size(); i++)
-	{
-		if (targetStr[i] == splitter)
-		{
-			vect.push_back(e);
-			e = "";
-		}
-		else
-		{
-			e += targetStr[i];
-		}
-	}
-	vect.push_back(e);
-	return vect;
 }

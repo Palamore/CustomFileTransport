@@ -143,6 +143,13 @@
     <None Include="protoc\GenerateProtoc.bat" />
     <None Include="protoc\PacketTag.proto" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CommonTools.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CommonTools.cpp" />
+    <ClCompile Include="DummyMain.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

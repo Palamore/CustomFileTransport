@@ -2,6 +2,7 @@
 #include "ProtocolTag.h"
 #include "ClientInfo.pb.h"
 #include "PacketTag.pb.h"
+#include "CommonTools.h"
 #include <WinSock2.h>
 #include <iostream>
 #include <WS2tcpip.h>
@@ -12,7 +13,6 @@
 #include <ostream>
 #include <io.h>
 using namespace std;
-
 
 #define	MAX_BUFFER		1024
 #define SERVER_PORT		8000

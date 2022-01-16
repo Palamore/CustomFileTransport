@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ClientInfo.pb.cc" />
+    <ClCompile Include="CommonTools.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="IOCompletionPort.cpp" />
     <ClCompile Include="PacketTag.pb.cc" />
@@ -162,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="ClientInfo.h" />
     <ClInclude Include="ClientInfo.pb.h" />
+    <ClInclude Include="CommonTools.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="IOCompletionPort.h" />
     <ClInclude Include="ProtocolTag.h" />

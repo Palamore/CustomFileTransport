@@ -145,10 +145,12 @@
   <ItemGroup>
     <ClCompile Include="ClientInfo.pb.cc" />
     <ClCompile Include="ClientMain.cpp" />
+    <ClCompile Include="CommonTools.cpp" />
     <ClCompile Include="PacketTag.pb.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientInfo.pb.h" />
+    <ClInclude Include="CommonTools.h" />
     <ClInclude Include="PacketTag.pb.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

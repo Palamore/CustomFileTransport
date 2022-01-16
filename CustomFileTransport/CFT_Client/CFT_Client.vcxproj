@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="ClientInfo.pb.cc" />
     <ClCompile Include="ClientMain.cpp" />
+    <ClCompile Include="CommonTools.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="PacketTag.pb.cc" />
     <ClCompile Include="Recv.cpp" />
@@ -155,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientInfo.pb.h" />
+    <ClInclude Include="CommonTools.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="IncludeDefineNamespace.h" />
     <ClInclude Include="PacketTag.pb.h" />

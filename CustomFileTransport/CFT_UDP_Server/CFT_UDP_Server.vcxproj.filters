@@ -24,12 +24,18 @@
     <ClCompile Include="PacketTag.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CommonTools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientInfo.pb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PacketTag.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonTools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

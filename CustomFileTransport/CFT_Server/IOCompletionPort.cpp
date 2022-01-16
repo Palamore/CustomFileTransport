@@ -589,9 +589,10 @@ void IOCompletionPort::OnRcvFileSendRequest(stSOCKETINFO* socketInfo, string dat
 	Debug::Log("[OnRcvFileSendRequest] " + fileData.SerializeAsString());
 
 
-	// TODO :: 메타파일 Parser 만들어야됨
 	ofstream metaFile(METAFILE_PATH);
-	metaFile << fileData.filename();
+	string metaStr = CommonTools::MakeMetaString(fileData.filename(), fileData.filesize());
+	metaFile.clear();
+	metaFile << metaStr;
 	metaFile.close();
 
 	ShellExecute(NULL, TEXT("open"), TEXT(UDP_SERVER_PATH), NULL, NULL, SW_SHOW);
