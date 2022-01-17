@@ -12,6 +12,7 @@
 #include <shellapi.h>
 #include "PacketTag.pb.h"
 #include "ClientInfo.pb.h"
+#include "CommonTools.h"
 
 using namespace std;
 #define SERVER_IP		"127.0.0.1"
@@ -90,16 +91,17 @@ void RunClient(const char* szServer, short nPort)
 	metaFile.read(buffer, fileLength);
 	metaFile.close();
 
-	PacketTag::FileSendRequest fileData;
-	fileData.ParseFromArray(buffer, fileLength);
+	map<string, string> metaData = CommonTools::ParseMetaString(buffer);
+	string fileName = metaData["Filename"];
+	size_t fileSize = atoi(metaData["Filesize"].c_str());
 
 	cout << "buffer : " << buffer << endl;
 	delete[] buffer;
-	cout << "FileName : " << fileData.filename() << endl;
-	cout << "FileSize : " << fileData.filesize() << endl;
+	cout << "FileName : " << fileName << endl;
+	cout << "FileSize : " << fileSize << endl;
 
 
-	ifstream fileStream(fileData.filename(), ios::binary);
+	ifstream fileStream(fileName, ios::binary);
 	fileStream.seekg(0, ios::end);
 	fileLength = fileStream.tellg();
 	fileStream.seekg(0, ios::beg);
@@ -114,6 +116,13 @@ void RunClient(const char* szServer, short nPort)
 		closesocket(s);
 		return;
 	}
+
+	cout << buffer << endl;
+	while (1)
+	{
+
+	}
+
 	delete[] buffer;
 
 	closesocket(s);

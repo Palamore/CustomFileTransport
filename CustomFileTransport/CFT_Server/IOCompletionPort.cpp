@@ -580,7 +580,7 @@ void IOCompletionPort::OnRcvFileSendRequest(stSOCKETINFO* socketInfo, string dat
 	ShellExecute(NULL, TEXT("open"), TEXT(UDP_SERVER_PATH), NULL, NULL, SW_SHOW);
 
 	AnsFileSendRequest ansData;
-	ansData.set_data(fileData.SerializeAsString());
+	ansData.set_data(metaStr);
 	// 보내는 쪽에 Answer 패킷 전송
 	SendAnsFileSendRequest(socketInfo, ansData);
 }
@@ -747,9 +747,7 @@ void IOCompletionPort::SendAnsFileSendRequest(stSOCKETINFO* socketInfo, AnsFileS
 {
 	PacketMsg msg;
 	msg.set_type(PacketType::FILE_SEND_REQUEST_ANSWER);
-	void* data;
-	fileData.SerializeToArray(data, fileData.ByteSizeLong());
-	msg.set_data(data);
+	msg.set_data(fileData.SerializeAsString());
 	string serializedMsg = msg.SerializeAsString();
 
 	if (ReplyPacket(socketInfo, serializedMsg))

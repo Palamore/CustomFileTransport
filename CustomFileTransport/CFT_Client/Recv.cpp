@@ -169,22 +169,14 @@ namespace Recv
 			return false;
 		}
 		// 보내기가 끝났음은 어떻게 판단?
-
-		FileSendRequest fileData;
-		if (!fileData.ParseFromString(ansData.data()))
-		{
-			Debug::LogError("fileData Parsing Failed");
-			return false;
-		}
-
 		ofstream metaFile(METAFILE_PATH);
-		string metaStr = CommonTools::MakeMetaString(fileData.filename(), fileData.filesize());
+		string metaStr = ansData.data();
 		metaFile.clear();
 		metaFile << metaStr;
 		metaFile.close();
 		
 
-		ShellExecute(NULL, TEXT("open"), TEXT(UDP_SERVER_PATH), NULL, NULL, SW_SHOW);
+		ShellExecute(NULL, TEXT("open"), TEXT(UDP_CLIENT_PATH), NULL, NULL, SW_SHOW);
 
 
 		return true;

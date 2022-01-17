@@ -11,6 +11,7 @@
 #include <string>
 #include <fstream>
 #include <ostream>
+#include <map>
 #include <io.h>
 using namespace std;
 
