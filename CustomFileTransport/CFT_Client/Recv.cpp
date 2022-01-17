@@ -43,9 +43,17 @@ namespace Recv
 			}
 			break;
 		case PacketType::FILE_SEND_REQUEST:
-
+			if (!OnRecvFileSendRequest(packet.data()))
+			{
+				return false;
+			}
 			break;
-
+		case PacketType::FILE_SEND_REQUEST_ANSWER:
+			if (!OnRecvFileSendRequestAnswer(packet.data()))
+			{
+				return false;
+			}
+			break;
 		case PacketType::EXIT_REQUEST:
 			if(!OnRecvExitRequest(packet.data()))
 			{
@@ -154,14 +162,30 @@ namespace Recv
 
 	bool Network_Recv::OnRecvFileSendRequestAnswer(std::string data)
 	{
-		AnsFileSendRequest fileData;
-		if (!fileData.ParseFromString(data))
+		AnsFileSendRequest ansData;
+		if (!ansData.ParseFromString(data))
+		{
+			Debug::LogError("ansData Parsing Failed");
+			return false;
+		}
+		// 보내기가 끝났음은 어떻게 판단?
+
+		FileSendRequest fileData;
+		if (!fileData.ParseFromString(ansData.data()))
 		{
 			Debug::LogError("fileData Parsing Failed");
 			return false;
 		}
-		// TODO :: 보내는 쪽 UDP 실행파일 실행, 보내기 시작
-		// 보내기가 끝났음은 어떻게 판단?
+
+		ofstream metaFile(METAFILE_PATH);
+		string metaStr = CommonTools::MakeMetaString(fileData.filename(), fileData.filesize());
+		metaFile.clear();
+		metaFile << metaStr;
+		metaFile.close();
+		
+
+		ShellExecute(NULL, TEXT("open"), TEXT(UDP_SERVER_PATH), NULL, NULL, SW_SHOW);
+
 
 		return true;
 	}

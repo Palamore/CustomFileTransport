@@ -17,6 +17,11 @@ using namespace std;
 #define SERVER_IP		"127.0.0.1"
 #define UDP_PORT		8001
 #define	MAX_BUFFER		1024
+#define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
+#define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
+#define METAFILE_PATH "C:\\CustomFileTransport\\CustomFileTransport\\tmp\\meta.txt"
+
+
 
 void RunClient(const char* szServer, short nPort);
 
@@ -71,23 +76,45 @@ void RunClient(const char* szServer, short nPort)
 	saServer.sin_addr = *((LPIN_ADDR)*lpHostEntry->h_addr_list);
 	saServer.sin_port = htons(nPort);
 
-	char szBuf[MAX_BUFFER];
 
 	int nRet;
 
+	// Read MetaFile
+	ifstream metaFile(METAFILE_PATH, ios::binary);
+	int fileLength;
+	char* buffer;
+	metaFile.seekg(0, ios::end);
+	fileLength = metaFile.tellg();
+	metaFile.seekg(0, ios::beg);
+	buffer = new char[fileLength];
+	metaFile.read(buffer, fileLength);
+	metaFile.close();
+
+	PacketTag::FileSendRequest fileData;
+	fileData.ParseFromArray(buffer, fileLength);
+
+	cout << "buffer : " << buffer << endl;
+	delete[] buffer;
+	cout << "FileName : " << fileData.filename() << endl;
+	cout << "FileSize : " << fileData.filesize() << endl;
 
 
-	strcpy(szBuf, "Test Message. senttt");
+	ifstream fileStream(fileData.filename(), ios::binary);
+	fileStream.seekg(0, ios::end);
+	fileLength = fileStream.tellg();
+	fileStream.seekg(0, ios::beg);
+	buffer = new char[fileLength];
+	fileStream.read(buffer, fileLength);
+	fileStream.close();
 
-	nRet = sendto(s, szBuf, strlen(szBuf), 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
+	nRet = sendto(s, buffer, strlen(buffer), 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
 	if (nRet == SOCKET_ERROR)
 	{
 		cout << "send failed" << endl;
 		closesocket(s);
 		return;
 	}
-
-	memset(szBuf, 0, sizeof(szBuf));
+	delete[] buffer;
 
 	closesocket(s);
 	return;

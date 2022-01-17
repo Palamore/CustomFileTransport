@@ -477,24 +477,6 @@ void IOCompletionPort::OnRcvLoginRequest(stSOCKETINFO* socketInfo, string data)
 	{
 		ansData.set_type(LoginResultType::LOGIN_SUCCESS);
 
-		/*int dirExist = 0;
-		dirExist = _access(loginData.nickname().c_str(), 0);
-		if (dirExist != 0)
-		{
-			int makeDir = 0;
-			makeDir = _mkdir(loginData.nickname().c_str());
-		}
-
-		string logFileStr = loginData.nickname() + "/" + GetCurrentDay() + ".txt";
-		dirExist = _access(logFileStr.c_str(), 0);
-		if (dirExist != 0)
-		{
-			ofstream makeFile(logFileStr.c_str());
-			makeFile.close();
-		}*/
-		//ofstream* fileStream = new ofstream(logFileStr.c_str());
-		//loggingStream->push_back(fileStream);
-
 	}
 	else
 	{
@@ -598,7 +580,7 @@ void IOCompletionPort::OnRcvFileSendRequest(stSOCKETINFO* socketInfo, string dat
 	ShellExecute(NULL, TEXT("open"), TEXT(UDP_SERVER_PATH), NULL, NULL, SW_SHOW);
 
 	AnsFileSendRequest ansData;
-	ansData.set_data("true");
+	ansData.set_data(fileData.SerializeAsString());
 	// 보내는 쪽에 Answer 패킷 전송
 	SendAnsFileSendRequest(socketInfo, ansData);
 }
@@ -765,7 +747,9 @@ void IOCompletionPort::SendAnsFileSendRequest(stSOCKETINFO* socketInfo, AnsFileS
 {
 	PacketMsg msg;
 	msg.set_type(PacketType::FILE_SEND_REQUEST_ANSWER);
-	msg.set_data(fileData.SerializeAsString());
+	void* data;
+	fileData.SerializeToArray(data, fileData.ByteSizeLong());
+	msg.set_data(data);
 	string serializedMsg = msg.SerializeAsString();
 
 	if (ReplyPacket(socketInfo, serializedMsg))

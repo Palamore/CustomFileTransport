@@ -8,6 +8,7 @@
 #include <io.h>
 #include "PacketTag.pb.h"
 #include "ClientInfo.pb.h"
+#include "CommonTools.h"
 
 using namespace std;
 #define UDP_PORT		8001
@@ -94,18 +95,24 @@ void RunServer(short nPort)
 	metaFile.close();
 
 	PacketTag::FileSendRequest fileData;
-	fileData.ParseFromArray(buffer, fileLength);
+	map<string, string> metaData = CommonTools::ParseMetaString(buffer);
+	fileData.set_filename(metaData["Filename"]);
+	fileData.set_filesize(atoi(metaData["Filesize"].c_str()));
 
-	cout << "buffer : " << buffer << endl;
+	//cout << "buffer : " << buffer << endl;
 
-	cout << "FileName : " << fileData.filename() << endl;
-	cout << "FileSize : " << fileData.filesize() << endl;
+	//cout << "FileName : " << fileData.filename() << endl;
+	//cout << "FileSize : " << fileData.filesize() << endl;
+
+	delete[] buffer;
+	fileLength = fileData.filesize();
+	buffer = new char[fileLength];
 
 	while (1)
 	{
-		memset(szBuf, 0, sizeof(szBuf));
+		memset(buffer, 0, fileLength);
 
-		nRet = recvfrom(s, szBuf, sizeof(szBuf), 0, (LPSOCKADDR)&clientAddr, &nLen);
+		nRet = recvfrom(s, buffer, fileLength, 0, (LPSOCKADDR)&clientAddr, &nLen);
 
 		if (nRet < 0)
 		{
@@ -114,7 +121,7 @@ void RunServer(short nPort)
 			return;
 		}
 
-		cout << "recv : " << szBuf << endl;
+		cout << "recv : " << buffer << endl;
 
 	}
 

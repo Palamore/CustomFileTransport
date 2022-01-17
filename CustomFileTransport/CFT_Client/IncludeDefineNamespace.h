@@ -22,3 +22,7 @@ using namespace std;
 #define INPUT_TARGET_NICKNAME_INDEX 1
 #define INPUT_FILENAME_INDEX 1
 #define INPUT_MESSAGE_INDEX 2
+#define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
+#define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
+#define UDP_CLIENT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Client.exe"
+#define METAFILE_PATH "C:\\CustomFileTransport\\CustomFileTransport\\tmp\\meta.txt"

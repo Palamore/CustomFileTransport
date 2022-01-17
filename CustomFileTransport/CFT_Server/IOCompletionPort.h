@@ -26,6 +26,7 @@ using namespace PacketTag;
 #define null			NULL
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
+#define UDP_CLIENT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Client.exe"
 #define METAFILE_PATH "C:\\CustomFileTransport\\CustomFileTransport\\tmp\\meta.txt"
 
 struct stSOCKETINFO
@@ -77,7 +78,6 @@ public:
 
 	vector<SOCKET*>* connectedClients;
 	vector<ClientInfo*>* clientInfoContainer;
-	//vector<ofstream*>* loggingStream;
 
 private:
 	stSOCKETINFO* m_pSocketInfo;		// 소켓 정보
