@@ -20,8 +20,9 @@ using namespace std;
 #define	MAX_BUFFER		1024
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
-#define METAFILE_PATH "C:\\CustomFileTransport\\CustomFileTransport\\tmp\\meta.txt"
-
+#define UDP_CLIENT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Client.exe"
+#define METAFILE_PATH "C:\\CustomFileTransport\\CustomFileTransport\\tmp\\meta_client.txt"
+#define FILE_TO_SEND_PATH "C:\\CustomFileTransport\\CustomFileTransport\\CFT_Client\\"
 
 
 void RunClient(const char* szServer, short nPort);
@@ -101,7 +102,7 @@ void RunClient(const char* szServer, short nPort)
 	cout << "FileSize : " << fileSize << endl;
 
 
-	ifstream fileStream(fileName, ios::binary);
+	ifstream fileStream(FILE_TO_SEND_PATH + fileName, ios::binary);
 	fileStream.seekg(0, ios::end);
 	fileLength = fileStream.tellg();
 	fileStream.seekg(0, ios::beg);

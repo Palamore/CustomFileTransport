@@ -93,6 +93,13 @@ namespace Send
 		sendData.set_filename(fileName);
 		sendData.set_filesize(length);
 
+		ofstream metaFile(METAFILE_PATH);
+		string metaStr = CommonTools::MakeMetaString(fileName, length);
+		metaFile.clear();
+		metaFile << metaStr;
+		metaFile.close();
+
+
 		PacketTag::PacketMsg packet;
 		packet.set_nickname(nickname);
 		packet.set_type(PacketTag::PacketType::FILE_SEND_REQUEST);

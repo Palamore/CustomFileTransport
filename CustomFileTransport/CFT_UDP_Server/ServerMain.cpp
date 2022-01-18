@@ -15,7 +15,8 @@ using namespace std;
 #define	MAX_BUFFER		1024
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
-#define METAFILE_PATH "C:\\CustomFileTransport\\CustomFileTransport\\tmp\\meta.txt"
+#define UDP_CLIENT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Client.exe"
+#define METAFILE_PATH "C:\\CustomFileTransport\\CustomFileTransport\\tmp\\meta_server.txt"
 
 
 void RunServer(short nPort);
@@ -107,7 +108,6 @@ void RunServer(short nPort)
 	delete[] buffer;
 	fileLength = fileData.filesize();
 	buffer = new char[fileLength];
-
 	while (1)
 	{
 		memset(buffer, 0, fileLength);
