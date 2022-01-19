@@ -14,23 +14,42 @@ string Trim(string str)
 			count++;
 		}
 	}
-	for (int i = str.length() - 1; i > str.length() - count; i--)
+	for (int i = 0; i < str.length(); i++)
 	{
-		str[i] = '\0';
+		if (str[i] < 0)
+		{
+			str.erase(i, str.length() - 1);
+			break;
+		}
 	}
+	
 	return str;
 }
 
-string CommonTools::MakeMetaString(string fileName, int fileSize)
-{
+
+/// <summary>
+/// 메타파일 작성시 Reliable UDP를 활용한다면 필요한 정보는
+/// 파일의 내용 분할 시 분할 숫자.
+/// 서버가 받아야 하는 페이로드의 갯수가 필요하다.
+/// </summary>
+string CommonTools::MakeMetaString(string fileName, int fileSize, int contentsLength, int payloadSize)
+{ 
 	string metaStr = "";
-	metaStr += "Filename";
+	metaStr += "FileName";
 	metaStr += '\n';
 	metaStr += fileName;
 	metaStr += '\n';
-	metaStr += "Filesize";
+	metaStr += "FileSize";
 	metaStr += '\n';
 	metaStr += to_string(fileSize);
+	metaStr += '\n';
+	metaStr += "ContentsLength";
+	metaStr += '\n';
+	metaStr += to_string(contentsLength);
+	metaStr += '\n';
+	metaStr += "PayloadSize";
+	metaStr += '\n';
+	metaStr += to_string(payloadSize);
 	return metaStr;
 }
 
@@ -42,21 +61,27 @@ map<string, string> CommonTools::ParseMetaString(string metaStr)
 
 	for (int i = 0; i < splitted.size() - 1; i++)
 	{
-
-		if (splitted[i]._Equal("Filename"))
+		if (splitted[i]._Equal("FileName"))
 		{
 			data.insert({ splitted[i], splitted[i + 1] });
 			i++;
 		}
-		if (splitted[i]._Equal("Filesize"))
+		if (splitted[i]._Equal("FileSize"))
+		{
+			data.insert({ splitted[i], splitted[i + 1] });
+			i++;
+		}
+		if (splitted[i]._Equal("ContentsLength"))
+		{
+			data.insert({ splitted[i], splitted[i + 1] });
+			i++;
+		}
+		if (splitted[i]._Equal("PayloadSize"))
 		{
 			data.insert({ splitted[i], splitted[i + 1] });
 			i++;
 		}
 	}
-
-
-
 	return data;
 }
 

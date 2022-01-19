@@ -13,11 +13,15 @@
 using namespace std;
 #define UDP_PORT		8001
 #define	MAX_BUFFER		1024
+#define UDP_PAYLOAD_SIZE 1000
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
 #define UDP_CLIENT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Client.exe"
 #define METAFILE_PATH "C:\\CustomFileTransport\\CustomFileTransport\\tmp\\meta_server.txt"
-
+#define METADATA_FILENAME "FileName"
+#define METADATA_FILESIZE "FileSize"
+#define METADATA_CONTENTSLENGTH "ContentsLength"
+#define METADATA_PAYLOADSIZE "PayloadSize"
 
 void RunServer(short nPort);
 
@@ -95,24 +99,24 @@ void RunServer(short nPort)
 	metaFile.read(buffer, fileLength);
 	metaFile.close();
 
-	PacketTag::FileSendRequest fileData;
-	map<string, string> metaData = CommonTools::ParseMetaString(buffer);
-	fileData.set_filename(metaData["Filename"]);
-	fileData.set_filesize(atoi(metaData["Filesize"].c_str()));
-
 	//cout << "buffer : " << buffer << endl;
-
 	//cout << "FileName : " << fileData.filename() << endl;
 	//cout << "FileSize : " << fileData.filesize() << endl;
 
+	map<string, string> metaData = CommonTools::ParseMetaString(buffer);
+
+	string fileName = metaData[METADATA_FILENAME];
+	int fileSize = atoi(metaData[METADATA_FILESIZE].c_str());
+	int contentsLength = atoi(metaData[METADATA_CONTENTSLENGTH].c_str());
+
+
 	delete[] buffer;
-	fileLength = fileData.filesize();
-	buffer = new char[fileLength];
+	buffer = new char[UDP_PAYLOAD_SIZE];
 	while (1)
 	{
 		memset(buffer, 0, fileLength);
 
-		nRet = recvfrom(s, buffer, fileLength, 0, (LPSOCKADDR)&clientAddr, &nLen);
+		nRet = recvfrom(s, buffer, UDP_PAYLOAD_SIZE, 0, (LPSOCKADDR)&clientAddr, &nLen);
 
 		if (nRet < 0)
 		{

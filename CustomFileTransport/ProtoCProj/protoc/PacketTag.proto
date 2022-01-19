@@ -69,7 +69,8 @@ message AnsUserListRequest{
 message FileSendRequest {
 	string fileName = 1;
 	int32 fileSize = 2;
-	string data = 3;
+	int32 contentsLength = 3;
+	string data = 4;
 }
 
 message AnsFileSendRequest {

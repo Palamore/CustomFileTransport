@@ -572,7 +572,7 @@ void IOCompletionPort::OnRcvFileSendRequest(stSOCKETINFO* socketInfo, string dat
 
 
 	ofstream metaFile(METAFILE_PATH);
-	string metaStr = CommonTools::MakeMetaString(fileData.filename(), fileData.filesize());
+	string metaStr = CommonTools::MakeMetaString(fileData.filename(), fileData.filesize(), fileData.contentslength(), UDP_PAYLOAD_SIZE);
 	metaFile.clear();
 	metaFile << metaStr;
 	metaFile.close();

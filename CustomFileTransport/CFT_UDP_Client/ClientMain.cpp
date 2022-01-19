@@ -18,12 +18,16 @@ using namespace std;
 #define SERVER_IP		"127.0.0.1"
 #define UDP_PORT		8001
 #define	MAX_BUFFER		1024
+#define UDP_PAYLOAD_SIZE 1000
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
 #define UDP_CLIENT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Client.exe"
 #define METAFILE_PATH "C:\\CustomFileTransport\\CustomFileTransport\\tmp\\meta_client.txt"
 #define FILE_TO_SEND_PATH "C:\\CustomFileTransport\\CustomFileTransport\\CFT_Client\\"
-
+#define METADATA_FILENAME "FileName"
+#define METADATA_FILESIZE "FileSize"
+#define METADATA_CONTENTSLENGTH "ContentsLength"
+#define METADATA_PAYLOADSIZE "PayloadSize"
 
 void RunClient(const char* szServer, short nPort);
 
@@ -93,8 +97,9 @@ void RunClient(const char* szServer, short nPort)
 	metaFile.close();
 
 	map<string, string> metaData = CommonTools::ParseMetaString(buffer);
-	string fileName = metaData["Filename"];
-	size_t fileSize = atoi(metaData["Filesize"].c_str());
+	string fileName = metaData[METADATA_FILENAME];
+	size_t fileSize = atoi(metaData[METADATA_FILESIZE].c_str());
+	size_t contentsLength = atoi(metaData[METADATA_CONTENTSLENGTH].c_str());
 
 	cout << "buffer : " << buffer << endl;
 	delete[] buffer;
@@ -103,29 +108,45 @@ void RunClient(const char* szServer, short nPort)
 
 
 	ifstream fileStream(FILE_TO_SEND_PATH + fileName, ios::binary);
-	fileStream.seekg(0, ios::end);
-	fileLength = fileStream.tellg();
-	fileStream.seekg(0, ios::beg);
-	buffer = new char[fileLength];
-	fileStream.read(buffer, fileLength);
-	fileStream.close();
-
-	nRet = sendto(s, buffer, strlen(buffer), 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
-	if (nRet == SOCKET_ERROR)
+	//fileStream.seekg(0, ios::end);
+	//fileLength = fileStream.tellg();
+	//fileStream.seekg(0, ios::beg);
+	buffer = new char[UDP_PAYLOAD_SIZE];
+	int index = 1;
+	while (true)
 	{
-		cout << "send failed" << endl;
-		closesocket(s);
-		return;
+		string str = "";
+		if (UDP_PAYLOAD_SIZE * index < contentsLength)
+		{
+			fileStream.read(buffer, UDP_PAYLOAD_SIZE);
+			buffer[UDP_PAYLOAD_SIZE] = '\0';
+			fileStream.seekg(UDP_PAYLOAD_SIZE * index, std::ios::beg);
+			str = string(buffer);
+		}
+		else
+		{
+			int targetLength = contentsLength - (UDP_PAYLOAD_SIZE * (index - 1));
+			fileStream.read(buffer, targetLength);
+			buffer[targetLength] = '\0';
+			fileStream.seekg(0, std::ios::beg);
+			str = string(buffer);
+			str.erase(str.end() - 4, str.end());
+		}
+
+		/*nRet = sendto(s, buffer, UDP_PAYLOAD_SIZE, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
+		if (nRet == SOCKET_ERROR)
+		{
+			cout << "send failed" << endl;
+		}*/
+		cout << str;
+		index++;
 	}
 
-	cout << buffer << endl;
-	while (1)
-	{
-
-	}
 
 	delete[] buffer;
-
+	fileStream.close();
 	closesocket(s);
+
+	cout << "Done" << endl;
 	return;
 }

@@ -1941,8 +1941,9 @@ class FileSendRequest final :
 
   enum : int {
     kFileNameFieldNumber = 1,
-    kDataFieldNumber = 3,
+    kDataFieldNumber = 4,
     kFileSizeFieldNumber = 2,
+    kContentsLengthFieldNumber = 3,
   };
   // string fileName = 1;
   void clear_filename();
@@ -1958,7 +1959,7 @@ class FileSendRequest final :
   std::string* _internal_mutable_filename();
   public:
 
-  // string data = 3;
+  // string data = 4;
   void clear_data();
   const std::string& data() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -1981,6 +1982,15 @@ class FileSendRequest final :
   void _internal_set_filesize(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int32 contentsLength = 3;
+  void clear_contentslength();
+  ::PROTOBUF_NAMESPACE_ID::int32 contentslength() const;
+  void set_contentslength(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_contentslength() const;
+  void _internal_set_contentslength(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:PacketTag.FileSendRequest)
  private:
   class _Internal;
@@ -1991,6 +2001,7 @@ class FileSendRequest final :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr filename_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
   ::PROTOBUF_NAMESPACE_ID::int32 filesize_;
+  ::PROTOBUF_NAMESPACE_ID::int32 contentslength_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_PacketTag_2eproto;
 };
@@ -3457,7 +3468,27 @@ inline void FileSendRequest::set_filesize(::PROTOBUF_NAMESPACE_ID::int32 value) 
   // @@protoc_insertion_point(field_set:PacketTag.FileSendRequest.fileSize)
 }
 
-// string data = 3;
+// int32 contentsLength = 3;
+inline void FileSendRequest::clear_contentslength() {
+  contentslength_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 FileSendRequest::_internal_contentslength() const {
+  return contentslength_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 FileSendRequest::contentslength() const {
+  // @@protoc_insertion_point(field_get:PacketTag.FileSendRequest.contentsLength)
+  return _internal_contentslength();
+}
+inline void FileSendRequest::_internal_set_contentslength(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  contentslength_ = value;
+}
+inline void FileSendRequest::set_contentslength(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_contentslength(value);
+  // @@protoc_insertion_point(field_set:PacketTag.FileSendRequest.contentsLength)
+}
+
+// string data = 4;
 inline void FileSendRequest::clear_data() {
   data_.ClearToEmpty();
 }

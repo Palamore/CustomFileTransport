@@ -17,6 +17,7 @@ using namespace std;
 
 #define	MAX_BUFFER		1024
 #define SERVER_PORT		8000
+#define UDP_PAYLOAD_SIZE 1000
 #define SERVER_IP		"127.0.0.1"
 #define INPUT_COMMAND_INDEX 0
 #define INPUT_COMMAND_TYPE_INDEX 1
@@ -27,3 +28,7 @@ using namespace std;
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
 #define UDP_CLIENT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Client.exe"
 #define METAFILE_PATH "C:\\CustomFileTransport\\CustomFileTransport\\tmp\\meta_client.txt"
+#define METADATA_FILENAME "FileName"
+#define METADATA_FILESIZE "FileSize"
+#define METADATA_CONTENTSLENGTH "ContentsLength"
+#define METADATA_PAYLOADSIZE "PayloadSize"

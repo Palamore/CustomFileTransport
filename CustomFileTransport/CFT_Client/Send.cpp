@@ -81,20 +81,23 @@ namespace Send
 	{
 		ifstream openFile(fileName, ios::binary);
 		int length;
-		//char* buffer;
+		char* buffer;
 		openFile.seekg(0, ios::end);
 		length = openFile.tellg();
 		openFile.seekg(0, ios::beg);
-		//buffer = new char[length];
-		//openFile.read(buffer, length);
+		buffer = new char[length];
+		openFile.read(buffer, length);
 		openFile.close();
+
+		int contentsLength = strlen(buffer);
 
 		PacketTag::FileSendRequest sendData;
 		sendData.set_filename(fileName);
 		sendData.set_filesize(length);
+		sendData.set_contentslength(contentsLength);
 
 		ofstream metaFile(METAFILE_PATH);
-		string metaStr = CommonTools::MakeMetaString(fileName, length);
+		string metaStr = CommonTools::MakeMetaString(fileName, length, contentsLength, UDP_PAYLOAD_SIZE);
 		metaFile.clear();
 		metaFile << metaStr;
 		metaFile.close();
