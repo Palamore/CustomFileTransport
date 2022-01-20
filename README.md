@@ -3,4 +3,5 @@
 Directory should be placed at
 "C:\CustomFileTransport"
 
-Protoc needs to be Installed.
+Protoc / Python
+needs to be Installed.
