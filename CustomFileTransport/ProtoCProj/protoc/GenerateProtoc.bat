@@ -16,4 +16,7 @@ protoc --cpp_out=%ServerPath% PacketTag.proto
 protoc --cpp_out=%ServerPath_UDP% ClientInfo.proto
 protoc --cpp_out=%ServerPath_UDP% PacketTag.proto
 
+protoc --cpp_out=%ClientPath_UDP% UDPFileSend.proto
+protoc --cpp_out=%ServerPath_UDP% UDPFileSend.proto
+
 pause

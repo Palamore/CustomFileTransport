@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\vcpkg\installed\x64-windows\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\vcpkg\installed\x64-windows\debug\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\CustomFileTransport\CustomFileTransport\Protobuf\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\CustomFileTransport\CustomFileTransport\Protobuf\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

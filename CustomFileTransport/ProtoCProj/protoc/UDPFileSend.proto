@@ -1,0 +1,11 @@
+syntax = "proto3";
+package UDP;
+
+message FileData{
+	int32 index = 1;
+	string data = 2;
+}
+
+message DataRcvAck{
+	int32 index = 1;
+}
