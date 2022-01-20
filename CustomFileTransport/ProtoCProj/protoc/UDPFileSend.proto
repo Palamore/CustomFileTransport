@@ -9,3 +9,7 @@ message FileData{
 message DataRcvAck{
 	int32 index = 1;
 }
+
+message DataRcvDone{
+	string data = 1;
+}
