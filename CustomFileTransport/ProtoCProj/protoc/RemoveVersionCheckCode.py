@@ -18,6 +18,7 @@ ServerUDPPath = "C:/CustomFileTransport/CustomFileTransport/CFT_UDP_Server/"
 
 ClientInfoProtoFile = "ClientInfo.pb.h"
 PacketTagProtoFile = "PacketTag.pb.h"
+UDPProtoFile = "UDPFileSend.pb.h"
 
 RemoveTargetFile = open("C:\CustomFileTransport\CustomFileTransport\ProtoCProj\protoc\TargetRemoveText.txt", 'r')
 RemoveTargetText = RemoveTargetFile.read()
@@ -32,8 +33,12 @@ TryRemove(ServerPath + PacketTagProtoFile, RemoveTargetText)
 
 TryRemove(ClientUDPPath + ClientInfoProtoFile, RemoveTargetText)
 TryRemove(ClientUDPPath + PacketTagProtoFile, RemoveTargetText)
+TryRemove(ClientUDPPath + UDPProtoFile, RemoveTargetText)
 TryRemove(ServerUDPPath + ClientInfoProtoFile, RemoveTargetText)
 TryRemove(ServerUDPPath + PacketTagProtoFile, RemoveTargetText)
+TryRemove(ServerUDPPath + UDPProtoFile, RemoveTargetText)
+
+
 
 print("done")
 
