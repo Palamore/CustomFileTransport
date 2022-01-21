@@ -24,6 +24,9 @@
     <None Include="protoc\PacketTag.proto">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="protoc\UDPFileSend.proto">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonTools.h">

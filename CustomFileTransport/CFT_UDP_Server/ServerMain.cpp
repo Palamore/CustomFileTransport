@@ -112,6 +112,9 @@ void RunServer(short nPort)
 
 	delete[] buffer;
 	buffer = new char[UDP_PAYLOAD_SIZE];
+
+
+
 	while (1)
 	{
 		memset(buffer, 0, fileLength);

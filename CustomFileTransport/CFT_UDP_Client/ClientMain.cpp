@@ -12,9 +12,12 @@
 #include <shellapi.h>
 #include "PacketTag.pb.h"
 #include "ClientInfo.pb.h"
+#include "UDPFileSend.pb.h"
 #include "CommonTools.h"
 
 using namespace std;
+using namespace PacketTag;
+using namespace UDP;
 #define SERVER_IP		"127.0.0.1"
 #define UDP_PORT		8001
 #define	MAX_BUFFER		1024
@@ -31,7 +34,14 @@ using namespace std;
 
 void RunClient(const char* szServer, short nPort);
 
+void RunSendThread();
+void RunListenThread();
 
+
+ifstream fileStream;
+SOCKET s;
+SOCKADDR_IN saServer;
+size_t contentsLength;
 int main()
 {
 
@@ -69,7 +79,7 @@ void RunClient(const char* szServer, short nPort)
 		return;
 	}
 
-	SOCKET s;
+	
 
 	s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	if(s == INVALID_SOCKET)
@@ -77,7 +87,6 @@ void RunClient(const char* szServer, short nPort)
 		cout << "making socket failed" << endl;
 	}
 
-	SOCKADDR_IN saServer;
 	saServer.sin_family = AF_INET;
 	saServer.sin_addr = *((LPIN_ADDR)*lpHostEntry->h_addr_list);
 	saServer.sin_port = htons(nPort);
@@ -99,7 +108,7 @@ void RunClient(const char* szServer, short nPort)
 	map<string, string> metaData = CommonTools::ParseMetaString(buffer);
 	string fileName = metaData[METADATA_FILENAME];
 	size_t fileSize = atoi(metaData[METADATA_FILESIZE].c_str());
-	size_t contentsLength = atoi(metaData[METADATA_CONTENTSLENGTH].c_str());
+	contentsLength = atoi(metaData[METADATA_CONTENTSLENGTH].c_str());
 
 	cout << "buffer : " << buffer << endl;
 	delete[] buffer;
@@ -107,12 +116,30 @@ void RunClient(const char* szServer, short nPort)
 	cout << "FileSize : " << fileSize << endl;
 
 
-	ifstream fileStream(FILE_TO_SEND_PATH + fileName, ios::binary);
+	fileStream.open(FILE_TO_SEND_PATH + fileName, ios::binary);
 	//fileStream.seekg(0, ios::end);
 	//fileLength = fileStream.tellg();
 	//fileStream.seekg(0, ios::beg);
-	buffer = new char[UDP_PAYLOAD_SIZE];
+
+	std::thread t1(RunSendThread);
+	std::thread t2(RunListenThread);
+
+
+	t1.join();
+	t2.join();
+	fileStream.close();
+	closesocket(s);
+
+	cout << "Done" << endl;
+	return;
+}
+
+void RunSendThread()
+{
+	int nRet = 0;
+	char* buffer = new char[UDP_PAYLOAD_SIZE];
 	int index = 1;
+	bool lastFlag = false;
 	while (true)
 	{
 		string str = "";
@@ -131,22 +158,26 @@ void RunClient(const char* szServer, short nPort)
 			fileStream.seekg(0, std::ios::beg);
 			str = string(buffer);
 			str.erase(str.end() - 4, str.end());
+			lastFlag = true;
 		}
 
-		/*nRet = sendto(s, buffer, UDP_PAYLOAD_SIZE, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
+		FileData data;
+		data.set_index(index);
+		data.set_data(buffer);
+
+		nRet = sendto(s, data.SerializeAsString().c_str(), UDP_PAYLOAD_SIZE, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
 		if (nRet == SOCKET_ERROR)
 		{
 			cout << "send failed" << endl;
-		}*/
+		}
 		cout << str;
+
+		if (lastFlag) break;
 		index++;
 	}
+}
 
+void RunListenThread()
+{
 
-	delete[] buffer;
-	fileStream.close();
-	closesocket(s);
-
-	cout << "Done" << endl;
-	return;
 }
