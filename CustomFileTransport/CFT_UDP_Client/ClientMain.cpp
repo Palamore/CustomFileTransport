@@ -46,6 +46,9 @@ SOCKET s_recv;
 SOCKADDR_IN saServer;
 SOCKADDR_IN saClient;
 size_t contentsLength;
+
+vector<int> indexContainer;
+list<int> idxcont;
 int main()
 {
 
@@ -64,6 +67,12 @@ int main()
 	}
 
 	string serverIP = SERVER_IP;
+	indexContainer.reserve(100);
+	for (int i = 0; i < 100; i++)
+	{
+		indexContainer.push_back(i);
+	}
+	
 
 	RunClient(serverIP.c_str(), nPort);
 
@@ -150,16 +159,35 @@ void RunSendThread()
 	int nRet = 0;
 	char* buffer = new char[UDP_PAYLOAD_SIZE];
 	int index = 1;
+	int lastIndex = -1;
 	bool lastFlag = false;
+	bool indexOverFlow = false;
+	bool indexExistFlag = false;
 	while (true)
 	{
 		string str = "";
+
+		for (int i = 0; i < indexContainer.size(); i++)
+		{
+			if (indexContainer[i] == index)
+			{
+				indexExistFlag = true;
+				break;
+			}
+		}
+		if (indexContainer.size() + lastIndex == 100)
+		{
+			break;
+		}
+		if (!indexExistFlag) continue;
+
 		if (UDP_PAYLOAD_SIZE * index < contentsLength)
 		{
 			fileStream.read(buffer, UDP_PAYLOAD_SIZE);
 			buffer[UDP_PAYLOAD_SIZE] = '\0';
 			fileStream.seekg(UDP_PAYLOAD_SIZE * index, std::ios::beg);
 			str = string(buffer);
+			
 		}
 		else
 		{
@@ -169,7 +197,8 @@ void RunSendThread()
 			fileStream.seekg(0, std::ios::beg);
 			str = string(buffer);
 			str.erase(str.end() - 4, str.end());
-			lastFlag = true;
+			lastIndex = index;
+			indexOverFlow = true;
 		}
 
 		FileData data;
@@ -195,8 +224,15 @@ void RunSendThread()
 
 		cout << str;
 
-		if (lastFlag) break;
-		index++;
+		if (indexContainer.size() + lastIndex == 100)
+		{
+			break;
+		}
+		if (indexOverFlow)
+			index = 1;
+		else
+			index++;
+		indexExistFlag = false;
 	}
 }
 
@@ -222,6 +258,14 @@ void RunListenThread()
 			}
 			int idx = ack.index();
 
+			for (int i = 0; i < indexContainer.size(); i++)
+			{
+				if (indexContainer[i] == idx)
+				{
+					indexContainer.erase(indexContainer.begin() + i);
+					break;
+				}
+			}
 			cout << "Index Ack : " + idx << endl;
 		}
 
