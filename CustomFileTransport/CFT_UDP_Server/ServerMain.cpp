@@ -1,4 +1,5 @@
 // √‚√≥ http://cakel.tistory.com
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 #pragma comment(lib, "ws2_32.lib")
 #include <WinSock2.h>
 #include <iostream>
@@ -6,6 +7,7 @@
 #include <memory>
 #include <direct.h>
 #include <io.h>
+#include <vector>
 #include "PacketTag.pb.h"
 #include "ClientInfo.pb.h"
 #include "UDPFileSend.pb.h"
@@ -14,7 +16,11 @@
 using namespace std;
 using namespace PacketTag;
 using namespace UDP;
+
+#define SERVER_IP		"127.0.0.1"
+#define CLIENT_IP		"127.0.0.1"
 #define UDP_PORT		8001
+#define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
 #define UDP_PAYLOAD_SIZE 1000
 #define HEADER_SIZE 9
@@ -32,8 +38,16 @@ void RunSendThread();
 void RunListenThread();
 
 SOCKET s;
+SOCKET s_send;
 SOCKADDR_IN serverAddr;
 SOCKADDR_IN clientAddr;
+
+string fileName;
+int fileSize;
+int contentsLength;
+bool doneFlag = false;
+
+vector<FileData> dataContainer;
 
 int main(const char* arg)
 {
@@ -60,7 +74,15 @@ int main(const char* arg)
 
 void RunServer(short nPort)
 {
-	s;
+	LPHOSTENT lpHostEntry;
+
+	lpHostEntry = gethostbyname(CLIENT_IP);
+
+	if (lpHostEntry == NULL)
+	{
+		cout << "get host name failed" << endl;
+		return;
+	}
 
 	s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	if (s == INVALID_SOCKET)
@@ -69,10 +91,20 @@ void RunServer(short nPort)
 		return;
 	}
 
-	serverAddr;
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_addr.s_addr = INADDR_ANY;
 	serverAddr.sin_port = htons(nPort);
+
+	//clientAddr.sin_family = AF_INET;
+	//clientAddr.sin_addr = *((LPIN_ADDR)*lpHostEntry->h_addr_list);
+	//clientAddr.sin_port = htons(UDP_RECV_PORT);
+
+	s_send = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+	if (s_send == INVALID_SOCKET)
+	{
+		cout << "wrong socket made" << endl;
+		return;
+	}
 
 	int nRet;
 
@@ -96,7 +128,7 @@ void RunServer(short nPort)
 		return;
 	}
 
-	clientAddr;
+	
 
 	// Read MetaFile
 	ifstream metaFile(METAFILE_PATH, ios::binary);
@@ -115,9 +147,9 @@ void RunServer(short nPort)
 
 	map<string, string> metaData = CommonTools::ParseMetaString(buffer);
 
-	string fileName = metaData[METADATA_FILENAME];
-	int fileSize = atoi(metaData[METADATA_FILESIZE].c_str());
-	int contentsLength = atoi(metaData[METADATA_CONTENTSLENGTH].c_str());
+	fileName		= metaData[METADATA_FILENAME];
+	fileSize		= atoi(metaData[METADATA_FILESIZE].c_str());
+	contentsLength  = atoi(metaData[METADATA_CONTENTSLENGTH].c_str());
 
 	std::thread t1(RunListenThread);
 	std::thread t2(RunSendThread);
@@ -136,12 +168,46 @@ void RunSendThread()
 {
 	int nRet = 0;
 	char* buffer = new char[UDP_PAYLOAD_SIZE];
-	int index = 1;
+	int curIndex = 1;
 	bool lastFlag = false;
+	dataContainer.reserve(100);
+	ofstream targetFile(fileName, ios::binary);
+
 	while (true)
 	{
-		
+		for (int i = 0 ; i < dataContainer.size(); i++)
+		{
+			int index = dataContainer.at(i).index();
+			string data = dataContainer.at(i).data();
+
+			if (data.length() < UDP_PAYLOAD_SIZE)
+			{
+				data.erase(data.end() - 5, data.end());
+			}
+			if (index == curIndex)
+			{
+				targetFile << data;
+				curIndex++;
+				dataContainer.erase(dataContainer.begin() + i);
+			}
+
+			DataRcvAck ack;
+			ack.set_index(index);
+			string sendData = ack.SerializeAsString();
+
+			nRet = sendto(s, ack.SerializeAsString().c_str(), ack.SerializeAsString().length() + 4, 0, (LPSOCKADDR)&clientAddr, sizeof(struct sockaddr));
+			if (nRet == SOCKET_ERROR)
+			{
+				cout << "send failed" << endl;
+			}
+		}
+
+		if (doneFlag && dataContainer.empty())
+			break;
+
 	}
+
+	targetFile.close();
 }
 
 void RunListenThread()
@@ -168,8 +234,13 @@ void RunListenThread()
 			closesocket(s);
 			return;
 		}
+		dataContainer.push_back(data);
 		cout << "index : " << data.index() << endl;
 		cout << "data : " << data.data() << endl;
+
+		if (nRet < UDP_PAYLOAD_SIZE)
+			doneFlag = true;
+
 		if (nRet < 0)
 		{
 			cout << "recv error" << endl;

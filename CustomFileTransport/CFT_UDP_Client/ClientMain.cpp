@@ -20,6 +20,7 @@ using namespace PacketTag;
 using namespace UDP;
 #define SERVER_IP		"127.0.0.1"
 #define UDP_PORT		8001
+#define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
 #define UDP_PAYLOAD_SIZE 1000
 #define HEADER_SIZE 9
@@ -41,7 +42,9 @@ void RunListenThread();
 
 ifstream fileStream;
 SOCKET s;
+SOCKET s_recv;
 SOCKADDR_IN saServer;
+SOCKADDR_IN saClient;
 size_t contentsLength;
 int main()
 {
@@ -88,12 +91,19 @@ void RunClient(const char* szServer, short nPort)
 		cout << "making socket failed" << endl;
 	}
 
+	s_recv = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+	if (s_recv == INVALID_SOCKET)
+	{
+		cout << "making recv socket failed" << endl;
+	}
+
+
 	saServer.sin_family = AF_INET;
 	saServer.sin_addr = *((LPIN_ADDR)*lpHostEntry->h_addr_list);
 	saServer.sin_port = htons(nPort);
 
 
-	int nRet;
+	int nRet = 0;
 
 	// Read MetaFile
 	ifstream metaFile(METAFILE_PATH, ios::binary);
@@ -168,7 +178,15 @@ void RunSendThread()
 
 		string _data = data.SerializeAsString();
 
-		nRet = sendto(s, _data.c_str(), UDP_PAYLOAD_SIZE + HEADER_SIZE, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
+		if (UDP_PAYLOAD_SIZE * index < contentsLength)
+		{
+			nRet = sendto(s, _data.c_str(), UDP_PAYLOAD_SIZE + HEADER_SIZE, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
+		}
+		else
+		{
+			nRet = sendto(s, _data.c_str(), _data.length(), 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
+		}
+
 		if (nRet == SOCKET_ERROR)
 		{
 			cout << "send failed" << endl;
@@ -184,5 +202,29 @@ void RunSendThread()
 
 void RunListenThread()
 {
+	int nRet = 0;
+	char* buffer = new char[6];
+	int nLen = sizeof(saClient);
+
+	while (true)
+	{
+		memset(buffer, 0, 6 * sizeof(char));
+
+		nRet = recvfrom(s, buffer, 6, 0, (LPSOCKADDR)&saClient, &nLen);
+		
+		if (nRet > 0)
+		{
+			DataRcvAck ack;
+			if (!ack.ParseFromString(buffer))
+			{
+				cout << "ack data parsing error" << endl;
+				break;
+			}
+			int idx = ack.index();
+
+			cout << "Index Ack : " + idx << endl;
+		}
+
+	}
 
 }
