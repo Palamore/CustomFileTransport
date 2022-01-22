@@ -22,6 +22,7 @@ using namespace UDP;
 #define UDP_PORT		8001
 #define	MAX_BUFFER		1024
 #define UDP_PAYLOAD_SIZE 1000
+#define HEADER_SIZE 9
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
 #define UDP_CLIENT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Client.exe"
@@ -165,11 +166,15 @@ void RunSendThread()
 		data.set_index(index);
 		data.set_data(buffer);
 
-		nRet = sendto(s, data.SerializeAsString().c_str(), UDP_PAYLOAD_SIZE, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
+		string _data = data.SerializeAsString();
+
+		nRet = sendto(s, _data.c_str(), UDP_PAYLOAD_SIZE + HEADER_SIZE, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
 		if (nRet == SOCKET_ERROR)
 		{
 			cout << "send failed" << endl;
 		}
+		cout << strlen(_data.c_str()) << endl;
+
 		cout << str;
 
 		if (lastFlag) break;

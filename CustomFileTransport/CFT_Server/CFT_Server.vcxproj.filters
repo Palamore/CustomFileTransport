@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Protobuffers">
+      <UniqueIdentifier>{7d27f2fa-ea87-4e23-88c0-03029a423d82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Protobuffers">
+      <UniqueIdentifier>{4bd4b09c-9791-42b4-abb1-8e9e298bb082}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerMain.cpp">
@@ -24,14 +30,14 @@
     <ClCompile Include="Debug.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ClientInfo.pb.cc">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="PacketTag.pb.cc">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CommonTools.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientInfo.pb.cc">
+      <Filter>소스 파일\Protobuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketTag.pb.cc">
+      <Filter>소스 파일\Protobuffers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,14 +53,14 @@
     <ClInclude Include="ProtocolTag.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ClientInfo.pb.h">
+    <ClInclude Include="CommonTools.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="PacketTag.pb.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Protobuffers</Filter>
     </ClInclude>
-    <ClInclude Include="CommonTools.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="ClientInfo.pb.h">
+      <Filter>헤더 파일\Protobuffers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
