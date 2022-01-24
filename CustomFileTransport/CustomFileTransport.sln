@@ -13,6 +13,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CFT_UDP_Server", "CFT_UDP_S
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CFT_UDP_Client", "CFT_UDP_Client\CFT_UDP_Client.vcxproj", "{F6B42BE5-9C08-4D9B-82FA-3736CDEE578A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CFT_ASIO_Client", "CFT_ASIO_Client\CFT_ASIO_Client.vcxproj", "{38609702-0BF2-4B2E-8A53-994452C93979}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CFT_ASIO_Server", "CFT_ASIO_Server\CFT_ASIO_Server.vcxproj", "{C40B86B6-D230-431B-9476-4AFCD6507FF4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +65,22 @@ Global
 		{F6B42BE5-9C08-4D9B-82FA-3736CDEE578A}.Release|x64.Build.0 = Release|x64
 		{F6B42BE5-9C08-4D9B-82FA-3736CDEE578A}.Release|x86.ActiveCfg = Release|Win32
 		{F6B42BE5-9C08-4D9B-82FA-3736CDEE578A}.Release|x86.Build.0 = Release|Win32
+		{38609702-0BF2-4B2E-8A53-994452C93979}.Debug|x64.ActiveCfg = Debug|x64
+		{38609702-0BF2-4B2E-8A53-994452C93979}.Debug|x64.Build.0 = Debug|x64
+		{38609702-0BF2-4B2E-8A53-994452C93979}.Debug|x86.ActiveCfg = Debug|Win32
+		{38609702-0BF2-4B2E-8A53-994452C93979}.Debug|x86.Build.0 = Debug|Win32
+		{38609702-0BF2-4B2E-8A53-994452C93979}.Release|x64.ActiveCfg = Release|x64
+		{38609702-0BF2-4B2E-8A53-994452C93979}.Release|x64.Build.0 = Release|x64
+		{38609702-0BF2-4B2E-8A53-994452C93979}.Release|x86.ActiveCfg = Release|Win32
+		{38609702-0BF2-4B2E-8A53-994452C93979}.Release|x86.Build.0 = Release|Win32
+		{C40B86B6-D230-431B-9476-4AFCD6507FF4}.Debug|x64.ActiveCfg = Debug|x64
+		{C40B86B6-D230-431B-9476-4AFCD6507FF4}.Debug|x64.Build.0 = Debug|x64
+		{C40B86B6-D230-431B-9476-4AFCD6507FF4}.Debug|x86.ActiveCfg = Debug|Win32
+		{C40B86B6-D230-431B-9476-4AFCD6507FF4}.Debug|x86.Build.0 = Debug|Win32
+		{C40B86B6-D230-431B-9476-4AFCD6507FF4}.Release|x64.ActiveCfg = Release|x64
+		{C40B86B6-D230-431B-9476-4AFCD6507FF4}.Release|x64.Build.0 = Release|x64
+		{C40B86B6-D230-431B-9476-4AFCD6507FF4}.Release|x86.ActiveCfg = Release|Win32
+		{C40B86B6-D230-431B-9476-4AFCD6507FF4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

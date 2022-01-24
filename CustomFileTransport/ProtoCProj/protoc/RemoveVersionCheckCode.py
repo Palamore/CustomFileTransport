@@ -16,6 +16,9 @@ ServerPath = "C:/CustomFileTransport/CustomFileTransport/CFT_Server/"
 ClientUDPPath = "C:/CustomFileTransport/CustomFileTransport/CFT_UDP_Client/"
 ServerUDPPath = "C:/CustomFileTransport/CustomFileTransport/CFT_UDP_Server/"
 
+ClientAsioPath = "C:/CustomFileTransport/CustomFileTransport/CFT_ASIO_Client/"
+ServerAsioPath = "C:/CustomFileTransport/CustomFileTransport/CFT_ASIO_Server/"
+
 ClientInfoProtoFile = "ClientInfo.pb.h"
 PacketTagProtoFile = "PacketTag.pb.h"
 UDPProtoFile = "UDPFileSend.pb.h"
@@ -38,6 +41,10 @@ TryRemove(ServerUDPPath + ClientInfoProtoFile, RemoveTargetText)
 TryRemove(ServerUDPPath + PacketTagProtoFile, RemoveTargetText)
 TryRemove(ServerUDPPath + UDPProtoFile, RemoveTargetText)
 
+TryRemove(ClientAsioPath + ClientInfoProtoFile, RemoveTargetFile)
+TryRemove(ClientAsioPath + PacketTagProtoFile, RemoveTargetFile)
+TryRemove(ServerAsioPath + ClientInfoProtoFile, RemoveTargetFile)
+TryRemove(ServerAsioPath + PacketTagProtoFile, RemoveTargetFile)
 
 
 print("done")
