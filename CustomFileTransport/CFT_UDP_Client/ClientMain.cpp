@@ -2,6 +2,7 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #pragma comment(lib, "ws2_32.lib")
+#include <stdio.h>
 #include <WinSock2.h>
 #include <iostream>
 #include <fstream>
@@ -41,11 +42,13 @@ void RunListenThread();
 
 
 ifstream fileStream;
+FILE* fp;
 SOCKET s;
 SOCKET s_recv;
 SOCKADDR_IN saServer;
 SOCKADDR_IN saClient;
 size_t contentsLength;
+size_t fileSize;
 
 vector<int> indexContainer;
 list<int> idxcont;
@@ -118,6 +121,7 @@ void RunClient(const char* szServer, short nPort)
 	ifstream metaFile(METAFILE_PATH, ios::binary);
 	int fileLength;
 	char* buffer;
+	void* vuffer = NULL;
 	metaFile.seekg(0, ios::end);
 	fileLength = metaFile.tellg();
 	metaFile.seekg(0, ios::beg);
@@ -127,7 +131,7 @@ void RunClient(const char* szServer, short nPort)
 
 	map<string, string> metaData = CommonTools::ParseMetaString(buffer);
 	string fileName = metaData[METADATA_FILENAME];
-	size_t fileSize = atoi(metaData[METADATA_FILESIZE].c_str());
+	fileSize = atoi(metaData[METADATA_FILESIZE].c_str());
 	contentsLength = atoi(metaData[METADATA_CONTENTSLENGTH].c_str());
 
 	cout << "buffer : " << buffer << endl;
@@ -135,11 +139,25 @@ void RunClient(const char* szServer, short nPort)
 	cout << "FileName : " << fileName << endl;
 	cout << "FileSize : " << fileSize << endl;
 
-
 	fileStream.open(FILE_TO_SEND_PATH + fileName, ios::binary);
-	//fileStream.seekg(0, ios::end);
-	//fileLength = fileStream.tellg();
-	//fileStream.seekg(0, ios::beg);
+
+	//TODO :: fileStream으로 Binary 파일 읽을시 fileLength만큼 읽고 그 다음 메모리 읽어내기.
+	/*ofstream openStream;
+	openStream.open("copied.png", ios::binary);
+
+	fileStream.seekg(0, ios::end);
+
+	int sz = fileStream.tellg();
+	buffer = new char[sz];
+	fileStream.seekg(0, ios::beg);
+
+	fileStream.read(buffer, sz);
+	
+	openStream.write(buffer, sz);
+	cout << "break" << endl;
+	fileStream.close();
+	openStream.close();*/
+
 
 	std::thread t1(RunSendThread);
 	std::thread t2(RunListenThread);
@@ -158,6 +176,7 @@ void RunSendThread()
 {
 	int nRet = 0;
 	char* buffer = new char[UDP_PAYLOAD_SIZE];
+	void* vuffer;
 	int index = 1;
 	int lastIndex = -1;
 	bool lastFlag = false;
@@ -181,39 +200,49 @@ void RunSendThread()
 		}
 		if (!indexExistFlag) continue;
 
-		if (UDP_PAYLOAD_SIZE * index < contentsLength)
+		if (UDP_PAYLOAD_SIZE * index < fileSize)
 		{
 			fileStream.read(buffer, UDP_PAYLOAD_SIZE);
-			buffer[UDP_PAYLOAD_SIZE] = '\0';
+			/*buffer[UDP_PAYLOAD_SIZE] = '\0';*/
 			fileStream.seekg(UDP_PAYLOAD_SIZE * index, std::ios::beg);
 			str = string(buffer);
 			
 		}
 		else
 		{
-			int targetLength = contentsLength - (UDP_PAYLOAD_SIZE * (index - 1));
+			int targetLength = fileSize - (UDP_PAYLOAD_SIZE * (index - 1));
 			fileStream.read(buffer, targetLength);
-			buffer[targetLength] = '\0';
+			/*buffer[targetLength] = '\0';*/
 			fileStream.seekg(0, std::ios::beg);
-			str = string(buffer);
-			str.erase(str.end() - 4, str.end());
+			/*str = string(buffer);
+			str.erase(str.end() - 4, str.end());*/
 			lastIndex = index;
 			indexOverFlow = true;
 		}
+		
 
 		FileData data;
 		data.set_index(index);
-		data.set_data(buffer);
-
+		
 		string _data = data.SerializeAsString();
 
-		if (UDP_PAYLOAD_SIZE * index < contentsLength)
+		int payloadSize = UDP_PAYLOAD_SIZE + _data.length();
+		int lastPayloadSize = fileSize % UDP_PAYLOAD_SIZE + _data.length();
+		char* sendBuffer = new char[payloadSize];
+
+
+		memcpy(sendBuffer, _data.c_str(), _data.length());
+		
+
+		if (UDP_PAYLOAD_SIZE * index < fileSize)
 		{
-			nRet = sendto(s, _data.c_str(), UDP_PAYLOAD_SIZE + HEADER_SIZE, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
+			memcpy((sendBuffer + _data.length()), buffer, UDP_PAYLOAD_SIZE);
+			nRet = sendto(s, sendBuffer, payloadSize, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
 		}
 		else
 		{
-			nRet = sendto(s, _data.c_str(), _data.length(), 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
+			memcpy((sendBuffer + _data.length()), buffer, lastPayloadSize - _data.length());
+			nRet = sendto(s, sendBuffer, lastPayloadSize, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
 		}
 
 		if (nRet == SOCKET_ERROR)
