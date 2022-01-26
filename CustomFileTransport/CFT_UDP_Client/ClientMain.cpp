@@ -24,7 +24,7 @@ using namespace UDP;
 #define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
 #define UDP_PAYLOAD_SIZE 1000
-#define HEADER_SIZE 9
+#define HEADER_SIZE 5
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
 #define UDP_CLIENT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Client.exe"
@@ -34,6 +34,7 @@ using namespace UDP;
 #define METADATA_FILESIZE "FileSize"
 #define METADATA_CONTENTSLENGTH "ContentsLength"
 #define METADATA_PAYLOADSIZE "PayloadSize"
+
 
 void RunClient(const char* szServer, short nPort);
 
@@ -226,22 +227,22 @@ void RunSendThread()
 		
 		string _data = data.SerializeAsString();
 
-		int payloadSize = UDP_PAYLOAD_SIZE + _data.length();
+		int payloadSize = UDP_PAYLOAD_SIZE + HEADER_SIZE;
 		int lastPayloadSize = fileSize % UDP_PAYLOAD_SIZE + _data.length();
 		char* sendBuffer = new char[payloadSize];
 
-
+		memset(sendBuffer, 0, payloadSize * sizeof(char));
 		memcpy(sendBuffer, _data.c_str(), _data.length());
 		
 
 		if (UDP_PAYLOAD_SIZE * index < fileSize)
 		{
-			memcpy((sendBuffer + _data.length()), buffer, UDP_PAYLOAD_SIZE);
+			memcpy((sendBuffer + HEADER_SIZE), buffer, UDP_PAYLOAD_SIZE);
 			nRet = sendto(s, sendBuffer, payloadSize, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
 		}
 		else
 		{
-			memcpy((sendBuffer + _data.length()), buffer, lastPayloadSize - _data.length());
+			memcpy((sendBuffer + HEADER_SIZE), buffer, lastPayloadSize - _data.length());
 			nRet = sendto(s, sendBuffer, lastPayloadSize, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
 		}
 

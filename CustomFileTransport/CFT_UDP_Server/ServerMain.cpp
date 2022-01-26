@@ -23,7 +23,7 @@ using namespace UDP;
 #define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
 #define UDP_PAYLOAD_SIZE 1000
-#define HEADER_SIZE 9
+#define HEADER_SIZE 5
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
 #define UDP_CLIENT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Client.exe"
@@ -45,9 +45,36 @@ SOCKADDR_IN clientAddr;
 string fileName;
 int fileSize;
 int contentsLength;
+int payloadCount;
+int lastPayloadSize;
 bool doneFlag = false;
 
-vector<FileData> dataContainer;
+class RecvData {
+	public:
+	FileData indexData;
+	char* data;
+
+	RecvData()
+	{
+		data = new char[UDP_PAYLOAD_SIZE];
+	}
+
+	~RecvData()
+	{
+		delete[] data;
+	}
+
+	int GetIndex()
+	{
+		return indexData.index();
+	}
+	char* GetData()
+	{
+		return data;
+	}
+};
+
+vector<RecvData*> dataCont;
 
 int main(const char* arg)
 {
@@ -150,6 +177,10 @@ void RunServer(short nPort)
 	fileName		= metaData[METADATA_FILENAME];
 	fileSize		= atoi(metaData[METADATA_FILESIZE].c_str());
 	contentsLength  = atoi(metaData[METADATA_CONTENTSLENGTH].c_str());
+	payloadCount = (fileSize / UDP_PAYLOAD_SIZE) + 1;
+	lastPayloadSize = fileSize % UDP_PAYLOAD_SIZE;
+
+	dataCont.reserve(100);
 
 	std::thread t1(RunListenThread);
 	std::thread t2(RunSendThread);
@@ -170,25 +201,34 @@ void RunSendThread()
 	char* buffer = new char[UDP_PAYLOAD_SIZE];
 	int curIndex = 1;
 	bool lastFlag = false;
-	dataContainer.reserve(100);
+	
 	ofstream targetFile(fileName, ios::binary);
 
 	while (true)
 	{
-		for (int i = 0 ; i < dataContainer.size(); i++)
+		for (int i = 0 ; i < dataCont.size(); i++)
 		{
-			int index = dataContainer.at(i).index();
-			string data = dataContainer.at(i).data();
+			int index = dataCont[i]->GetIndex();
+			memcpy(buffer, dataCont[i]->data, UDP_PAYLOAD_SIZE);
 
-			if (data.length() < UDP_PAYLOAD_SIZE)
-			{
-				data.erase(data.end() - 5, data.end());
-			}
 			if (index == curIndex)
 			{
-				targetFile << data;
-				curIndex++;
-				dataContainer.erase(dataContainer.begin() + i);
+				if (curIndex == payloadCount)
+				{
+					char* lastPayload = new char[lastPayloadSize];
+					memcpy(lastPayload, buffer, lastPayloadSize);
+					targetFile << lastPayload;
+
+					targetFile.close();
+					delete[] buffer;
+					delete[] lastPayload;
+				}
+				else
+				{
+					targetFile << buffer;
+					curIndex++;
+					dataCont.erase(dataCont.begin() + i);
+				}
 			}
 
 			DataRcvAck ack;
@@ -202,7 +242,7 @@ void RunSendThread()
 			}
 		}
 
-		if (doneFlag && dataContainer.empty())
+		if (doneFlag && dataCont.empty())
 			break;
 
 	}
@@ -215,28 +255,40 @@ void RunListenThread()
 	int nRet = 0;
 	char* dataBuffer;
 	int nLen = sizeof(SOCKADDR);
+	dataCont.reserve(100);
 
 	dataBuffer = new char[UDP_PAYLOAD_SIZE];
 	char* buffer = new char[UDP_PAYLOAD_SIZE + HEADER_SIZE];
-	while (1)
+	while (true)
 	{
 		memset(buffer, 0, (UDP_PAYLOAD_SIZE + HEADER_SIZE) * sizeof(char));
 		memset(dataBuffer, 0, (UDP_PAYLOAD_SIZE) * sizeof(char));
 
 		nRet = recvfrom(s, buffer, UDP_PAYLOAD_SIZE + HEADER_SIZE, 0, (LPSOCKADDR)&clientAddr, &nLen);
 
-		string recvData(buffer);
+		char* header = new char[HEADER_SIZE];
+		memcpy(header, buffer, HEADER_SIZE);
 
+		char* binaryData = new char[UDP_PAYLOAD_SIZE];
+		memcpy(binaryData, buffer + HEADER_SIZE, UDP_PAYLOAD_SIZE);
+
+		string headerStr(header);
+		
 		FileData data;
-		if (!data.ParseFromString(recvData))
+		if (!data.ParseFromString(headerStr))
 		{
 			cout << "data Parsing Error" << endl;
 			closesocket(s);
+			delete[] dataBuffer;
+			delete[] buffer;
 			return;
 		}
-		dataContainer.push_back(data);
+		RecvData *recvData = new RecvData();
+		recvData->indexData = data;
+		memcpy(recvData->data, binaryData, UDP_PAYLOAD_SIZE);
+		dataCont.push_back(recvData);
+		
 		cout << "index : " << data.index() << endl;
-		cout << "data : " << data.data() << endl;
 
 		if (nRet < UDP_PAYLOAD_SIZE)
 			doneFlag = true;
@@ -245,8 +297,13 @@ void RunListenThread()
 		{
 			cout << "recv error" << endl;
 			closesocket(s);
+			delete[] dataBuffer;
+			delete[] buffer;
 			return;
 		}
 
 	}
+
+	delete[] dataBuffer;
+	delete[] buffer;
 }
