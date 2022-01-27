@@ -142,23 +142,43 @@ void RunClient(const char* szServer, short nPort)
 
 	fileStream.open(FILE_TO_SEND_PATH + fileName, ios::binary);
 
-	//TODO :: fileStream으로 Binary 파일 읽을시 fileLength만큼 읽고 그 다음 메모리 읽어내기.
-	/*ofstream openStream;
-	openStream.open("copied.png", ios::binary);
+	//TODO :: 바이너리 파일 읽어서 memcpy로 복사한다음 일단 같은 위치에 복사할 것
+	//ofstream openStream;
+	//openStream.open("copied.jpg", ios::binary);
 
-	fileStream.seekg(0, ios::end);
+	//fileStream.seekg(0, ios::end);
 
-	int sz = fileStream.tellg();
-	buffer = new char[sz];
-	fileStream.seekg(0, ios::beg);
+	//char* buffer2;
+	////int sz = fileStream.tellg();
+	//int sz = 1000;
+	//buffer = new char[sz];
+	//buffer2 = new char[sz];
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	fileStream.seekg(i * sz, ios::beg);
+	//	fileStream.read(buffer, sz);
 
-	fileStream.read(buffer, sz);
-	
-	openStream.write(buffer, sz);
-	cout << "break" << endl;
-	fileStream.close();
-	openStream.close();*/
+	//	memcpy(buffer2, buffer, sz);
 
+	//	openStream.write(buffer, sz);
+	//}
+
+	//delete[] buffer;
+	//delete[] buffer2;
+
+	//sz = 196;
+	//buffer = new char[sz];
+	//buffer2 = new char[sz];
+	//fileStream.seekg(4000, ios::beg);
+	//fileStream.read(buffer, sz);
+
+	//memcpy(buffer2, buffer, sz);
+
+	//openStream.write(buffer, sz);
+
+	//cout << "break" << endl;
+	//fileStream.close();
+	//openStream.close();
 
 	std::thread t1(RunSendThread);
 	std::thread t2(RunListenThread);
@@ -250,9 +270,9 @@ void RunSendThread()
 		{
 			cout << "send failed" << endl;
 		}
-		cout << strlen(_data.c_str()) << endl;
+		//cout << strlen(_data.c_str()) << endl;
 
-		cout << str;
+		//cout << str;
 
 		if (indexContainer.size() + lastIndex == 100)
 		{

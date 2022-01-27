@@ -217,15 +217,16 @@ void RunSendThread()
 				{
 					char* lastPayload = new char[lastPayloadSize];
 					memcpy(lastPayload, buffer, lastPayloadSize);
-					targetFile << lastPayload;
+					targetFile.write(lastPayload, lastPayloadSize);
 
 					targetFile.close();
 					delete[] buffer;
 					delete[] lastPayload;
+					dataCont.clear();
 				}
 				else
 				{
-					targetFile << buffer;
+					targetFile.write(buffer, UDP_PAYLOAD_SIZE);
 					curIndex++;
 					dataCont.erase(dataCont.begin() + i);
 				}
