@@ -52,7 +52,6 @@ size_t contentsLength;
 size_t fileSize;
 
 vector<int> indexContainer;
-list<int> idxcont;
 int main()
 {
 
@@ -71,8 +70,8 @@ int main()
 	}
 
 	string serverIP = SERVER_IP;
-	indexContainer.reserve(100);
-	for (int i = 0; i < 100; i++)
+	indexContainer.reserve(200);
+	for (int i = 0; i < 200; i++)
 	{
 		indexContainer.push_back(i);
 	}
@@ -215,7 +214,7 @@ void RunSendThread()
 				break;
 			}
 		}
-		if (indexContainer.size() + lastIndex == 100)
+		if (indexContainer.size() + lastIndex == 200)
 		{
 			break;
 		}
@@ -254,6 +253,14 @@ void RunSendThread()
 		memset(sendBuffer, 0, payloadSize * sizeof(char));
 		memcpy(sendBuffer, _data.c_str(), _data.length());
 		
+		if (index >= 80)
+		{
+			cout << "index 80" << endl;
+		}
+		if (index == 178)
+		{
+			cout << "index 178" << endl;
+		}
 
 		if (UDP_PAYLOAD_SIZE * index < fileSize)
 		{
@@ -274,7 +281,7 @@ void RunSendThread()
 
 		//cout << str;
 
-		if (indexContainer.size() + lastIndex == 100)
+		if (indexContainer.size() + lastIndex == 200)
 		{
 			break;
 		}

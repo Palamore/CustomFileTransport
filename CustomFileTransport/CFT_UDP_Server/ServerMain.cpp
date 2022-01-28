@@ -180,7 +180,7 @@ void RunServer(short nPort)
 	payloadCount = (fileSize / UDP_PAYLOAD_SIZE) + 1;
 	lastPayloadSize = fileSize % UDP_PAYLOAD_SIZE;
 
-	dataCont.reserve(100);
+	dataCont.reserve(200);
 
 	std::thread t1(RunListenThread);
 	std::thread t2(RunSendThread);
@@ -247,8 +247,6 @@ void RunSendThread()
 			break;
 
 	}
-
-	targetFile.close();
 }
 
 void RunListenThread()
@@ -256,7 +254,7 @@ void RunListenThread()
 	int nRet = 0;
 	char* dataBuffer;
 	int nLen = sizeof(SOCKADDR);
-	dataCont.reserve(100);
+	dataCont.reserve(200);
 
 	dataBuffer = new char[UDP_PAYLOAD_SIZE];
 	char* buffer = new char[UDP_PAYLOAD_SIZE + HEADER_SIZE];
@@ -266,6 +264,7 @@ void RunListenThread()
 		memset(dataBuffer, 0, (UDP_PAYLOAD_SIZE) * sizeof(char));
 
 		nRet = recvfrom(s, buffer, UDP_PAYLOAD_SIZE + HEADER_SIZE, 0, (LPSOCKADDR)&clientAddr, &nLen);
+		
 
 		char* header = new char[HEADER_SIZE];
 		memcpy(header, buffer, HEADER_SIZE);
@@ -284,6 +283,13 @@ void RunListenThread()
 			delete[] buffer;
 			return;
 		}
+		if (data.index() == 0)
+		{
+			delete[] header;
+			delete[] binaryData;
+			continue;
+		}
+
 		RecvData *recvData = new RecvData();
 		recvData->indexData = data;
 		memcpy(recvData->data, binaryData, UDP_PAYLOAD_SIZE);
