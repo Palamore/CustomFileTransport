@@ -72,6 +72,16 @@ class RecvData {
 	{
 		return data;
 	}
+
+	bool operator==(RecvData &rhs)
+	{
+		if (indexData.index() == rhs.indexData.index()) 
+		{
+			//if (strcmp(data, rhs.data))  일단 인덱스만 검증
+				return true;
+		}
+		return false;
+	}
 };
 
 vector<RecvData*> dataCont;
@@ -204,6 +214,12 @@ void RunSendThread()
 	
 	ofstream targetFile(fileName, ios::binary);
 
+	vector<int> payloadIndexCont;
+	payloadIndexCont.reserve(payloadCount);
+	for (int i = 1; i <= payloadCount; i++)
+	{
+		payloadIndexCont.push_back(i);
+	}
 	while (true)
 	{
 		for (int i = 0 ; i < dataCont.size(); i++)
@@ -219,32 +235,41 @@ void RunSendThread()
 					memcpy(lastPayload, buffer, lastPayloadSize);
 					targetFile.write(lastPayload, lastPayloadSize);
 
+					printf("curIndex : %d \n", curIndex);
+					delete[] lastPayload;
 					targetFile.close();
 					delete[] buffer;
-					delete[] lastPayload;
 					dataCont.clear();
+					payloadIndexCont.clear();
+					break;
+				}
+
+				DataRcvAck ack;
+				ack.set_index(index);
+				string sendData = ack.SerializeAsString();
+
+				nRet = sendto(s, ack.SerializeAsString().c_str(), ack.SerializeAsString().length() + 4, 0, (LPSOCKADDR)&clientAddr, sizeof(struct sockaddr));
+				if (nRet == SOCKET_ERROR)
+				{
+					printf("send failed Index : %d\n", curIndex);
 				}
 				else
 				{
 					targetFile.write(buffer, UDP_PAYLOAD_SIZE);
-					curIndex++;
+					printf("curIndex : %d \n", curIndex);
+
 					dataCont.erase(dataCont.begin() + i);
+					CommonTools::Remove(payloadIndexCont, index);
+					curIndex++;
 				}
-			}
 
-			DataRcvAck ack;
-			ack.set_index(index);
-			string sendData = ack.SerializeAsString();
-
-			nRet = sendto(s, ack.SerializeAsString().c_str(), ack.SerializeAsString().length() + 4, 0, (LPSOCKADDR)&clientAddr, sizeof(struct sockaddr));
-			if (nRet == SOCKET_ERROR)
-			{
-				cout << "send failed" << endl;
 			}
 		}
 
-		if (doneFlag && dataCont.empty())
+		if (payloadIndexCont.empty() && dataCont.empty())
+		{
 			break;
+		}
 
 	}
 }
@@ -262,29 +287,35 @@ void RunListenThread()
 	{
 		memset(buffer, 0, (UDP_PAYLOAD_SIZE + HEADER_SIZE) * sizeof(char));
 		memset(dataBuffer, 0, (UDP_PAYLOAD_SIZE) * sizeof(char));
-
-		nRet = recvfrom(s, buffer, UDP_PAYLOAD_SIZE + HEADER_SIZE, 0, (LPSOCKADDR)&clientAddr, &nLen);
-		
-
 		char* header = new char[HEADER_SIZE];
-		memcpy(header, buffer, HEADER_SIZE);
-
 		char* binaryData = new char[UDP_PAYLOAD_SIZE];
-		memcpy(binaryData, buffer + HEADER_SIZE, UDP_PAYLOAD_SIZE);
-
-		string headerStr(header);
-		
+		string headerStr;
 		FileData data;
-		if (!data.ParseFromString(headerStr))
+		nRet = recvfrom(s, buffer, UDP_PAYLOAD_SIZE + HEADER_SIZE, 0, (LPSOCKADDR)&clientAddr, &nLen);
+		if (nRet > 0)
 		{
-			cout << "data Parsing Error" << endl;
-			closesocket(s);
-			delete[] dataBuffer;
-			delete[] buffer;
-			return;
+			memcpy(header, buffer, HEADER_SIZE);
+			memcpy(binaryData, buffer + HEADER_SIZE, UDP_PAYLOAD_SIZE);
+			headerStr = header;
+			if (!data.ParseFromString(headerStr))
+			{
+				printf("data Parsing Error");
+				closesocket(s);
+				delete[] dataBuffer;
+				delete[] buffer;
+				return;
+			}
+			if (data.index() == 0)
+			{
+				delete[] header;
+				delete[] binaryData;
+				continue;
+			}
+			printf("recv : %d\n", data.index());
 		}
-		if (data.index() == 0)
+		else
 		{
+			printf("recv Failed\n");
 			delete[] header;
 			delete[] binaryData;
 			continue;
@@ -294,21 +325,9 @@ void RunListenThread()
 		recvData->indexData = data;
 		memcpy(recvData->data, binaryData, UDP_PAYLOAD_SIZE);
 		dataCont.push_back(recvData);
-		
-		cout << "index : " << data.index() << endl;
 
-		if (nRet < UDP_PAYLOAD_SIZE)
-			doneFlag = true;
-
-		if (nRet < 0)
-		{
-			cout << "recv error" << endl;
-			closesocket(s);
-			delete[] dataBuffer;
-			delete[] buffer;
-			return;
-		}
-
+		delete[] header;
+		delete[] binaryData;
 	}
 
 	delete[] dataBuffer;

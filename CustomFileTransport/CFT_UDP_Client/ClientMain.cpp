@@ -252,15 +252,6 @@ void RunSendThread()
 
 		memset(sendBuffer, 0, payloadSize * sizeof(char));
 		memcpy(sendBuffer, _data.c_str(), _data.length());
-		
-		if (index >= 80)
-		{
-			cout << "index 80" << endl;
-		}
-		if (index == 178)
-		{
-			cout << "index 178" << endl;
-		}
 
 		if (UDP_PAYLOAD_SIZE * index < fileSize)
 		{
@@ -275,7 +266,11 @@ void RunSendThread()
 
 		if (nRet == SOCKET_ERROR)
 		{
-			cout << "send failed" << endl;
+			printf("send failed\n");
+		}
+		else
+		{
+			printf("Sent index : %d\n", index);
 		}
 		//cout << strlen(_data.c_str()) << endl;
 
@@ -298,6 +293,7 @@ void RunListenThread()
 	int nRet = 0;
 	char* buffer = new char[6];
 	int nLen = sizeof(saClient);
+	DataRcvDone done;
 
 	while (true)
 	{
@@ -310,20 +306,24 @@ void RunListenThread()
 			DataRcvAck ack;
 			if (!ack.ParseFromString(buffer))
 			{
-				cout << "ack data parsing error" << endl;
-				break;
-			}
-			int idx = ack.index();
-
-			for (int i = 0; i < indexContainer.size(); i++)
-			{
-				if (indexContainer[i] == idx)
+				printf("ack data parsing failed.\ntry parse DataRcvDone\n");
+				if (!done.ParseFromString(buffer))
 				{
-					indexContainer.erase(indexContainer.begin() + i);
+					printf("done parsing failed.\n");
+					break;
+				}
+				else
+				{
+					printf("File Sending End.\n");
 					break;
 				}
 			}
-			cout << "Index Ack : " + idx << endl;
+			int idx = ack.index();
+
+			if (CommonTools::Remove(indexContainer, idx))
+				printf("Index Ack : %d\n", idx);
+			else
+				printf("Index Ack : %d but Failed to remove\n", idx);
 		}
 
 	}
