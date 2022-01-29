@@ -24,6 +24,7 @@ using namespace UDP;
 #define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
 #define UDP_PAYLOAD_SIZE 1000
+#define ACK_SIZE 10
 #define HEADER_SIZE 5
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
@@ -50,7 +51,7 @@ SOCKADDR_IN saServer;
 SOCKADDR_IN saClient;
 size_t contentsLength;
 size_t fileSize;
-
+size_t payloadLength;
 vector<int> indexContainer;
 int main()
 {
@@ -70,11 +71,7 @@ int main()
 	}
 
 	string serverIP = SERVER_IP;
-	indexContainer.reserve(200);
-	for (int i = 0; i < 200; i++)
-	{
-		indexContainer.push_back(i);
-	}
+
 	
 
 	RunClient(serverIP.c_str(), nPort);
@@ -141,6 +138,14 @@ void RunClient(const char* szServer, short nPort)
 
 	fileStream.open(FILE_TO_SEND_PATH + fileName, ios::binary);
 
+	payloadLength = fileSize / UDP_PAYLOAD_SIZE + 1;
+
+	indexContainer.reserve(payloadLength);
+	for (int i = 1; i <= payloadLength; i++)
+	{
+		indexContainer.push_back(i);
+	}
+
 	//TODO :: 바이너리 파일 읽어서 memcpy로 복사한다음 일단 같은 위치에 복사할 것
 	//ofstream openStream;
 	//openStream.open("copied.jpg", ios::binary);
@@ -188,7 +193,7 @@ void RunClient(const char* szServer, short nPort)
 	fileStream.close();
 	closesocket(s);
 
-	cout << "Done" << endl;
+	printf("---------------------Done---------------------");
 	return;
 }
 
@@ -202,6 +207,9 @@ void RunSendThread()
 	bool lastFlag = false;
 	bool indexOverFlow = false;
 	bool indexExistFlag = false;
+
+	printf("Start Send Thread");
+
 	while (true)
 	{
 		string str = "";
@@ -214,8 +222,9 @@ void RunSendThread()
 				break;
 			}
 		}
-		if (indexContainer.size() + lastIndex == 200)
+		if (indexContainer.empty())
 		{
+			printf("End Send Thread\n");
 			break;
 		}
 		if (!indexExistFlag) continue;
@@ -270,14 +279,15 @@ void RunSendThread()
 		}
 		else
 		{
-			printf("Sent index : %d\n", index);
+			printf("Sent index : %d, nRet : %d\n", index, nRet);
 		}
 		//cout << strlen(_data.c_str()) << endl;
 
 		//cout << str;
 
-		if (indexContainer.size() + lastIndex == 200)
+		if (indexContainer.empty())
 		{
+			printf("End Send Thread\n");
 			break;
 		}
 		if (indexOverFlow)
@@ -291,15 +301,18 @@ void RunSendThread()
 void RunListenThread()
 {
 	int nRet = 0;
-	char* buffer = new char[6];
+
+	char* buffer = new char[ACK_SIZE];
 	int nLen = sizeof(saClient);
 	DataRcvDone done;
 
+	printf("Start Listen Thread");
+
 	while (true)
 	{
-		memset(buffer, 0, 6 * sizeof(char));
+		memset(buffer, 0, ACK_SIZE * sizeof(char));
 
-		nRet = recvfrom(s, buffer, 6, 0, (LPSOCKADDR)&saClient, &nLen);
+		nRet = recvfrom(s, buffer, ACK_SIZE, 0, (LPSOCKADDR)&saClient, &nLen);
 		
 		if (nRet > 0)
 		{
@@ -320,11 +333,23 @@ void RunListenThread()
 			}
 			int idx = ack.index();
 
+			if (idx == payloadLength)
+			{
+				printf("Catch\n");
+			}
+
 			if (CommonTools::Remove(indexContainer, idx))
-				printf("Index Ack : %d\n", idx);
+				printf("Index Ack : %d, nRet : %d\n", idx, nRet);
 			else
 				printf("Index Ack : %d but Failed to remove\n", idx);
 		}
+
+		if (indexContainer.empty())
+		{
+			printf("End Listen Thread\n");
+			break;
+		}
+			
 
 	}
 

@@ -23,6 +23,7 @@ using namespace UDP;
 #define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
 #define UDP_PAYLOAD_SIZE 1000
+#define ACK_SIZE 10
 #define HEADER_SIZE 5
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
@@ -48,6 +49,8 @@ int contentsLength;
 int payloadCount;
 int lastPayloadSize;
 bool doneFlag = false;
+
+vector<int> indexContainer;
 
 class RecvData {
 	public:
@@ -190,7 +193,13 @@ void RunServer(short nPort)
 	payloadCount = (fileSize / UDP_PAYLOAD_SIZE) + 1;
 	lastPayloadSize = fileSize % UDP_PAYLOAD_SIZE;
 
-	dataCont.reserve(200);
+	indexContainer.reserve(payloadCount);
+	dataCont.reserve(payloadCount);
+
+	for (int i = 1; i <= payloadCount; i++)
+	{
+		indexContainer.push_back(i);
+	}
 
 	std::thread t1(RunListenThread);
 	std::thread t2(RunSendThread);
@@ -200,7 +209,7 @@ void RunServer(short nPort)
 	delete[] buffer;
 	closesocket(s);
 
-	cout << "Done" << endl;
+	printf("---------------------Done---------------------");
 	return;
 }
 
@@ -220,6 +229,9 @@ void RunSendThread()
 	{
 		payloadIndexCont.push_back(i);
 	}
+
+	printf("Start Send Thread");
+
 	while (true)
 	{
 		for (int i = 0 ; i < dataCont.size(); i++)
@@ -241,26 +253,33 @@ void RunSendThread()
 					delete[] buffer;
 					dataCont.clear();
 					payloadIndexCont.clear();
-					break;
+					lastFlag = true;
 				}
 
 				DataRcvAck ack;
 				ack.set_index(index);
 				string sendData = ack.SerializeAsString();
 
-				nRet = sendto(s, ack.SerializeAsString().c_str(), ack.SerializeAsString().length() + 4, 0, (LPSOCKADDR)&clientAddr, sizeof(struct sockaddr));
+				nRet = sendto(s, ack.SerializeAsString().c_str(), ACK_SIZE, 0, (LPSOCKADDR)&clientAddr, sizeof(struct sockaddr));
 				if (nRet == SOCKET_ERROR)
 				{
 					printf("send failed Index : %d\n", curIndex);
 				}
 				else
 				{
-					targetFile.write(buffer, UDP_PAYLOAD_SIZE);
-					printf("curIndex : %d \n", curIndex);
-
-					dataCont.erase(dataCont.begin() + i);
-					CommonTools::Remove(payloadIndexCont, index);
+					printf("Index Sent : %d, nRet : %d \n", curIndex, nRet);
+					if (!lastFlag)
+					{
+						targetFile.write(buffer, UDP_PAYLOAD_SIZE);
+						CommonTools::Remove(payloadIndexCont, index);
+						dataCont.erase(dataCont.begin() + i);
+					}
 					curIndex++;
+				}
+
+				if (lastFlag)
+				{
+					break;
 				}
 
 			}
@@ -268,6 +287,7 @@ void RunSendThread()
 
 		if (payloadIndexCont.empty() && dataCont.empty())
 		{
+			printf("End Send Thread\n");
 			break;
 		}
 
@@ -279,10 +299,12 @@ void RunListenThread()
 	int nRet = 0;
 	char* dataBuffer;
 	int nLen = sizeof(SOCKADDR);
-	dataCont.reserve(200);
+	dataCont.reserve(payloadCount);
 
 	dataBuffer = new char[UDP_PAYLOAD_SIZE];
 	char* buffer = new char[UDP_PAYLOAD_SIZE + HEADER_SIZE];
+
+	printf("Start Listen Thread");
 	while (true)
 	{
 		memset(buffer, 0, (UDP_PAYLOAD_SIZE + HEADER_SIZE) * sizeof(char));
@@ -311,7 +333,7 @@ void RunListenThread()
 				delete[] binaryData;
 				continue;
 			}
-			printf("recv : %d\n", data.index());
+			printf("recv : %d, nRet : %d\n", data.index(), nRet);
 		}
 		else
 		{
@@ -325,9 +347,17 @@ void RunListenThread()
 		recvData->indexData = data;
 		memcpy(recvData->data, binaryData, UDP_PAYLOAD_SIZE);
 		dataCont.push_back(recvData);
+		CommonTools::Remove(indexContainer, data.index());
+
+
 
 		delete[] header;
 		delete[] binaryData;
+		if (indexContainer.empty())
+		{
+			printf("End Listen Thread\n");
+			break;
+		}
 	}
 
 	delete[] dataBuffer;
