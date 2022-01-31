@@ -24,7 +24,7 @@ using namespace UDP;
 #define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
 #define UDP_PAYLOAD_SIZE 1000
-#define ACK_SIZE 10
+#define ACK_SIZE 1000
 #define HEADER_SIZE 5
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
@@ -146,7 +146,6 @@ void RunClient(const char* szServer, short nPort)
 		indexContainer.push_back(i);
 	}
 
-	//TODO :: 바이너리 파일 읽어서 memcpy로 복사한다음 일단 같은 위치에 복사할 것
 	//ofstream openStream;
 	//openStream.open("copied.jpg", ios::binary);
 
@@ -280,6 +279,10 @@ void RunSendThread()
 		else
 		{
 			printf("Sent index : %d, nRet : %d\n", index, nRet);
+			this_thread::sleep_for(chrono::milliseconds(1)); // send하고 다음 send 전에 텀을 두지 않으면
+			// 서버 측에서 recvfrom으로 받을 준비가 되기 전에 또 send 해버림.
+			// 결과적으로 중간의 datagram 하나가 스킵된다.
+			// TODO::sleep하지 않고 모든 datagram을 받아낼 방법은 없는가?
 		}
 		//cout << strlen(_data.c_str()) << endl;
 
@@ -338,6 +341,7 @@ void RunListenThread()
 				printf("Catch\n");
 			}
 
+			
 			if (CommonTools::Remove(indexContainer, idx))
 				printf("Index Ack : %d, nRet : %d\n", idx, nRet);
 			else

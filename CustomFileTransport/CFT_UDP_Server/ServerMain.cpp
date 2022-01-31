@@ -23,7 +23,7 @@ using namespace UDP;
 #define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
 #define UDP_PAYLOAD_SIZE 1000
-#define ACK_SIZE 10
+#define ACK_SIZE 1000
 #define HEADER_SIZE 5
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
@@ -241,6 +241,7 @@ void RunSendThread()
 
 			if (index == curIndex)
 			{
+				printf("                                  Try Remove index : %d\n" , curIndex);
 				if (curIndex == payloadCount)
 				{
 					char* lastPayload = new char[lastPayloadSize];
@@ -260,6 +261,11 @@ void RunSendThread()
 				ack.set_index(index);
 				string sendData = ack.SerializeAsString();
 
+				if (sendData.length() > ACK_SIZE)
+				{
+					printf("Catch");
+				}
+
 				nRet = sendto(s, ack.SerializeAsString().c_str(), ACK_SIZE, 0, (LPSOCKADDR)&clientAddr, sizeof(struct sockaddr));
 				if (nRet == SOCKET_ERROR)
 				{
@@ -271,11 +277,19 @@ void RunSendThread()
 					if (!lastFlag)
 					{
 						targetFile.write(buffer, UDP_PAYLOAD_SIZE);
+						
 						CommonTools::Remove(payloadIndexCont, index);
+						
+						printf("                                  Removed Target Index : %d\n",  dataCont[i]->indexData.index());
 						dataCont.erase(dataCont.begin() + i);
+						if (dataCont.size() > i)
+							printf("                                  After Removed Target Index : %d\n", dataCont[i]->indexData.index());
 					}
 					curIndex++;
 				}
+
+				this_thread::sleep_for(chrono::milliseconds(1)); 
+
 
 				if (lastFlag)
 				{
