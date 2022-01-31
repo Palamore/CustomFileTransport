@@ -288,7 +288,7 @@ void RunSendThread()
 					curIndex++;
 				}
 
-				this_thread::sleep_for(chrono::milliseconds(1)); 
+				//this_thread::sleep_for(chrono::milliseconds(1)); 
 
 
 				if (lastFlag)
@@ -360,10 +360,15 @@ void RunListenThread()
 		RecvData *recvData = new RecvData();
 		recvData->indexData = data;
 		memcpy(recvData->data, binaryData, UDP_PAYLOAD_SIZE);
-		dataCont.push_back(recvData);
-		CommonTools::Remove(indexContainer, data.index());
-
-
+		if (CommonTools::Find(indexContainer, data.index()))
+		{
+			dataCont.push_back(recvData);
+			CommonTools::Remove(indexContainer, data.index());
+		}
+		else
+		{
+			delete recvData;
+		}
 
 		delete[] header;
 		delete[] binaryData;
