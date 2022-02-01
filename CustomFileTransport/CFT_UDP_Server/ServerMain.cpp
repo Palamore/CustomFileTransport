@@ -22,7 +22,7 @@ using namespace UDP;
 #define UDP_PORT		8001
 #define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
-#define UDP_PAYLOAD_SIZE 1000
+#define UDP_PAYLOAD_SIZE 10000
 #define ACK_SIZE 1000
 #define HEADER_SIZE 5
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"

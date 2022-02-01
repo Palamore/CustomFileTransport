@@ -17,7 +17,7 @@ using namespace std;
 
 #define	MAX_BUFFER		1024
 #define SERVER_PORT		8000
-#define UDP_PAYLOAD_SIZE 1000
+#define UDP_PAYLOAD_SIZE 10000
 #define SERVER_IP		"127.0.0.1"
 #define INPUT_COMMAND_INDEX 0
 #define INPUT_COMMAND_TYPE_INDEX 1

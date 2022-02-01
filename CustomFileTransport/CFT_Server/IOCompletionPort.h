@@ -23,7 +23,7 @@ using namespace PacketTag;
 #define	MAX_BUFFER		1024
 #define SERVER_PORT		8000
 #define MAX_CLIENT		1000
-#define UDP_PAYLOAD_SIZE 1000
+#define UDP_PAYLOAD_SIZE 10000
 #define null			NULL
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"

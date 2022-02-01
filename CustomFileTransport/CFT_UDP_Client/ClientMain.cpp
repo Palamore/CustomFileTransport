@@ -23,7 +23,7 @@ using namespace UDP;
 #define UDP_PORT		8001
 #define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
-#define UDP_PAYLOAD_SIZE 1000
+#define UDP_PAYLOAD_SIZE 10000
 #define ACK_SIZE 1000
 #define HEADER_SIZE 5
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
@@ -282,11 +282,7 @@ void RunSendThread()
 			//this_thread::sleep_for(chrono::milliseconds(1)); // send하고 다음 send 전에 텀을 두지 않으면
 			// 서버 측에서 recvfrom으로 받을 준비가 되기 전에 또 send 해버림.
 			// 결과적으로 중간의 datagram 하나가 스킵된다.
-			// TODO::sleep하지 않고 모든 datagram을 받아낼 방법은 없는가?
 		}
-		//cout << strlen(_data.c_str()) << endl;
-
-		//cout << str;
 
 
 		if (indexOverFlow)
