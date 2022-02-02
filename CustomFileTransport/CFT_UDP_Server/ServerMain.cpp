@@ -8,6 +8,7 @@
 #include <direct.h>
 #include <io.h>
 #include <vector>
+#include <mutex>
 #include "PacketTag.pb.h"
 #include "ClientInfo.pb.h"
 #include "UDPFileSend.pb.h"
@@ -50,6 +51,7 @@ int payloadCount;
 int lastPayloadSize;
 bool doneFlag = false;
 
+//mutex m;
 vector<int> indexContainer;
 
 class RecvData {
@@ -181,9 +183,6 @@ void RunServer(short nPort)
 	metaFile.read(buffer, fileLength);
 	metaFile.close();
 
-	//cout << "buffer : " << buffer << endl;
-	//cout << "FileName : " << fileData.filename() << endl;
-	//cout << "FileSize : " << fileData.filesize() << endl;
 
 	map<string, string> metaData = CommonTools::ParseMetaString(buffer);
 
@@ -203,6 +202,8 @@ void RunServer(short nPort)
 
 	std::thread t1(RunListenThread);
 	std::thread t2(RunSendThread);
+	/*std::thread t3(RunListenThread);
+	std::thread t4(RunListenThread);*/
 
 	t1.join();
 	t2.join();
@@ -261,11 +262,6 @@ void RunSendThread()
 				ack.set_index(index);
 				string sendData = ack.SerializeAsString();
 
-				if (sendData.length() > ACK_SIZE)
-				{
-					printf("Catch");
-				}
-
 				nRet = sendto(s, ack.SerializeAsString().c_str(), ACK_SIZE, 0, (LPSOCKADDR)&clientAddr, sizeof(struct sockaddr));
 				if (nRet == SOCKET_ERROR)
 				{
@@ -288,7 +284,7 @@ void RunSendThread()
 					curIndex++;
 				}
 
-				//this_thread::sleep_for(chrono::milliseconds(1)); 
+				
 
 
 				if (lastFlag)
@@ -313,7 +309,7 @@ void RunListenThread()
 	int nRet = 0;
 	char* dataBuffer;
 	int nLen = sizeof(SOCKADDR);
-	dataCont.reserve(payloadCount);
+	
 
 	dataBuffer = new char[UDP_PAYLOAD_SIZE];
 	char* buffer = new char[UDP_PAYLOAD_SIZE + HEADER_SIZE];
@@ -327,6 +323,7 @@ void RunListenThread()
 		char* binaryData = new char[UDP_PAYLOAD_SIZE];
 		string headerStr;
 		FileData data;
+		//m.lock();
 		nRet = recvfrom(s, buffer, UDP_PAYLOAD_SIZE + HEADER_SIZE, 0, (LPSOCKADDR)&clientAddr, &nLen);
 		if (nRet > 0)
 		{
@@ -339,12 +336,14 @@ void RunListenThread()
 				closesocket(s);
 				delete[] dataBuffer;
 				delete[] buffer;
+				//m.unlock();
 				return;
 			}
 			if (data.index() == 0)
 			{
 				delete[] header;
 				delete[] binaryData;
+				//m.unlock();
 				continue;
 			}
 			printf("recv : %d, nRet : %d\n", data.index(), nRet);
@@ -354,6 +353,7 @@ void RunListenThread()
 			printf("recv Failed\n");
 			delete[] header;
 			delete[] binaryData;
+			//m.unlock();
 			continue;
 		}
 
@@ -375,8 +375,10 @@ void RunListenThread()
 		if (indexContainer.empty())
 		{
 			printf("End Listen Thread\n");
+			//m.unlock();
 			break;
 		}
+		//m.unlock();
 	}
 
 	delete[] dataBuffer;
