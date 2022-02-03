@@ -211,8 +211,13 @@ void RunSendThread()
 
 	while (true)
 	{
-		string str = "";
-
+		if (indexOverFlow)
+		{
+			if (!indexContainer.empty())
+			{
+				index = indexContainer[0];
+			}
+		}
 		for (int i = 0; i < indexContainer.size(); i++)
 		{
 			if (indexContainer[i] == index)
@@ -233,7 +238,6 @@ void RunSendThread()
 			fileStream.read(buffer, UDP_PAYLOAD_SIZE);
 			/*buffer[UDP_PAYLOAD_SIZE] = '\0';*/
 			fileStream.seekg(UDP_PAYLOAD_SIZE * index, std::ios::beg);
-			str = string(buffer);
 			
 		}
 		else
@@ -279,9 +283,7 @@ void RunSendThread()
 		else
 		{
 			printf("Sent index : %d, nRet : %d\n", index, nRet);
-			//this_thread::sleep_for(chrono::milliseconds(1)); // send하고 다음 send 전에 텀을 두지 않으면
-			// 서버 측에서 recvfrom으로 받을 준비가 되기 전에 또 send 해버림.
-			// 결과적으로 중간의 datagram 하나가 스킵된다.
+
 		}
 
 
@@ -290,7 +292,7 @@ void RunSendThread()
 			if (!indexContainer.empty())
 			{
 				index = indexContainer[0];
-				indexOverFlow = false;
+				printf("				index overflow, index restart : %d.\n", index);
 			}
 		}
 		else
@@ -317,6 +319,7 @@ void RunListenThread()
 	while (true)
 	{
 		memset(buffer, 0, ACK_SIZE * sizeof(char));
+
 
 		nRet = recvfrom(s, buffer, ACK_SIZE, 0, (LPSOCKADDR)&saClient, &nLen);
 		
@@ -346,7 +349,7 @@ void RunListenThread()
 
 			
 			if (CommonTools::Remove(indexContainer, idx))
-				printf("Index Ack : %d, nRet : %d\n", idx, nRet);
+				printf("							Index Ack : %d, nRet : %d\n", idx, nRet);
 			else
 				printf("Index Ack : %d but Failed to remove\n", idx);
 		}
