@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="소스 파일\Protobuffers">
-      <UniqueIdentifier>{598bd901-7e40-466d-990f-4f3f642c743b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="헤더 파일\Protobuffers">
-      <UniqueIdentifier>{e7bc8030-8626-4bf2-9c9b-2c0c848756dc}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientMain.cpp">
@@ -33,15 +27,6 @@
     <ClCompile Include="Debug.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CommonTools.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="ClientInfo.pb.cc">
-      <Filter>소스 파일\Protobuffers</Filter>
-    </ClCompile>
-    <ClCompile Include="PacketTag.pb.cc">
-      <Filter>소스 파일\Protobuffers</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Send.h">
@@ -55,18 +40,6 @@
     </ClInclude>
     <ClInclude Include="Debug.h">
       <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CommonTools.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketTag.pb.h">
-      <Filter>헤더 파일\Protobuffers</Filter>
-    </ClInclude>
-    <ClInclude Include="ProtocolTag.h">
-      <Filter>헤더 파일\Protobuffers</Filter>
-    </ClInclude>
-    <ClInclude Include="ClientInfo.pb.h">
-      <Filter>헤더 파일\Protobuffers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

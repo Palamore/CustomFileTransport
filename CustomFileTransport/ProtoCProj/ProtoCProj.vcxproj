@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -145,11 +145,17 @@
     <None Include="protoc\UDPFileSend.proto" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClientInfo.pb.h" />
     <ClInclude Include="CommonTools.h" />
+    <ClInclude Include="PacketTag.pb.h" />
+    <ClInclude Include="UDPFileSend.pb.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClientInfo.pb.cc" />
     <ClCompile Include="CommonTools.cpp" />
     <ClCompile Include="DummyMain.cpp" />
+    <ClCompile Include="PacketTag.pb.cc" />
+    <ClCompile Include="UDPFileSend.pb.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -116,6 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\CustomFileTransport\CustomFileTransport\ProtoCProj;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,15 +140,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ClientInfo.pb.h" />
-    <ClInclude Include="CommonTools.h" />
-    <ClInclude Include="PacketTag.pb.h" />
+    <ClCompile Include="ClientMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ClientInfo.pb.cc" />
-    <ClCompile Include="ClientMain.cpp" />
-    <ClCompile Include="CommonTools.cpp" />
-    <ClCompile Include="PacketTag.pb.cc" />
+    <ProjectReference Include="..\ProtoCProj\ProtoCProj.vcxproj">
+      <Project>{885aa34c-112e-42a3-b909-414c07488985}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

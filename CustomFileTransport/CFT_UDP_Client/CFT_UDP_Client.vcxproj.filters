@@ -13,42 +13,10 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Protobuffers">
-      <UniqueIdentifier>{f2aab023-6bc9-4a1f-b7de-76374d0fe832}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Protobuffers">
-      <UniqueIdentifier>{a7dc3a53-c2d0-40ec-8cea-5dea351cfdd2}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientInfo.pb.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CommonTools.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UDPFileSend.pb.cc">
-      <Filter>Source Files\Protobuffers</Filter>
-    </ClCompile>
-    <ClCompile Include="PacketTag.pb.cc">
-      <Filter>Source Files\Protobuffers</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="CommonTools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UDPFileSend.pb.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ClientInfo.pb.h">
-      <Filter>Header Files\Protobuffers</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketTag.pb.h">
-      <Filter>Header Files\Protobuffers</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

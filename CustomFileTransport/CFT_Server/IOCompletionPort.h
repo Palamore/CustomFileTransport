@@ -2,7 +2,6 @@
 #pragma once
 #pragma comment(lib, "ws2_32.lib")
 #include <vector>
-#include "ProtocolTag.h"
 #include "PacketTag.pb.h"
 #include "ClientInfo.pb.h"
 #include "CommonTools.h"

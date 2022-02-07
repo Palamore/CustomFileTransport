@@ -122,6 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\CustomFileTransport\CustomFileTransport\ProtoCProj;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,23 +147,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ClientInfo.pb.cc" />
     <ClCompile Include="ClientMain.cpp" />
-    <ClCompile Include="CommonTools.cpp" />
     <ClCompile Include="Debug.cpp" />
-    <ClCompile Include="PacketTag.pb.cc" />
     <ClCompile Include="Recv.cpp" />
     <ClCompile Include="Send.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ClientInfo.pb.h" />
-    <ClInclude Include="CommonTools.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="IncludeDefineNamespace.h" />
-    <ClInclude Include="PacketTag.pb.h" />
-    <ClInclude Include="ProtocolTag.h" />
     <ClInclude Include="Recv.h" />
     <ClInclude Include="Send.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProtoCProj\ProtoCProj.vcxproj">
+      <Project>{885aa34c-112e-42a3-b909-414c07488985}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
