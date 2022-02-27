@@ -1,0 +1,8 @@
+FileName
+expan.zip
+FileSize
+8737729
+ContentsLength
+5
+PayloadSize
+10000
