@@ -15,6 +15,7 @@
 #include "ClientInfo.pb.h"
 #include "UDPFileSend.pb.h"
 #include "CommonTools.h"
+#include "Debug.h"
 
 using namespace std;
 using namespace PacketTag;
@@ -191,12 +192,14 @@ void RunServer(short nPort)
 
 	std::thread t1(RunListenThread);
 	std::thread t2(RunSendThread);
-	std::thread t3(RunFileWriteThread);
+
 	/*std::thread t3(RunListenThread);
 	std::thread t4(RunListenThread);*/
 
 	t1.join();
 	t2.join();
+	std::thread t3(RunFileWriteThread);
+
 	t3.join();
 	delete[] buffer;
 	closesocket(s);
@@ -206,6 +209,12 @@ void RunServer(short nPort)
 	cout << "whole time : " << difftime(end, start) / 1000.0 << endl;
 
 	printf("---------------------Done---------------------");
+
+	while (true)
+	{
+
+	}
+
 	return;
 }
 
@@ -238,7 +247,7 @@ void RunFileWriteThread()
 			char* lastPayload = new char[lastPayloadSize];
 			memcpy(lastPayload, iter->second->data, lastPayloadSize);
 			targetFile.write(lastPayload, lastPayloadSize);
-			
+			printf("										Write Index : %d.\n", curIndex);
 
 			delete[] lastPayload;
 			targetFile.close();
@@ -295,9 +304,11 @@ void RunSendThread()
 			}
 			else
 			{
+
 				iter->second->SendFlag = true;
 				CommonTools::Remove(sendIndexCont, curIndex);
-				printf("					Sent Index : %d.\n", curIndex);
+				//printf("					Sent Index : %d.\n", curIndex);
+				Debug::Log("					Sent Index : " + to_string(curIndex));
 				if (iter->second->WriteFlag == true) //Send, Write 모두 끝난 경우 날림
 				{
 					dataDic.erase(curIndex);
@@ -361,7 +372,8 @@ void RunListenThread()
 				//m.unlock();
 				continue;
 			}
-			printf("recv index : %d, nRet : %d\n", data.index(), nRet);
+			//printf("recv index : %d, nRet : %d\n", data.index(), nRet);
+			Debug::Log("recv index : " + to_string(data.index()) + ", nRet : " + to_string(nRet));
 		}
 		else
 		{

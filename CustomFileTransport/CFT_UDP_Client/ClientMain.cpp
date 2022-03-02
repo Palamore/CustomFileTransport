@@ -15,6 +15,7 @@
 #include "ClientInfo.pb.h"
 #include "UDPFileSend.pb.h"
 #include "CommonTools.h"
+#include "Debug.h"
 
 using namespace std;
 using namespace PacketTag;
@@ -195,6 +196,11 @@ void RunClient(const char* szServer, short nPort)
 	closesocket(s);
 
 	printf("---------------------Done---------------------");
+	
+	while (true)
+	{
+
+	}
 	return;
 }
 
@@ -235,6 +241,12 @@ void RunSendThread()
 		}
 		if (!indexExistFlag) continue;
 
+		if (index == 3)
+		{
+			cout << "catch" << endl;
+		}
+		memset(buffer, 0, UDP_PAYLOAD_SIZE * sizeof(char));
+
 		if (UDP_PAYLOAD_SIZE * index < fileSize)
 		{
 			fileStream.read(buffer, UDP_PAYLOAD_SIZE);
@@ -267,6 +279,7 @@ void RunSendThread()
 		memset(sendBuffer, 0, payloadSize * sizeof(char));
 		memcpy(sendBuffer, _data.c_str(), _data.length());
 
+
 		if (UDP_PAYLOAD_SIZE * index < fileSize)
 		{
 			memcpy((sendBuffer + HEADER_SIZE), buffer, UDP_PAYLOAD_SIZE);
@@ -278,14 +291,15 @@ void RunSendThread()
 			nRet = sendto(s, sendBuffer, lastPayloadSize, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
 		}
 
+
 		if (nRet == SOCKET_ERROR)
 		{
 			printf("send failed\n");
 		}
 		else
 		{
-			printf("Sent index : %d, nRet : %d\n", index, nRet);
-
+			//printf("Sent index : %d, nRet : %d\n", index, nRet);
+			Debug::Log("Sent index : " + to_string(index) + ", nRet : " + to_string(nRet));
 		}
 
 
@@ -294,7 +308,8 @@ void RunSendThread()
 			if (!indexContainer.empty())
 			{
 				index = indexContainer[0];
-				printf("				index overflow, index restart : %d.\n", index);
+				//printf("				index overflow, index restart : %d.\n", index);
+				Debug::Log("				index overflow, index restart : " + to_string(index));
 			}
 		}
 		else
@@ -344,16 +359,17 @@ void RunListenThread()
 			}
 			int idx = ack.index();
 
-			if (idx == payloadLength)
-			{
-				printf("Catch\n");
-			}
-
 			
 			if (CommonTools::Remove(indexContainer, idx))
-				printf("							Index Ack : %d, nRet : %d\n", idx, nRet);
+			{
+				//printf("							Index Ack : %d, nRet : %d\n", idx, nRet);
+				Debug::Log("							Index Ack : " + to_string(idx) + ", nRet : " + to_string(nRet));
+			}
 			else
-				printf("Index Ack : %d but Failed to remove\n", idx);
+			{
+				//printf("Index Ack : %d but Failed to remove\n", idx);
+				Debug::Log("Index Ack : " + to_string(idx) + " but Failed to remove");
+			}
 		}
 
 		if (indexContainer.empty())
