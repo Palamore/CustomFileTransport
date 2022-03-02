@@ -73,14 +73,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>C:\vcpkg\installed\x64-windows\debug\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\vcpkg\installed\x64-windows\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\vcpkg\installed\x64-windows\include;C:\CustomFileTransport\CustomFileTransport\ProtoCProj;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\CustomFileTransport\CustomFileTransport\Protobuf\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\CustomFileTransport\CustomFileTransport\Protobuf\include;C:\CustomFileTransport\CustomFileTransport\ProtoCProj;$(IncludePath)</IncludePath>
     <LibraryPath>C:\CustomFileTransport\CustomFileTransport\Protobuf\debug\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

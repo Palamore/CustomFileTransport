@@ -80,7 +80,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\CustomFileTransport\CustomFileTransport\Protobuf\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\CustomFileTransport\CustomFileTransport\Protobuf\include;C:\CustomFileTransport\CustomFileTransport\ProtoCProj;$(IncludePath)</IncludePath>
     <LibraryPath>C:\CustomFileTransport\CustomFileTransport\Protobuf\debug\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
