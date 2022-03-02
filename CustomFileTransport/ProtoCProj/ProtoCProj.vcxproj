@@ -149,12 +149,14 @@
   <ItemGroup>
     <ClInclude Include="ClientInfo.pb.h" />
     <ClInclude Include="CommonTools.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="PacketTag.pb.h" />
     <ClInclude Include="UDPFileSend.pb.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientInfo.pb.cc" />
     <ClCompile Include="CommonTools.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DummyMain.cpp" />
     <ClCompile Include="PacketTag.pb.cc" />
     <ClCompile Include="UDPFileSend.pb.cc" />

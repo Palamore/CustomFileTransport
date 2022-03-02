@@ -281,7 +281,7 @@ void RunSendThread()
 	}
 
 	printf("Start Send Thread\n");
-
+	
 	while (true)
 	{
 		for (int i = 0 ; i < sendIndexCont.size(); i++)
@@ -309,10 +309,10 @@ void RunSendThread()
 				CommonTools::Remove(sendIndexCont, curIndex);
 				//printf("					Sent Index : %d.\n", curIndex);
 				Debug::Log("					Sent Index : " + to_string(curIndex));
-				if (iter->second->WriteFlag == true) //Send, Write 모두 끝난 경우 날림
-				{
-					dataDic.erase(curIndex);
-				}
+				//if (iter->second->WriteFlag == true) //Send, Write 모두 끝난 경우 날림
+				//{
+				//	dataDic.erase(curIndex);
+				//}
 			}
 			
 		}

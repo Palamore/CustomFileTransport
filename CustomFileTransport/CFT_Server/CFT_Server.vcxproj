@@ -154,13 +154,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="IOCompletionPort.cpp" />
     <ClCompile Include="ServerMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientInfo.h" />
-    <ClInclude Include="Debug.h" />
     <ClInclude Include="IOCompletionPort.h" />
   </ItemGroup>
   <ItemGroup>

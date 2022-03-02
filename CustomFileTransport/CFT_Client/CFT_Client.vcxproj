@@ -148,12 +148,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ClientMain.cpp" />
-    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="Recv.cpp" />
     <ClCompile Include="Send.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Debug.h" />
     <ClInclude Include="IncludeDefineNamespace.h" />
     <ClInclude Include="Recv.h" />
     <ClInclude Include="Send.h" />
