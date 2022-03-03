@@ -23,7 +23,7 @@ string GetCurrentDay()
 
 void Debug::Log(string str)
 {
-	m.lock();
+	//m.lock();
 	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
 	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
 	string log = "";
@@ -35,7 +35,7 @@ void Debug::Log(string str)
 	logFile.write(log.c_str(), log.length());
 	//logFile << log << endl;
 	logFile.close();
-	m.unlock();
+	//m.unlock();
 }
 
 void Debug::LogError(string str)

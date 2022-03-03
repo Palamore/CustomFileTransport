@@ -43,6 +43,8 @@ void RunFileWriteThread();
 void RunSendThread();
 void RunListenThread();
 
+mutex m;
+
 SOCKET s;
 SOCKET s_send;
 SOCKADDR_IN serverAddr;
@@ -308,7 +310,9 @@ void RunSendThread()
 				iter->second->SendFlag = true;
 				CommonTools::Remove(sendIndexCont, curIndex);
 				//printf("					Sent Index : %d.\n", curIndex);
+				m.lock();
 				Debug::Log("					Sent Index : " + to_string(curIndex));
+				m.unlock();
 				//if (iter->second->WriteFlag == true) //Send, Write 모두 끝난 경우 날림
 				//{
 				//	dataDic.erase(curIndex);
@@ -373,7 +377,9 @@ void RunListenThread()
 				continue;
 			}
 			//printf("recv index : %d, nRet : %d\n", data.index(), nRet);
+			m.lock();
 			Debug::Log("recv index : " + to_string(data.index()) + ", nRet : " + to_string(nRet));
+			m.unlock();
 		}
 		else
 		{
@@ -390,6 +396,9 @@ void RunListenThread()
 			memcpy(iter->second->data, binaryData, UDP_PAYLOAD_SIZE);
 			iter->second->RecvFlag = true;
 			CommonTools::Remove(recvIndexCont, data.index());
+			m.lock();
+			Debug::Log("Index Found, Remove");
+			m.unlock();
 		}
 		else //못 찾는 경우 해당 Index의 Ack 데이터그램을 클라이언트에서 못 받은 경우일 수 있으므로 해당 index의 Ack 데이터그램 재전송.
 		{    
@@ -400,8 +409,14 @@ void RunListenThread()
 				string sendData = ack.SerializeAsString();
 
 				nRet = sendto(s, sendData.c_str(), ACK_SIZE, 0, (LPSOCKADDR)&clientAddr, sizeof(struct sockaddr));
+				m.lock();
+				Debug::Log("No Index Found, Resend");
+				m.unlock();
 			}
 		}
+		m.lock();
+		Debug::Log("SendFlag : " + to_string(iter->second->SendFlag) + " | RecvFlag : " + to_string(iter->second->RecvFlag));
+		m.unlock();
 
 		delete[] header;
 		delete[] binaryData;

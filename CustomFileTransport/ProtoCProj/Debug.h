@@ -19,5 +19,6 @@ public:
 
 	static void LogWarning(string str);
 
-	static std::mutex m;
+//private:
+//	static mutex m;
 };

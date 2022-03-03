@@ -9,6 +9,7 @@
 #include <memory>
 #include <direct.h>
 #include <io.h>
+#include <mutex>
 #include <string>
 #include <shellapi.h>
 #include "PacketTag.pb.h"
@@ -44,6 +45,7 @@ void RunClient(const char* szServer, short nPort);
 void RunSendThread();
 void RunListenThread();
 
+mutex m;
 
 ifstream fileStream;
 FILE* fp;
@@ -299,7 +301,9 @@ void RunSendThread()
 		else
 		{
 			//printf("Sent index : %d, nRet : %d\n", index, nRet);
+			m.lock();
 			Debug::Log("Sent index : " + to_string(index) + ", nRet : " + to_string(nRet));
+			m.unlock();
 		}
 
 
@@ -309,7 +313,9 @@ void RunSendThread()
 			{
 				index = indexContainer[0];
 				//printf("				index overflow, index restart : %d.\n", index);
+				m.lock();
 				Debug::Log("				index overflow, index restart : " + to_string(index));
+				m.unlock();
 			}
 		}
 		else
@@ -363,9 +369,11 @@ void RunListenThread()
 			if (CommonTools::Remove(indexContainer, idx))
 			{
 				//printf("							Index Ack : %d, nRet : %d\n", idx, nRet);
+				m.lock();
 				Debug::Log("							Index Ack : " + to_string(idx) + ", nRet : " + to_string(nRet));
 				if (indexContainer.size() > 5)
 					Debug::Log("              Index Removed : " + to_string(idx) + " initial five : " + to_string(indexContainer[0]) + " : " + to_string(indexContainer[1]) + " : " + to_string(indexContainer[2]) + " : " + to_string(indexContainer[3]) + " : " + to_string(indexContainer[4]));
+				m.unlock();
 			}
 			else
 			{
