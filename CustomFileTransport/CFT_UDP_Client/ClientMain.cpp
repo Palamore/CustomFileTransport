@@ -364,6 +364,8 @@ void RunListenThread()
 			{
 				//printf("							Index Ack : %d, nRet : %d\n", idx, nRet);
 				Debug::Log("							Index Ack : " + to_string(idx) + ", nRet : " + to_string(nRet));
+				if (indexContainer.size() > 5)
+					Debug::Log("              Index Removed : " + to_string(idx) + " initial five : " + to_string(indexContainer[0]) + " : " + to_string(indexContainer[1]) + " : " + to_string(indexContainer[2]) + " : " + to_string(indexContainer[3]) + " : " + to_string(indexContainer[4]));
 			}
 			else
 			{

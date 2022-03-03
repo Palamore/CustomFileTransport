@@ -27,10 +27,11 @@ void Debug::Log(string str)
 	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
 	string log = "";
 	log = string(std::ctime(&end_time)) + string("[Log] ") + str + "\n";
-	cout << log;
+	printf("%s ", log.c_str());
 
 	ofstream logFile(GetCurrentDay() + ".txt", ios::app);
-	logFile << log << endl;
+	logFile.write(log.c_str(), log.length());
+	//logFile << log << endl;
 	logFile.close();
 }
 
