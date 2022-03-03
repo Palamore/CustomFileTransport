@@ -7,6 +7,7 @@
 #include <direct.h>
 #include <io.h>
 #include <fstream>
+#include <mutex>
 using namespace std;
 
 static class Debug
@@ -17,4 +18,6 @@ public:
 	static void LogError(string str);
 
 	static void LogWarning(string str);
+
+	static std::mutex m;
 };

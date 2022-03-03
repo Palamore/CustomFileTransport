@@ -23,16 +23,19 @@ string GetCurrentDay()
 
 void Debug::Log(string str)
 {
+	m.lock();
 	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
 	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
 	string log = "";
 	log = string(std::ctime(&end_time)) + string("[Log] ") + str + "\n";
 	printf("%s ", log.c_str());
 
+	
 	ofstream logFile(GetCurrentDay() + ".txt", ios::app);
 	logFile.write(log.c_str(), log.length());
 	//logFile << log << endl;
 	logFile.close();
+	m.unlock();
 }
 
 void Debug::LogError(string str)
