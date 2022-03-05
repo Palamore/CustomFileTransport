@@ -80,7 +80,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\CustomFileTransport\CustomFileTransport\Protobuf\include;C:\CustomFileTransport\CustomFileTransport\ProtoCProj;$(IncludePath)</IncludePath>
+    <IncludePath>C:\CustomFileTransport\CustomFileTransport\Protobuf\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\CustomFileTransport\CustomFileTransport\Protobuf\debug\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -154,11 +154,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="IOCompletionPort.cpp" />
     <ClCompile Include="ServerMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientInfo.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="IOCompletionPort.h" />
   </ItemGroup>
   <ItemGroup>

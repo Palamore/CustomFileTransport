@@ -6,7 +6,7 @@
 using namespace std;
 #pragma comment(lib, "ws2_32")
 
-#define PORT 8000
+#define PORT 4000
 #define PACKET_SIZE 1024
 vector<ClientInfo*>* clientInfoContainer;
 

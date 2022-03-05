@@ -27,7 +27,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -72,14 +72,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\CustomFileTransport\CustomFileTransport\Protobuf\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\CustomFileTransport\CustomFileTransport\Protobuf\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -149,14 +147,12 @@
   <ItemGroup>
     <ClInclude Include="ClientInfo.pb.h" />
     <ClInclude Include="CommonTools.h" />
-    <ClInclude Include="Debug.h" />
     <ClInclude Include="PacketTag.pb.h" />
     <ClInclude Include="UDPFileSend.pb.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientInfo.pb.cc" />
     <ClCompile Include="CommonTools.cpp" />
-    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DummyMain.cpp" />
     <ClCompile Include="PacketTag.pb.cc" />
     <ClCompile Include="UDPFileSend.pb.cc" />

@@ -49,8 +49,7 @@ int main()
 	// 접속할 서버 포트 및 IP
 	stServerAddr.sin_port = htons(SERVER_PORT);
 	//stServerAddr.sin_addr.s_addr = inet_addr(SERVER_IP);
-	//inet_pton(stServerAddr.sin_family, SERVER_IP, &stServerAddr.sin_addr.s_addr);
-	inet_pton(stServerAddr.sin_family, PUBLIC_SERVER_IP, &stServerAddr.sin_addr.s_addr);
+	inet_pton(stServerAddr.sin_family, SERVER_IP, &stServerAddr.sin_addr.s_addr);
 
 	nRet = connect(sendObject.clientSocket, (sockaddr*)&stServerAddr, sizeof(sockaddr));
 	if (nRet == SOCKET_ERROR) {

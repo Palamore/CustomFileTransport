@@ -9,20 +9,17 @@
 #include <memory>
 #include <direct.h>
 #include <io.h>
-#include <mutex>
 #include <string>
 #include <shellapi.h>
 #include "PacketTag.pb.h"
 #include "ClientInfo.pb.h"
 #include "UDPFileSend.pb.h"
 #include "CommonTools.h"
-#include "Debug.h"
 
 using namespace std;
 using namespace PacketTag;
 using namespace UDP;
 #define SERVER_IP		"127.0.0.1"
-#define PUBLIC_SERVER_IP "121.134.137.247"
 #define UDP_PORT		8001
 #define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
@@ -45,7 +42,6 @@ void RunClient(const char* szServer, short nPort);
 void RunSendThread();
 void RunListenThread();
 
-mutex m;
 
 ifstream fileStream;
 FILE* fp;
@@ -57,10 +53,6 @@ size_t contentsLength;
 size_t fileSize;
 size_t payloadLength;
 vector<int> indexContainer;
-
-string sendThreadState;
-string listenThreadState;
-
 int main()
 {
 
@@ -78,8 +70,7 @@ int main()
 		return -1;
 	}
 
-	string serverIP = PUBLIC_SERVER_IP;
-	//string serverIP = SERVER_IP;
+	string serverIP = SERVER_IP;
 
 	
 
@@ -202,11 +193,6 @@ void RunClient(const char* szServer, short nPort)
 	closesocket(s);
 
 	printf("---------------------Done---------------------");
-	
-	while (true)
-	{
-
-	}
 	return;
 }
 
@@ -247,12 +233,6 @@ void RunSendThread()
 		}
 		if (!indexExistFlag) continue;
 
-		if (index == 3)
-		{
-			cout << "catch" << endl;
-		}
-		memset(buffer, 0, UDP_PAYLOAD_SIZE * sizeof(char));
-
 		if (UDP_PAYLOAD_SIZE * index < fileSize)
 		{
 			fileStream.read(buffer, UDP_PAYLOAD_SIZE);
@@ -285,7 +265,6 @@ void RunSendThread()
 		memset(sendBuffer, 0, payloadSize * sizeof(char));
 		memcpy(sendBuffer, _data.c_str(), _data.length());
 
-
 		if (UDP_PAYLOAD_SIZE * index < fileSize)
 		{
 			memcpy((sendBuffer + HEADER_SIZE), buffer, UDP_PAYLOAD_SIZE);
@@ -297,17 +276,14 @@ void RunSendThread()
 			nRet = sendto(s, sendBuffer, lastPayloadSize, 0, (LPSOCKADDR)&saServer, sizeof(struct sockaddr));
 		}
 
-
 		if (nRet == SOCKET_ERROR)
 		{
 			printf("send failed\n");
 		}
 		else
 		{
-			//printf("Sent index : %d, nRet : %d\n", index, nRet);
-			m.lock();
-			Debug::Log("Sent index : " + to_string(index) + ", nRet : " + to_string(nRet));
-			m.unlock();
+			printf("Sent index : %d, nRet : %d\n", index, nRet);
+
 		}
 
 
@@ -316,10 +292,7 @@ void RunSendThread()
 			if (!indexContainer.empty())
 			{
 				index = indexContainer[0];
-				//printf("				index overflow, index restart : %d.\n", index);
-				m.lock();
-				Debug::Log("				index overflow, index restart : " + to_string(index));
-				m.unlock();
+				printf("				index overflow, index restart : %d.\n", index);
 			}
 		}
 		else
@@ -347,18 +320,11 @@ void RunListenThread()
 	{
 		memset(buffer, 0, ACK_SIZE * sizeof(char));
 
-		m.lock();
-		listenThreadState = "recv";
-		Debug::Log("[ListenState] - " + listenThreadState);
-		m.unlock();
+
 		nRet = recvfrom(s, buffer, ACK_SIZE, 0, (LPSOCKADDR)&saClient, &nLen);
 		
 		if (nRet > 0)
 		{
-			m.lock();
-			listenThreadState = "recved";
-			Debug::Log("[ListenState] - " + listenThreadState);
-			m.unlock();
 			DataRcvAck ack;
 			if (!ack.ParseFromString(buffer))
 			{
@@ -376,24 +342,16 @@ void RunListenThread()
 			}
 			int idx = ack.index();
 
-			m.lock();
-			listenThreadState = "removing";
-			Debug::Log("[ListenState] - " + listenThreadState);
-			m.unlock();
+			if (idx == payloadLength)
+			{
+				printf("Catch\n");
+			}
+
+			
 			if (CommonTools::Remove(indexContainer, idx))
-			{
-				//printf("							Index Ack : %d, nRet : %d\n", idx, nRet);
-				m.lock();
-				Debug::Log("							Index Ack : " + to_string(idx) + ", nRet : " + to_string(nRet));
-				if (indexContainer.size() > 5)
-					Debug::Log("              Index Removed : " + to_string(idx) + " initial five : " + to_string(indexContainer[0]) + " : " + to_string(indexContainer[1]) + " : " + to_string(indexContainer[2]) + " : " + to_string(indexContainer[3]) + " : " + to_string(indexContainer[4]));
-				m.unlock();
-			}
+				printf("							Index Ack : %d, nRet : %d\n", idx, nRet);
 			else
-			{
-				//printf("Index Ack : %d but Failed to remove\n", idx);
-				Debug::Log("Index Ack : " + to_string(idx) + " but Failed to remove");
-			}
+				printf("Index Ack : %d but Failed to remove\n", idx);
 		}
 
 		if (indexContainer.empty())

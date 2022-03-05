@@ -15,7 +15,6 @@
 #include "ClientInfo.pb.h"
 #include "UDPFileSend.pb.h"
 #include "CommonTools.h"
-#include "Debug.h"
 
 using namespace std;
 using namespace PacketTag;
@@ -43,8 +42,6 @@ void RunFileWriteThread();
 void RunSendThread();
 void RunListenThread();
 
-mutex m;
-
 SOCKET s;
 SOCKET s_send;
 SOCKADDR_IN serverAddr;
@@ -56,9 +53,6 @@ int contentsLength;
 int payloadCount;
 int lastPayloadSize;
 bool doneFlag = false;
-
-string sendThreadState;
-string listenThreadState;
 
 //mutex m;
 
@@ -195,18 +189,14 @@ void RunServer(short nPort)
 	}
 	clock_t start = clock();
 
-	Debug::Log("hello");
-
 	std::thread t1(RunListenThread);
 	std::thread t2(RunSendThread);
-
+	std::thread t3(RunFileWriteThread);
 	/*std::thread t3(RunListenThread);
 	std::thread t4(RunListenThread);*/
 
 	t1.join();
 	t2.join();
-	std::thread t3(RunFileWriteThread);
-
 	t3.join();
 	delete[] buffer;
 	closesocket(s);
@@ -216,12 +206,6 @@ void RunServer(short nPort)
 	cout << "whole time : " << difftime(end, start) / 1000.0 << endl;
 
 	printf("---------------------Done---------------------");
-
-	while (true)
-	{
-
-	}
-
 	return;
 }
 
@@ -254,7 +238,7 @@ void RunFileWriteThread()
 			char* lastPayload = new char[lastPayloadSize];
 			memcpy(lastPayload, iter->second->data, lastPayloadSize);
 			targetFile.write(lastPayload, lastPayloadSize);
-			printf("										Write Index : %d.\n", curIndex);
+			
 
 			delete[] lastPayload;
 			targetFile.close();
@@ -288,7 +272,7 @@ void RunSendThread()
 	}
 
 	printf("Start Send Thread\n");
-	
+
 	while (true)
 	{
 		for (int i = 0 ; i < sendIndexCont.size(); i++)
@@ -307,24 +291,17 @@ void RunSendThread()
 			nRet = sendto(s, sendData.c_str(), ACK_SIZE, 0, (LPSOCKADDR)&clientAddr, sizeof(struct sockaddr));
 			if (nRet == SOCKET_ERROR)
 			{
-				//printf("Send Failed index : %d\n", curIndex);
-				m.lock();
-				Debug::Log("Send Failed index : " + to_string(curIndex));
-				m.unlock();
+				printf("Send Failed index : %d\n", curIndex);
 			}
 			else
 			{
-
 				iter->second->SendFlag = true;
 				CommonTools::Remove(sendIndexCont, curIndex);
-				//printf("					Sent Index : %d.\n", curIndex);
-				m.lock();
-				Debug::Log("					Sent Index : " + to_string(curIndex));
-				m.unlock();
-				//if (iter->second->WriteFlag == true) //Send, Write 모두 끝난 경우 날림
-				//{
-				//	dataDic.erase(curIndex);
-				//}
+				printf("					Sent Index : %d.\n", curIndex);
+				if (iter->second->WriteFlag == true) //Send, Write 모두 끝난 경우 날림
+				{
+					dataDic.erase(curIndex);
+				}
 			}
 			
 		}
@@ -362,18 +339,9 @@ void RunListenThread()
 		string headerStr;
 		FileData data;
 		//m.lock();
-		m.lock();
-		listenThreadState = "recv";
-		Debug::Log("[ListenState] - " + listenThreadState);
-		m.unlock();
 		nRet = recvfrom(s, buffer, UDP_PAYLOAD_SIZE + HEADER_SIZE, 0, (LPSOCKADDR)&clientAddr, &nLen);
 		if (nRet > 0)
 		{
-			m.lock();
-			listenThreadState = "recved";
-			Debug::Log("[ListenState] - " + listenThreadState);
-			m.unlock();
-
 			memcpy(header, buffer, HEADER_SIZE);
 			memcpy(binaryData, buffer + HEADER_SIZE, UDP_PAYLOAD_SIZE);
 			headerStr = header;
@@ -393,10 +361,7 @@ void RunListenThread()
 				//m.unlock();
 				continue;
 			}
-			//printf("recv index : %d, nRet : %d\n", data.index(), nRet);
-			m.lock();
-			Debug::Log("recv index : " + to_string(data.index()) + ", nRet : " + to_string(nRet));
-			m.unlock();
+			printf("recv index : %d, nRet : %d\n", data.index(), nRet);
 		}
 		else
 		{
@@ -408,18 +373,11 @@ void RunListenThread()
 		}
 
 		map<int, RecvData*>::iterator iter = dataDic.find(data.index());
-		m.lock();
-		listenThreadState = "searchDict";
-		Debug::Log("[ListenState] - " + listenThreadState);
-		m.unlock();
 		if (CommonTools::Find(recvIndexCont, data.index()))
 		{
 			memcpy(iter->second->data, binaryData, UDP_PAYLOAD_SIZE);
 			iter->second->RecvFlag = true;
 			CommonTools::Remove(recvIndexCont, data.index());
-			m.lock();
-			Debug::Log("Index Found, Remove");
-			m.unlock();
 		}
 		else //못 찾는 경우 해당 Index의 Ack 데이터그램을 클라이언트에서 못 받은 경우일 수 있으므로 해당 index의 Ack 데이터그램 재전송.
 		{    
@@ -430,22 +388,8 @@ void RunListenThread()
 				string sendData = ack.SerializeAsString();
 
 				nRet = sendto(s, sendData.c_str(), ACK_SIZE, 0, (LPSOCKADDR)&clientAddr, sizeof(struct sockaddr));
-				m.lock();
-				Debug::Log("No Index Found, Resend");
-				m.unlock();
-
-				if (nRet == SOCKET_ERROR)
-				{
-					//printf("Send Failed index : %d\n", curIndex);
-					m.lock();
-					Debug::Log("Resend Failed index : " + to_string(data.index()));
-					m.unlock();
-				}
 			}
 		}
-		m.lock();
-		Debug::Log("SendFlag : " + to_string(iter->second->SendFlag) + " | RecvFlag : " + to_string(iter->second->RecvFlag));
-		m.unlock();
 
 		delete[] header;
 		delete[] binaryData;

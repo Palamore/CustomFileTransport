@@ -12,7 +12,6 @@
 #include <fstream>
 #include <ostream>
 #include <map>
-#include <mutex>
 #include <io.h>
 using namespace std;
 
@@ -20,7 +19,6 @@ using namespace std;
 #define SERVER_PORT		8000
 #define UDP_PAYLOAD_SIZE 10000
 #define SERVER_IP		"127.0.0.1"
-#define PUBLIC_SERVER_IP "121.134.137.247"
 #define INPUT_COMMAND_INDEX 0
 #define INPUT_COMMAND_TYPE_INDEX 1
 #define INPUT_TARGET_NICKNAME_INDEX 1
