@@ -57,6 +57,9 @@ int payloadCount;
 int lastPayloadSize;
 bool doneFlag = false;
 
+string sendThreadState;
+string listenThreadState;
+
 //mutex m;
 
 class RecvData {
@@ -192,6 +195,8 @@ void RunServer(short nPort)
 	}
 	clock_t start = clock();
 
+	Debug::Log("hello");
+
 	std::thread t1(RunListenThread);
 	std::thread t2(RunSendThread);
 
@@ -302,7 +307,10 @@ void RunSendThread()
 			nRet = sendto(s, sendData.c_str(), ACK_SIZE, 0, (LPSOCKADDR)&clientAddr, sizeof(struct sockaddr));
 			if (nRet == SOCKET_ERROR)
 			{
-				printf("Send Failed index : %d\n", curIndex);
+				//printf("Send Failed index : %d\n", curIndex);
+				m.lock();
+				Debug::Log("Send Failed index : " + to_string(curIndex));
+				m.unlock();
 			}
 			else
 			{
@@ -354,9 +362,18 @@ void RunListenThread()
 		string headerStr;
 		FileData data;
 		//m.lock();
+		m.lock();
+		listenThreadState = "recv";
+		Debug::Log("[ListenState] - " + listenThreadState);
+		m.unlock();
 		nRet = recvfrom(s, buffer, UDP_PAYLOAD_SIZE + HEADER_SIZE, 0, (LPSOCKADDR)&clientAddr, &nLen);
 		if (nRet > 0)
 		{
+			m.lock();
+			listenThreadState = "recved";
+			Debug::Log("[ListenState] - " + listenThreadState);
+			m.unlock();
+
 			memcpy(header, buffer, HEADER_SIZE);
 			memcpy(binaryData, buffer + HEADER_SIZE, UDP_PAYLOAD_SIZE);
 			headerStr = header;
@@ -391,6 +408,10 @@ void RunListenThread()
 		}
 
 		map<int, RecvData*>::iterator iter = dataDic.find(data.index());
+		m.lock();
+		listenThreadState = "searchDict";
+		Debug::Log("[ListenState] - " + listenThreadState);
+		m.unlock();
 		if (CommonTools::Find(recvIndexCont, data.index()))
 		{
 			memcpy(iter->second->data, binaryData, UDP_PAYLOAD_SIZE);
@@ -412,6 +433,14 @@ void RunListenThread()
 				m.lock();
 				Debug::Log("No Index Found, Resend");
 				m.unlock();
+
+				if (nRet == SOCKET_ERROR)
+				{
+					//printf("Send Failed index : %d\n", curIndex);
+					m.lock();
+					Debug::Log("Resend Failed index : " + to_string(data.index()));
+					m.unlock();
+				}
 			}
 		}
 		m.lock();

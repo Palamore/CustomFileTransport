@@ -57,6 +57,10 @@ size_t contentsLength;
 size_t fileSize;
 size_t payloadLength;
 vector<int> indexContainer;
+
+string sendThreadState;
+string listenThreadState;
+
 int main()
 {
 
@@ -343,11 +347,18 @@ void RunListenThread()
 	{
 		memset(buffer, 0, ACK_SIZE * sizeof(char));
 
-
+		m.lock();
+		listenThreadState = "recv";
+		Debug::Log("[ListenState] - " + listenThreadState);
+		m.unlock();
 		nRet = recvfrom(s, buffer, ACK_SIZE, 0, (LPSOCKADDR)&saClient, &nLen);
 		
 		if (nRet > 0)
 		{
+			m.lock();
+			listenThreadState = "recved";
+			Debug::Log("[ListenState] - " + listenThreadState);
+			m.unlock();
 			DataRcvAck ack;
 			if (!ack.ParseFromString(buffer))
 			{
@@ -365,7 +376,10 @@ void RunListenThread()
 			}
 			int idx = ack.index();
 
-			
+			m.lock();
+			listenThreadState = "removing";
+			Debug::Log("[ListenState] - " + listenThreadState);
+			m.unlock();
 			if (CommonTools::Remove(indexContainer, idx))
 			{
 				//printf("							Index Ack : %d, nRet : %d\n", idx, nRet);

@@ -27,7 +27,10 @@ void Debug::Log(string str)
 	std::chrono::system_clock::time_point end = std::chrono::system_clock::now();
 	std::time_t end_time = std::chrono::system_clock::to_time_t(end);
 	string log = "";
-	log = string(std::ctime(&end_time)) + string("[Log] ") + str + "\n";
+	string cTime(std::ctime(&end_time));
+	cTime.erase(0, 11);
+	cTime.erase(cTime.length() - 6, 6);
+	log = string("[") + cTime + string("] ") + str + "\n";
 	printf("%s ", log.c_str());
 
 	
