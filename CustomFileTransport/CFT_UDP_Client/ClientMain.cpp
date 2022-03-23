@@ -20,11 +20,12 @@ using namespace std;
 using namespace PacketTag;
 using namespace UDP;
 #define SERVER_IP		"127.0.0.1"
+#define PUBLIC_SERVER_IP		"121.134.137.247"
 #define UDP_PORT		8001
 #define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
-#define UDP_PAYLOAD_SIZE 10000
-#define ACK_SIZE 1000
+#define UDP_PAYLOAD_SIZE 4000
+#define ACK_SIZE 100
 #define HEADER_SIZE 5
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
@@ -70,7 +71,8 @@ int main()
 		return -1;
 	}
 
-	string serverIP = SERVER_IP;
+	string serverIP = PUBLIC_SERVER_IP;
+	//string serverIP = SERVER_IP;
 
 	
 

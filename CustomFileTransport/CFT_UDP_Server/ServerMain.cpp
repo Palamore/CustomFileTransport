@@ -25,8 +25,8 @@ using namespace UDP;
 #define UDP_PORT		8001
 #define UDP_RECV_PORT		8002
 #define	MAX_BUFFER		1024
-#define UDP_PAYLOAD_SIZE 10000
-#define ACK_SIZE 1000
+#define UDP_PAYLOAD_SIZE 4000
+#define ACK_SIZE 100
 #define HEADER_SIZE 5
 #define PROJECT_PATH "C:\\CustomFileTransport\\CustomFileTransport\\"
 #define UDP_SERVER_PATH "C:\\CustomFileTransport\\CustomFileTransport\\x64\\Debug\\CFT_UDP_Server.exe"
@@ -191,12 +191,14 @@ void RunServer(short nPort)
 
 	std::thread t1(RunListenThread);
 	std::thread t2(RunSendThread);
-	std::thread t3(RunFileWriteThread);
+	//std::thread t3(RunFileWriteThread);
 	/*std::thread t3(RunListenThread);
 	std::thread t4(RunListenThread);*/
 
 	t1.join();
 	t2.join();
+	std::thread t3(RunFileWriteThread);
+
 	t3.join();
 	delete[] buffer;
 	closesocket(s);
